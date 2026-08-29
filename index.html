@@ -571,15 +571,19 @@ html[data-celebration="independence"] #hero-bg{
 }
 #hero-video{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.4s var(--ease-out); }
 #hero-video.ready{ opacity:1; }
-#hero-bg.mode-core #hero-video{ display:none; }
+#hero-bg-image{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.4s var(--ease-out); }
+#hero-bg-image.ready{ opacity:1; }
+#hero-bg.mode-core #hero-video, #hero-bg.mode-core #hero-bg-image{ display:none; }
+#hero-bg.mode-video #hero-bg-image{ display:none; }
+#hero-bg.mode-image #hero-video{ display:none; }
 .hero-fade{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(180deg, transparent 78%, var(--bg) 100%);
 }
-/* When a video is playing behind the hero, force the dark Forge palette
-   locally so text/borders stay legible over the footage, regardless of
-   the light background used everywhere else on the site. */
-#hero.video-active{
+/* When a video or image is showing behind the hero, force the dark Forge
+   palette locally so text/borders stay legible over the footage, regardless
+   of the light background used everywhere else on the site. */
+#hero.media-active{
   --text: var(--ink);
   --text-dim: var(--ink-dim);
   --text-dimmer: var(--ink-dimmer);
@@ -646,23 +650,15 @@ html[data-celebration="independence"] #hero-bg{
 .hero-sound-btn.unmuted .snd-on{ display:block; }
 .hero-sound-btn.unmuted{ border-color:var(--accent); }
 
-/* ---- Trust indicator: overlapping avatars + credibility line ---- */
+/* ---- Trust indicator: honest one-line credibility statement ---- */
 .hero-trust{ margin-top:34px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-.hero-avatars{ display:flex; }
-.hero-avatar{
-  width:34px; height:34px; border-radius:50%; flex:none;
-  background:radial-gradient(circle at 32% 28%, var(--hc1), var(--hc2) 78%);
-  border:2px solid var(--bg);
-  box-shadow:0 2px 8px rgba(30,20,10,.18);
-  margin-left:-10px;
+.hero-trust-mark{
+  width:30px; height:30px; border-radius:50%; flex:none;
+  background:var(--grad-ember); color:var(--on-accent);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:700; font-size:.85rem;
 }
-.hero-avatar:first-child{ margin-left:0; }
 .hero-trust p{ font-size:13.5px; color:var(--text-dim); }
-.hero-trust-badge{
-  font-family:var(--font-mono); font-size:11.5px; font-weight:700; letter-spacing:.02em;
-  color:var(--on-accent); background:var(--grad-ember);
-  padding:4px 10px; border-radius:var(--radius-full);
-}
 
 /* ========================================================================
    HERO SCENE — abstract copper archway, right column of the hero grid
@@ -847,6 +843,133 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .service-tags{ margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
 .service-tags span{ font-family:var(--font-mono); font-size:10.5px; padding:5px 10px; border:1px solid var(--border); border-radius:var(--radius-full); color:var(--text-dimmer); }
 
+/* ---- Editorial services list — numbered rows instead of six identical
+   cards, echoing the numeral language already used in Process/Value. ---- */
+.services-list{ display:flex; flex-direction:column; border-top:1px solid var(--border); }
+.service-row{
+  display:grid; grid-template-columns:64px 52px 1fr 30px; align-items:center; gap:30px;
+  padding:36px 6px; border-bottom:1px solid var(--border);
+  transition:background var(--dur-fast) var(--ease-out), padding-left var(--dur-fast) var(--ease-out);
+}
+.service-row:hover{ background:color-mix(in srgb, var(--accent) 4%, transparent); padding-left:18px; }
+.sr-num{ font-family:var(--font-mono); font-size:13px; color:var(--text-dimmer); }
+.sr-icon{ width:30px; height:30px; display:flex; align-items:center; justify-content:center; flex:none; }
+.sr-icon svg{ width:26px; height:26px; stroke:var(--accent); transition:transform var(--dur-fast) var(--ease-out); }
+.service-row:hover .sr-icon svg{ transform:scale(1.1); }
+.sr-body h3{ font-size:1.22rem; margin-bottom:9px; }
+.sr-body p{ color:var(--text-dim); font-size:.94rem; line-height:1.62; max-width:56ch; }
+.sr-arrow{ display:flex; align-items:center; justify-content:flex-end; color:var(--text-dimmer); transition:transform var(--dur-fast) var(--ease-out), color var(--dur-fast); }
+.sr-arrow svg{ width:18px; height:18px; }
+.service-row:hover .sr-arrow{ color:var(--accent); transform:translateX(5px); }
+
+/* ========================================================================
+   REVIEWS
+   ======================================================================== */
+
+/* ---- Stat belt: average rating + distribution bars above the grid.
+   Hidden entirely when there are no reviews yet — the empty state below
+   carries that moment instead. ---- */
+.reviews-belt{
+  display:flex; align-items:center; gap:44px; flex-wrap:wrap;
+  padding:38px 44px; margin-bottom:48px;
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg);
+}
+.reviews-belt .ravg{ text-align:center; flex:none; }
+.reviews-belt .ravg .num{
+  font-family:var(--font-display); font-weight:700; font-size:3rem; line-height:1;
+  background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.reviews-belt .ravg .stars{ margin-top:12px; display:flex; gap:3px; justify-content:center; }
+.reviews-belt .ravg .stars svg{ width:16px; height:16px; }
+.reviews-belt .ravg .cnt{ margin-top:9px; font-family:var(--font-mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dimmer); white-space:nowrap; }
+.reviews-belt .rdivider{ width:1px; align-self:stretch; background:var(--border); flex:none; }
+.reviews-belt .rdist{ flex:1; min-width:200px; display:flex; flex-direction:column; gap:9px; }
+.rdist-row{ display:flex; align-items:center; gap:12px; }
+.rdist-row .lbl{ width:40px; flex:none; font-family:var(--font-mono); font-size:11px; color:var(--text-dimmer); display:flex; align-items:center; gap:4px; }
+.rdist-row .track{ flex:1; height:5px; border-radius:99px; background:var(--border); overflow:hidden; }
+.rdist-row .fill{ height:100%; border-radius:99px; background:var(--grad-amber); transition:width .8s var(--ease-out); }
+
+.reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:22px; }
+.review-card{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md);
+  padding:30px; position:relative; overflow:hidden; display:flex; flex-direction:column;
+  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+}
+.review-card::before{
+  content:''; position:absolute; inset:0; opacity:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(196,73,26,.20), transparent 60%);
+  transition:opacity var(--dur-med); pointer-events:none;
+}
+.review-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); }
+.review-card:hover::before{ opacity:1; }
+.rc-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.rc-stars{ display:flex; gap:2px; flex:none; }
+.rc-stars svg{ width:14px; height:14px; }
+.rc-service{
+  font-family:var(--font-mono); font-size:10px; padding:5px 10px; border:1px solid var(--border);
+  border-radius:var(--radius-full); color:var(--text-dimmer); white-space:nowrap; text-align:right;
+}
+.rc-text{ margin-top:20px; color:var(--text-dim); font-size:.95rem; line-height:1.72; flex:1; }
+.rc-foot{ margin-top:24px; display:flex; align-items:center; gap:12px; }
+.rc-avatar{
+  width:38px; height:38px; border-radius:50%; flex:none;
+  background:var(--grad-ember); color:var(--on-accent);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:700; font-size:.92rem;
+}
+.rc-meta b{ display:block; font-size:.92rem; }
+.rc-meta span{ font-family:var(--font-mono); font-size:10px; color:var(--text-dimmer); }
+
+/* ---- "Add yours" tile: sits as the last cell of the grid once reviews
+   exist, so writing a review reads as part of the collection rather than
+   a bolted-on button. ---- */
+.review-card.add-card{
+  align-items:center; justify-content:center; text-align:center;
+  min-height:230px; background:transparent; border-style:dashed; border-color:var(--border-strong);
+  cursor:pointer;
+}
+.review-card.add-card:hover{ border-color:var(--accent); background:color-mix(in srgb, var(--accent) 5%, transparent); }
+.review-card.add-card:hover::before{ opacity:0; }
+.add-card .add-icon{
+  width:46px; height:46px; border-radius:50%; border:1px solid var(--border-strong);
+  display:flex; align-items:center; justify-content:center; color:var(--accent); margin-bottom:16px;
+  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast);
+}
+.add-card:hover .add-icon{ transform:scale(1.08); border-color:var(--accent); }
+.add-card .add-icon svg{ width:18px; height:18px; }
+.add-card b{ font-size:.98rem; }
+.add-card span{ margin-top:6px; color:var(--text-dim); font-size:.86rem; max-width:22ch; }
+
+/* ---- Empty state: shown instead of the belt + grid when no reviews
+   exist yet. Honest rather than faked — no seeded testimonials. ---- */
+.reviews-empty{
+  border:1px dashed var(--border-strong); border-radius:var(--radius-lg);
+  padding:70px 40px; text-align:center; display:flex; flex-direction:column; align-items:center;
+  cursor:pointer; transition:border-color var(--dur-fast), background var(--dur-fast);
+}
+.reviews-empty:hover{ border-color:var(--accent); background:color-mix(in srgb, var(--accent) 4%, transparent); }
+.reviews-empty .re-icon{
+  width:60px; height:60px; border-radius:50%; border:1px solid var(--border-strong); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; margin-bottom:22px;
+}
+.reviews-empty .re-icon svg{ width:24px; height:24px; }
+.reviews-empty h3{ font-size:1.3rem; }
+.reviews-empty p{ margin-top:10px; color:var(--text-dim); max-width:38ch; line-height:1.6; }
+.reviews-empty .btn{ margin-top:26px; pointer-events:none; }
+
+/* ---- Rating picker inside the "write a review" form ---- */
+.rate-picker{ display:flex; gap:7px; }
+.rate-star{
+  width:32px; height:32px; padding:0; border:none; background:none; cursor:pointer;
+  color:var(--border-strong); transition:color .15s, transform .15s var(--ease-out);
+}
+.rate-star svg{ width:100%; height:100%; }
+.rate-star:hover{ transform:scale(1.12); }
+.rate-star.filled{ color:var(--accent); }
+.rate-hint{ margin-top:8px; font-family:var(--font-mono); font-size:11px; color:var(--text-dimmer); min-height:14px; }
+.char-count{ margin-top:6px; text-align:right; font-family:var(--font-mono); font-size:10.5px; color:var(--text-dimmer); }
+.hp-wrap{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
 /* ========================================================================
    WORK / PORTFOLIO
    ======================================================================== */
@@ -910,6 +1033,20 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .work-card:hover .work-open svg{ stroke:var(--on-accent); transform:rotate(45deg); }
 
 .work-more{ text-align:center; margin-top:56px; }
+
+/* ---- Empty state for the Digital Products grid — same honest,
+   no-fake-content pattern as .reviews-empty, styled to match. ---- */
+.products-empty{
+  border:1px dashed var(--border-strong); border-radius:var(--radius-lg);
+  padding:70px 40px; text-align:center; display:flex; flex-direction:column; align-items:center;
+}
+.products-empty .pe-icon{
+  width:56px; height:56px; border-radius:50%; border:1px solid var(--border-strong); color:var(--accent);
+  display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+}
+.products-empty .pe-icon svg{ width:22px; height:22px; }
+.products-empty h3{ font-size:1.2rem; }
+.products-empty p{ margin-top:9px; color:var(--text-dim); max-width:40ch; line-height:1.6; }
 
 /* ========================================================================
    VIDEO GRID (Media section)
@@ -1149,6 +1286,17 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .estimator-visual .price-preview .amt{ font-family:var(--font-display); font-size:3rem; margin-top:10px; background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .estimator-visual .price-preview .sub{ margin-top:8px; font-size:.85rem; color:var(--text-dimmer); }
 
+/* ---- Tiny "meet IRA" chat preview above the price card — introduces
+   her as a guide having an exchange, not just a form that spits out a
+   number. ---- */
+.estimator-visual .ev-inner{ display:flex; flex-direction:column; align-items:center; width:100%; }
+.ecp{ display:flex; flex-direction:column; gap:10px; width:100%; max-width:330px; margin-bottom:30px; }
+.ecp-bubble{ padding:12px 16px; border-radius:16px; font-size:.84rem; line-height:1.5; max-width:88%; }
+.ecp-bubble.user{ align-self:flex-end; background:var(--bg-card); border:1px solid var(--border); border-bottom-right-radius:4px; color:var(--text-dim); }
+.ecp-ira-wrap{ align-self:flex-start; max-width:88%; }
+.ecp-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dimmer); margin-bottom:5px; padding-left:2px; }
+.ecp-bubble.ira{ background:var(--grad-ember); color:var(--on-accent); border-bottom-left-radius:4px; max-width:none; }
+
 /* ========================================================================
    FAQ
    ======================================================================== */
@@ -1382,6 +1530,14 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   section{ padding:100px 0; }
   .work-grid{ grid-template-columns:1fr; }
   .services-grid{ grid-template-columns:1fr; }
+  .service-row{ grid-template-columns:36px 1fr; row-gap:12px; padding:26px 4px; }
+  .service-row:hover{ padding-left:4px; }
+  .sr-icon{ display:none; }
+  .sr-arrow{ grid-column:2; justify-self:start; }
+  .reviews-grid{ grid-template-columns:1fr; }
+  .reviews-belt{ flex-direction:column; text-align:center; padding:32px 26px; gap:26px; }
+  .reviews-belt .rdivider{ display:none; }
+  .reviews-belt .rdist{ width:100%; }
   .hero-stats{ gap:26px; margin-top:52px; flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; padding-bottom:6px; }
   .hero-scene{ max-width:340px; aspect-ratio:1/1.15; }
   .hs-scroll{ font-size:10px; padding:9px 14px; }
@@ -1407,6 +1563,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .btn{ padding:13px 20px; font-size:14px; }
   .value-card{ padding:32px 26px; }
   .service-card{ padding:28px 24px; }
+  .review-card{ padding:26px 22px; }
+  .reviews-empty{ padding:50px 26px; }
   .estimator-copy{ padding:40px 26px; }
   .estimator-visual{ padding:36px 26px; }
   .estimator-visual .price-preview .amt{ font-size:2.5rem; }
@@ -1442,6 +1600,27 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 }
 
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Hanuman Digital Studio",
+  "description": "Hand-coded, premium websites, admin panels and AI tools for local businesses — cinematic digital experiences, not templates.",
+  "url": "https://hanumanwebapp.com/",
+  "email": "hanumandigitalstudio.software@gmail.com",
+  "telephone": "+91-99128-88172",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kamareddy",
+    "addressRegion": "Telangana",
+    "addressCountry": "IN"
+  },
+  "areaServed": "IN",
+  "founder": { "@type": "Person", "name": "Rudra" },
+  "sameAs": []
+}
+</script>
 </head>
 <body>
 <div class="theme-chakra" id="themeChakra"></div>
@@ -1467,9 +1646,11 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
     </a>
     <nav class="nav-links">
       <a href="#work">Work</a>
+      <a href="#products">Products</a>
       <a href="#media" id="navVideosLink" style="display:none;">Videos</a>
+      <a href="#reviews">Reviews</a>
       <a href="#services">Services</a>
-      <a href="#services">AI Tools</a>
+      <a href="#estimator">Meet IRA</a>
       <a href="#about">About</a>
       <a href="#process">Process</a>
       <a href="#faq">FAQ</a>
@@ -1484,9 +1665,11 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work">Work</a>
+  <a href="#products">Products</a>
   <a href="#media" id="navVideosLinkMobile" style="display:none;">Videos</a>
+  <a href="#reviews">Reviews</a>
   <a href="#services">Services</a>
-  <a href="#services">AI Tools</a>
+  <a href="#estimator">Meet IRA</a>
   <a href="#about">About</a>
   <a href="#process">Process</a>
   <a href="#faq">FAQ</a>
@@ -1518,6 +1701,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 <section id="hero">
   <div id="hero-bg" class="mode-core">
     <video id="hero-video" muted playsinline preload="auto"></video>
+    <img id="hero-bg-image" alt="">
   </div>
   <div class="hero-atmos" aria-hidden="true"><i class="ha1"></i><i class="ha2"></i><i class="ha3"></i></div>
   <div class="hero-fade"></div>
@@ -1541,14 +1725,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
           </button>
         </div>
         <div class="hero-trust">
-          <div class="hero-avatars">
-            <span class="hero-avatar" style="--hc1:#e2b892;--hc2:#a9673a;"></span>
-            <span class="hero-avatar" style="--hc1:#d9a06a;--hc2:#7a4426;"></span>
-            <span class="hero-avatar" style="--hc1:#c98a58;--hc2:#5e3620;"></span>
-            <span class="hero-avatar" style="--hc1:#eccba0;--hc2:#8a5a34;"></span>
-          </div>
-          <p>Trusted by founders &amp; businesses worldwide</p>
-          <span class="hero-trust-badge">50+</span>
+          <span class="hero-trust-mark" aria-hidden="true">H</span>
+          <p>Designed in India. Built for anywhere.</p>
         </div>
       </div>
 
@@ -1633,42 +1811,66 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <h2 class="section-title">Six ways we can<br>help your business.</h2>
       </div>
     </div>
-    <div class="services-grid reveal-stagger">
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
-        <h3>Business &amp; Brand Websites</h3>
-        <p>Cinematic marketing sites for clinics, restaurants, studios and professionals who want to look like the premium option.</p>
-        <div class="service-tags"><span>Single-page</span><span>Multi-page</span></div>
+    <div class="services-list reveal-stagger">
+      <div class="service-row">
+        <span class="sr-num mono">01</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="sr-body">
+          <h3>Business &amp; Brand Websites</h3>
+          <p>Cinematic marketing sites for clinics, restaurants, studios and professionals who want to look like the premium option.</p>
+          <div class="service-tags"><span>Single-page</span><span>Multi-page</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
-        <h3>Admin Panels &amp; Dashboards</h3>
-        <p>Password-protected panels so you can edit content, swap images and manage your site without touching code.</p>
-        <div class="service-tags"><span>Supabase</span><span>Self-serve editing</span></div>
+      <div class="service-row">
+        <span class="sr-num mono">02</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+        <div class="sr-body">
+          <h3>Admin Panels &amp; Dashboards</h3>
+          <p>Password-protected panels so you can edit content, swap images and manage your site without touching code.</p>
+          <div class="service-tags"><span>Supabase</span><span>Self-serve editing</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
-        <h3>Booking &amp; Appointment Systems</h3>
-        <p>Smart scheduling that adapts to your hours, staff and services — built for clinics and service businesses.</p>
-        <div class="service-tags"><span>Auto time-slots</span><span>Reminders</span></div>
+      <div class="service-row">
+        <span class="sr-num mono">03</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div class="sr-body">
+          <h3>Booking &amp; Appointment Systems</h3>
+          <p>Smart scheduling that adapts to your hours, staff and services — built for clinics and service businesses.</p>
+          <div class="service-tags"><span>Auto time-slots</span><span>Reminders</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/><line x1="20" y1="14" x2="23" y2="14"/></svg></div>
-        <h3>AI Chatbots &amp; Assistants</h3>
-        <p>From support bots to on-site cost estimators, wired into your content so answers are actually relevant.</p>
-        <div class="service-tags"><span>Cost estimators</span><span>Support bots</span></div>
+      <div class="service-row">
+        <span class="sr-num mono">04</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/><line x1="20" y1="14" x2="23" y2="14"/></svg></div>
+        <div class="sr-body">
+          <h3>AI Chatbots &amp; Assistants</h3>
+          <p>From support bots to on-site cost estimators, wired into your content so answers are actually relevant.</p>
+          <div class="service-tags"><span>Cost estimators</span><span>Support bots</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
-        <h3>3D &amp; WebGL Experiences</h3>
-        <p>Three.js-driven scenes, scroll storytelling and motion that make a page feel like a product, not a brochure.</p>
-        <div class="service-tags"><span>Three.js</span><span>Scroll motion</span></div>
+      <div class="service-row">
+        <span class="sr-num mono">05</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
+        <div class="sr-body">
+          <h3>3D &amp; WebGL Experiences</h3>
+          <p>Three.js-driven scenes, scroll storytelling and motion that make a page feel like a product, not a brochure.</p>
+          <div class="service-tags"><span>Three.js</span><span>Scroll motion</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
-      <div class="service-card">
-        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
-        <h3>E-Commerce &amp; Catalogs</h3>
-        <p>3D product showcases, cart flows and live inventory, built on Supabase so stock stays accurate.</p>
-        <div class="service-tags"><span>Product 3D views</span><span>Live inventory</span></div>
+      <div class="service-row">
+        <span class="sr-num mono">06</span>
+        <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>
+        <div class="sr-body">
+          <h3>E-Commerce &amp; Catalogs</h3>
+          <p>3D product showcases, cart flows and live inventory, built on Supabase so stock stays accurate.</p>
+          <div class="service-tags"><span>Product 3D views</span><span>Live inventory</span></div>
+        </div>
+        <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
     </div>
   </div>
@@ -1685,6 +1887,25 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
       <p class="section-sub">Every project below is a real, hand-built site — click one to open the details, or launch the live experience.</p>
     </div>
     <div class="work-grid reveal-stagger" id="workGrid"></div>
+  </div>
+</section>
+
+<!-- DIGITAL PRODUCTS -->
+<section id="products">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Digital products</span>
+        <h2 class="section-title">Things I've built,<br>not just delivered.</h2>
+      </div>
+      <p class="section-sub">Chatbots, tools and small products built on my own time — separate from client work, but built the same hand-coded way.</p>
+    </div>
+    <div class="work-grid reveal-stagger" id="productsGrid" style="display:none;"></div>
+    <div class="products-empty reveal" id="productsEmpty">
+      <div class="pe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/><line x1="20" y1="14" x2="23" y2="14"/></svg></div>
+      <h3>Nothing listed yet</h3>
+      <p>Products go here as they're built — first up will likely be an AI chatbot or two.</p>
+    </div>
   </div>
 </section>
 
@@ -1732,6 +1953,38 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </section>
 
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Client reviews</span>
+        <h2 class="section-title">What clients say<br>after we ship.</h2>
+      </div>
+      <p class="section-sub">Straight from the people we've built for — unedited, and posted the moment they hit submit.</p>
+    </div>
+
+    <div id="reviewsBelt" class="reviews-belt reveal" style="display:none;">
+      <div class="ravg">
+        <div class="num" id="revAvgNum">0.0</div>
+        <div class="stars" id="revAvgStars"></div>
+        <div class="cnt" id="revAvgCount">from 0 reviews</div>
+      </div>
+      <div class="rdivider" id="revDivider" style="display:none;"></div>
+      <div class="rdist" id="revDist" style="display:none;"></div>
+    </div>
+
+    <div id="reviewsEmpty" class="reviews-empty reveal">
+      <div class="re-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></div>
+      <h3>No reviews yet</h3>
+      <p>Be the first to tell people what it was actually like working with us.</p>
+      <button type="button" class="btn btn-primary">Write a review</button>
+    </div>
+
+    <div class="reviews-grid reveal-stagger" id="reviewsGrid" style="display:none;"></div>
+  </div>
+</section>
+
 <!-- ESTIMATOR -->
 <section id="estimator">
   <div class="container">
@@ -1752,10 +2005,19 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <button class="btn btn-primary" style="margin-top:32px;" id="estimatorOpenBtn">Chat with IRA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
       </div>
       <div class="estimator-visual">
-        <div class="price-preview">
-          <span class="lbl mono">Typical project range</span>
-          <div class="amt">From ₹7K</div>
-          <span class="sub">+ domain, hosting &amp; other charges — final number depends on your requirements</span>
+        <div class="ev-inner">
+          <div class="ecp">
+            <div class="ecp-bubble user">I need a website for my restaurant.</div>
+            <div class="ecp-ira-wrap">
+              <div class="ecp-label">IRA · AI project guide</div>
+              <div class="ecp-bubble ira">Let's go beyond a menu — live ordering, WhatsApp bookings, an AI concierge. Here's roughly what that runs:</div>
+            </div>
+          </div>
+          <div class="price-preview">
+            <span class="lbl mono">Typical project range</span>
+            <div class="amt">From ₹7K</div>
+            <span class="sub">+ domain, hosting &amp; other charges — final number depends on your requirements</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1834,7 +2096,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
       <div class="footer-links">
         <div class="footer-col">
           <h4>Sitemap</h4>
-          <a href="#work">Work</a><a href="#services">Services</a><a href="#process">Process</a><a href="#estimator">Estimator</a><a href="#contact">Contact</a>
+          <a href="#work">Work</a><a href="#products">Products</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#estimator">Estimator</a><a href="#contact">Contact</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -1932,6 +2194,57 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </div>
 
+<!-- REVIEW MODAL -->
+<div class="pmodal-backdrop" id="rvModalBackdrop">
+  <div class="pmodal" style="position:relative;">
+    <button class="pmodal-close" id="rvModalClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <span class="pcat mono">Share your experience</span>
+    <h3>Write a review</h3>
+    <p>Honest, specific feedback helps other business owners trust the work — and helps us improve it.</p>
+    <form id="reviewForm" novalidate>
+      <div class="form-field"><label>Your name</label><input type="text" name="name" id="reviewNameInput" required maxlength="60" placeholder="Your name"></div>
+      <div class="form-field">
+        <label>Which service was this for?</label>
+        <select name="service" id="reviewServiceInput" required>
+          <option value="" disabled selected>Choose one</option>
+          <option>Business &amp; Brand Website</option>
+          <option>Admin Panel / Dashboard</option>
+          <option>Booking &amp; Appointment System</option>
+          <option>AI Chatbot / Assistant</option>
+          <option>3D &amp; WebGL Experience</option>
+          <option>E-Commerce Store</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Your rating</label>
+        <div class="rate-picker" id="ratePicker" role="radiogroup" aria-label="Rating out of 5 stars">
+          <button type="button" class="rate-star" data-value="1" aria-label="1 star"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></button>
+          <button type="button" class="rate-star" data-value="2" aria-label="2 stars"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></button>
+          <button type="button" class="rate-star" data-value="3" aria-label="3 stars"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></button>
+          <button type="button" class="rate-star" data-value="4" aria-label="4 stars"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></button>
+          <button type="button" class="rate-star" data-value="5" aria-label="5 stars"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg></button>
+        </div>
+        <div class="rate-hint" id="rateHint"></div>
+        <input type="hidden" name="rating" id="reviewRatingInput" value="0" required>
+      </div>
+      <div class="form-field">
+        <label>Your review</label>
+        <textarea name="text" id="reviewTextInput" required minlength="12" maxlength="600" rows="4" placeholder="What was it like working with us? What did we build?"></textarea>
+        <div class="char-count"><span id="reviewCharCount">0</span>/600</div>
+      </div>
+      <div class="hp-wrap" aria-hidden="true">
+        <label for="reviewHpInput">Leave this field blank</label>
+        <input type="text" name="hp_website" id="reviewHpInput" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="form-btn-row" style="display:flex;gap:12px;margin-top:6px;">
+        <button type="submit" class="btn btn-primary" id="reviewSubmitBtn" style="flex:1;">Submit review<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
+        <button type="button" class="btn btn-ghost" id="rvModalCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- CHAT WIDGET -->
 <button id="chat-toggle" aria-label="Chat with IRA — cost estimator & AI assistant" data-cursor-text="Chat"><img id="chatToggleLogo" alt="IRA"><span class="ping">₹</span></button>
 
@@ -1968,6 +2281,8 @@ var SUPABASE_BUCKET = "hero-media";
 
 var AI_FUNCTION_NAME = "ai-proxy"; // must match the Edge Function name in your Supabase project
 
+var REVIEWS = []; // populated by syncReviewsFromCloud(); rendered by renderReviews()
+
 /* ---- IRA (the AI chat widget) logo, embedded as a data URI so the
    whole site stays a single portable file with no extra image hosting. ---- */
 var IRA_LOGO_DATA_URI = "data:image/webp;base64,UklGRgARAABXRUJQVlA4IPQQAADwRwCdASrIAJkAPjEWiUMiISEVCiVMIAMEsQN8Pfyh+0H+Z63LgPbPyI/KP5s66/cPwt+R3W7np9evij8v9w3zX/YD2e/mz/a+4B+mX+j/rn5EdyzzBf0b+u/9L/Be8h/lf1y91/9p/vv/I9wD+u/17/vetv7GPoJfsR6Xn7SfCL+4H7Z+0l/881N/EnxN/u/5E+JP2cPavQI/kn3F/A/2v9wPOG8beAX+Lfy7+1/lV+ZnN5gC/Pf5z/jf7H+SnPD9df9j7gH6u/6f8p+dPmd/1X/c/bv9Mv9N/4/8r+XPuY/M/8V/0/838BP8v/q/+0/u3Cr/tkcYcoisWA9TZxmaWZDY8kk4cJuX//93+3bn/xBLqUgkwTaSnlTcgDqgILr/Tb/OLTf6+k3ifAyVSPzfeNYA/pt02K/SAbCXxbhAlU9U7vRYdeOlB/muuAxAU6EOkjK6/ZXGuuZ84+dGOWEEOjL+ZoET2xpzhpBujEw4qC7IZ9FeF2KfjX1job1PgXVurTnCCW1vnEmiK6J/pBmyJ88tepxpz36+vQe3tHNKp209XYJE5CBrcGjNY7o95a5H0qzO4UZYIxeKufsnt35MdjX3Zvllao5GqsMmErXaQUM/ft3DtP0iypzvYdBvl+/rUFiOPJXaPuOaEPuBp0tDyRbcXjt339lVHQq3znBvrYak8S/4pjMg0wdzXorcIi4W3lLJVejKVRdT8J34ChI4RdBUTyMzPVrPbZ5UmHlYMGuMI2Ohk6hgz+aWBkcFJhFvggzTj96LwAD+/s9mjq1lGVfKbTFz/rRENjm2M9C0GXjVv/BNND1UCbfsT2sj4h0Bm9RL5D87ok2jrJBYeDgR5qJshZ4P5hMEIqHW/km+49PAG1dsnIheO6zdcQbL653S/bfIayTS4n/zxTyj3pJTjzEpoUkquOHkr+dpHJSdRy5F9EQjBMCgdbMOOi4CPKtexYWfFkiK3FCnc0Tul67ASS66yH/bBmbAoen18OjOI5VZx9HCN8fg3nKpp41d0p+13U0oKUk7sIzxmOGMELMBO+VQOq3drSsz4GztxI4jZmgxsgb7KOSI3VbrP0NcYeTn+wp1WQ/f/S9FuTbPzpuILeJqu+T1Tx71KaOlsrwKnNCVk1njuI11cWnDBsIb/fyvgT7B1IDjXXWAPJ2KDzCCbkJKmu2O89N2/HlOGPGxA6m4pD+IeGWud4xiOb56pwGFSPkmczd82mfCTtG9sZEwFHGkjnCsGEpI9DG1eRRo+f9gIiAeECmIcbe6e0NPq4P94Kx1HEbsGaWFGPXnzguVVFrC5o0gEttpTyLxlq1pZDqfnQZqE6jdDgg5MlFbU3pY3IyoT+K/PI/bO89z6eENNX7yfFjc/Bbw5pn9uedwOVJy12DqqqlQL2DRpfU3h3qGZRpBzpq1VpfdpcuTCn0i+GbZ6LIdCCYr+KyEH7E4nGD2nGmreUaM0x6Q/eBsr3BJKc64W2YV/QcOf+WeBQAZGgqN2Ug+iosl0MqjSWSxlZ57xn3SQbLHdzWoqhQpQ+HL7IQJUWMtZxJubV+RG1j6BXVInwKQ3RT1gf+bYTLP/EqFOuJf/dABzfrjyddvnB8aQQDbCMoJnyyZJwNhTgpUc+fYQiqUKPjhLN/jTPvIQuEwANSx5UwJGzchCwTG+y1yTiSeELGU3NYWxkI4XH84V+4dPVHUje3VRb4Dfx6fF+heAsP7G7j5D0pbYiPxXGozFgaPU2KzpNvMbg2lrLblCfhTI4hcjEJUFMPTUtK52PYZ0tgYzN0sVWDnudh7DgLwdf/8U6N1isNnYg5go6/vkFVlUZDzmP9WcfB2H+mUM2FL/bZng/6tqahwh/XzvbXd16ISRo8QwVCn5Pwyg2lrDsGhy/AbdkZwzptqBvE1ETjtB1zS8IVSa22Bnfp07360C35WjQyS9ZVbHLn4z6K8+2/5C1wdllpHvMsaRIFoRjLs0igEJ2bP7VJsIZuurAIce6woabjLHxHZEpLHq9cg85CGAeaqLFLyVJYjEn+a5nswFQesVivwTf3lJ4tx90spY/7PXsaXWkd2vh2UPpfBZRwZxrIslDS2zSHQV7tDFn+ppUYex/bzRWHPjTe62l8BWIrFSiek2eF3nnv7iDm07uUG9NHNa2TmS3rN79n8gFY9MqsqQO9V7er0jd3Aey3b1A7xMNZgLguljyR231610lwDhdswq6k18H2+L19ewW3eOgcBNawTM5v1oV5+Ama9id8EW+dL6Mih/FltHtYE6TExHhAMxneKEcRNJnDh8o6p7R9kZwoqdE+PEso9xrIqs6F0eKNKr/LoYvkBmsg1HiWcKeT1NV+H6jXyEp/wTtQkqyjVokIoZuKxHqbnBW+87l3etvDknTpywURYxN1jYX9PwTkZaq/0HqvxUUWArTUdYy7f/UBkub+v8jLR//nJk9emcJ5oiEBMj1L8VCAGqShsc7wVMaPtnVNjjCz6tkpbqi4C9VrUt2+f6j6h3EKqFWRbGFx23j9NyiUcFrjfZsy69e6ijFuMXBQVsSO3/ybolnnwW+xWMaJXhuyV0gUTOE9Ds3U8Cqs1ZP/x46MiVrvhSY6sx6bhO3WDBQ2s18ny2psdj2gtbswatAN21RwCDf+/+l0/bz8o/u/W9JGVI2zbEZ6c/6B5qzDyShEFM8TzrSKLshHCPqKyMznp04VYsSk5qRNVneMn4Q+NARL5DqUH5K2t6COjchhW7BiRK0ms2YBPoaY4KnjeocF50YqlfYIAaf7hsVluSK+3haHRGEJ7eX0cU6CBuCSLZevas4aNxziXrkjkXo1JZazdWeJ26KUn/q1KTj9HAEW5WSjEzArd8HFiJaGtjJK+oOJ/kKTh5eqY9MQzyQCSrBfX1KayWfc1SI5kaAGlJqoT0kCH+GbLYqFTAC7jeiPtsAyW5FgJWf9G43b+kKDWbfdKevkbTqbrKtY/I2i1im0pBvto8iRyzhTy6PA7jnIj76GzkrTMu3Dc8IQ+b/S+iyGpRmrbbmXMighj7/ZsUVPU6DHnM0zlgri+66ycKKHQs6zJPkcPvVhQLT174iI+Thx3X3upRl7yvoGpjlUJ9gDKzWVTtLIzXqzK09Onb8KhB+/jD+Q+9+oXct4wBYymONf4SKKt0xMAcaC+5w0zfFO7u6YMKgBaFhsBd2nsM34L88oMWHog2Jzf7YhnL00HjjfNWEHcT7woT8RUure4DYtwHkVWEv1PRtG3xRqmTB2223aKXZGB2mIkjYg+YySfJZGSezh+asSMbyADxl+HtcNDRXB9NvBN0xq+dhxWKDhQEJtQYh6ZYn0bPoSt0Ibdzk4qG0Q3rW/JKsymhD7al31zgEPtWVWCM8UIA16dLOp1LLEwH4ws+wics4OEFacNAzk0wjEevKD//GoGH/+Vfl+ELBpXOU/CUKW+/ZJO2PKkRaeMpXBSMs4rGAfXSwr7bFndwvKLLOOho3IO88l5GG11T++7YU4bGmT/gyOzcQSsnWrRbDcqzj1+Y8IvPYZyYdb9KOMwCZmqbf18l5q6JESuryBkDYwTTYIbbS7UF0tgNAAORJn+0gEVoTEv/04muynO8csY2dKGkuS2eO38O9nKtq+gdnVcsqsYOkBIToVjhZ+ySynhCWqihNuzhslYb43p/X8U3K/Bxd8+HrL0m5t99SVgNFjAXjXHzZYlyvnWcJ7Hgw0rhyTntzhzPKtZHglsayqjEUVbKXlJeMJ4iAHg1fAxdVqS4trxMKb6QRubW/p1msJw78K2UC9RAYYTZ9/4ezpZ6+tLu3z+VB2fsPKRV0/ueFOEWVuWvTc/odymRf6xN7aHT5Hpelor1SMzpTqvWjWfyXd5xO6l2Z4uvwFYypodBKiWu+ung8g3bp8LGKtev/kNEMT2guMbbwveV1JiZ2QdyeQdxnXlrTe2yb3lGMq5cM63ISafd9uyyB8kr6ATigG+ALbWEFjXWe/yLcwk/+oI6pFReeNKOPGwBqfG/YdH7BiBFPWmPEynOsTa87ZCxFuWUUSkifXuj8UQrahlTD3IFu+Q9S6ALSYiFOtXKuWQDQHASHePgFHisPSgN3YdVPa4Lb72iuiaHsal26myk+t0XkcF7ehmoRJ29zSlmU2TWP7Q9aii1lTo0Q5KEQOvfWCQvbT42cm2li4ZqDwjntR3o7yWTqqqBI6iivP7CQ3JxmjB/D/Jn9CHac1+HmrrVnAv+M34b51N+xrS9z5kEF2Gndg2bjudOkJojnqlM92sPHNeRo912Qf5mAdkok4Rjv3zW9D6syLldKd8TUcaOGoBp/+u202JsS23QvcLPSBZRjlKaqNHMfIbBCG1X2M3BgrtFUvdQwM5N0vvCnF0t9Isfc8lf2gqbVjnya9kLhS0QrnQG4kd+Gh1uF6cscHONMwYTf9ywt3icngvM78ekWxcsd3VrsWRLp7PXc/inGiznvj+dV4d/9uJzsS1jCP+bG37HOwfEamSSxtcelyA1wcd4L6lyd3btVSxoiy9CB9Hrvg6JYk/Jlkr98uLd3dRRs5tB2wi9+Nv6sKDFqHXixXRj2GSXpYfcuEigAZQafN+UgpKGgj/SHGGg9Hj1pSf3EBbFG0L7I4En8Km5E96M3EG3mmyWu8My/2knuF3XbPPrn6VhxaGKi+++SKov1v8eFX6PoWwALGYSpz9wt7XVi05mIZixgXVCWf5WmzAKZW4rNxepPpHns7IDvCviHGRHBBCeso/ohamee6WvwgiutGUOGNaAA5/iLRPqtOjRdQBLKf3TFcjTzJCmBu6wHQl87WC983Hh8QLT0eXovJx+yFNDxQtYSJfyy/gO+eqbZnLFZJkCDR3RxR0V/40fo8YLdI52EmO4b1XSyJUYV+PbQ3LrnR9pnhc3xZ1ExKhosbAonPryG9oj4mJ4WoEnERrenrOCCogMwYH5lYDn7lASqdljAO35QAIAgw+Sv8ia6JGm/uVFB1hlpnaC0HzrFn2twlGixT844uUu4o6p+lJJAQZIbCRfiF2TwOqq1LrnsGUKHnUQ73eWHclk5cWR4Au47Ft1/4G5CQvoHfsWjMG5RHHi9AGo4CJAciXGWNTSa6/l8DpiO9RAukvXuTTncBFc+8avsAo09FtGLuQTNMrnBnFif2ASGzfrObE3EA9Im7NKd6gm1FhECN/w/WdmGzIZeubCqHigPEY+sKjeTVscYVCOdJOvuCWSk5Y1LsNvy1oETrG4iurYS6FLNA/HZEL8d4FljccB4G+cdUdB2BL5pS8GFQ4MY6NVZGoncytUGU+MlB9PNyolcO4WJq8zSctXWmxHWZK4FLKpYfrk4F+3DNhJrok07G0EmskifAC+54vPLbGmk3luetkk3IPA1ktLYO7hjbnYImYGHG00GUpu4OGaD1+LxhGpDM9ZAejFnZ6F+EC22uiTg4LvFfUbDIAVuNKqPb+G8QPBiiPtnO6CzlbffrXaHjIWeK8VWRxFXczoqJdObLwSg59iYOO41bXtQLkHn1dTlbEsKz+zrcF9iJmAeJkrg81RY3H7eiQbxijkMVzn4KQ0kBgoSctuy/yiKOveaLj3EP408wLceESEh/HQQ6Py8n/x0NAY+QX6p8gD9glucZZF2uvdG7R2Yr6XRYWJJ1AjxKQwUOdgUTAiUFZ4pCk2UX8cOI2x5Pv2wtY+nqXaLGUIx/uX/TuE1WKqIIMLAXjSZ6OR7HFVBV6jRN4NpsDHa5jVnWJ8+mNkq4xSRLXc84mA0+Ns7huxl5UlIjSChGvgCTvwo87eM5fsXS69VjoZdLzhdJmyFN0zm+8zAAAAA==";
@@ -1999,8 +2314,8 @@ var DEFAULT_DATA = {
     stat1v: "06", stat1l: "Projects delivered",
     stat2v: "01", stat2l: "Founder — no outsourcing",
     stat3v: "3D", stat3l: "Immersive, not templated",
-    trustText: "Trusted by founders & businesses worldwide",
-    trustBadge: "50+"
+    trustText: "Designed in India. Built for anywhere.",
+    trustBadge: "01"
   },
   contact: {
     whatsapp: "919912888172",
@@ -2016,7 +2331,8 @@ var DEFAULT_DATA = {
   },
   heroBg: {
     mode: "core",
-    videoUrl: ""
+    videoUrl: "",
+    imageUrl: ""
   },
   heroVisual: {
     mode: "photo",
@@ -2024,7 +2340,8 @@ var DEFAULT_DATA = {
     videoUrl: ""
   },
   site: {
-    logoUrl: ""
+    logoUrl: "",
+    introFramesEnabled: true
   },
   siteTheme: {
     active: "default",
@@ -2100,7 +2417,12 @@ var DEFAULT_DATA = {
         "Real-photo placeholder system for treatments, ready for the clinic's own photos",
         "Clean, trustworthy layout suited to a healthcare brand"
       ] }
-  ]
+  ],
+  // Standalone digital products (chatbots, tools, small apps) — distinct
+  // from client `projects` above. Same object shape, so the existing
+  // project modal renders these too. Starts empty on purpose; filled in
+  // as real products are added, never with placeholder entries.
+  products: []
 };
 
 
@@ -2166,10 +2488,12 @@ function syncSiteDataFromCloud(){
       DATA.site = cloud.site || DATA.site;
       DATA.siteTheme = cloud.siteTheme || DATA.siteTheme;
       DATA.projects = cloud.projects;
+      DATA.products = cloud.products || DATA.products || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
       localStorage.setItem(STORE_KEY, JSON.stringify(DATA));
       renderAll();
+      renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
     })
     .catch(function(){ /* no cloud copy yet, or offline — keep local content */ });
 }
@@ -2208,7 +2532,6 @@ function renderHero(){
   if(s2v) s2v.textContent=h.stat2v; if(s2l) s2l.textContent=h.stat2l;
   if(s3v) s3v.textContent=h.stat3v; if(s3l) s3l.textContent=h.stat3l;
   setText('.hero-trust p', h.trustText);
-  setText('.hero-trust-badge', h.trustBadge);
 }
 
 
@@ -2273,6 +2596,63 @@ function renderProjects(){
       var id = parseInt(card.getAttribute('data-id'),10);
       var proj = DATA.projects.find(function(x){ return x.id===id; });
       if(proj) openProjectModal(proj);
+    });
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      var x = ((e.clientX - r.left)/r.width - 0.5) * 2;
+      var y = ((e.clientY - r.top)/r.height - 0.5) * 2;
+      thumb.style.transform = 'rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg)';
+    });
+    card.addEventListener('mouseleave', function(){ thumb.style.transform=''; });
+  });
+
+  reInitReveal(grid.querySelectorAll('.work-card'));
+}
+
+/* ---- Digital products — same card/modal system as Work, sourced from
+   DATA.products instead of DATA.projects. Shows an honest empty state
+   until real products are added (no fabricated placeholder entries). ---- */
+function renderProducts(){
+  var grid = document.getElementById('productsGrid');
+  var empty = document.getElementById('productsEmpty');
+  if(!grid || !empty) return;
+
+  var products = DATA.products || [];
+  if(!products.length){
+    grid.style.display = 'none';
+    empty.style.display = 'flex';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+
+  grid.innerHTML = products.map(function(p){
+    var hasCover = !!(p.coverUrl && p.coverUrl.trim());
+    var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
+    return '' +
+    '<div class="work-card" data-id="'+p.id+'" data-cursor-text="View">' +
+      '<div class="work-thumb '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
+        (hasLogo ? '<div class="wt-logo"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
+        '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>' +
+        '<div class="noise"></div>' +
+      '</div>' +
+      '<div class="work-body">' +
+        '<div><span class="work-cat mono">'+escapeHtml(p.cat)+'</span><h3>'+escapeHtml(p.title)+'</h3><p>'+escapeHtml(p.desc.slice(0,70))+(p.desc.length>70?'…':'')+'</p></div>' +
+        '<button class="work-open" aria-label="Open product details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.work-card').forEach(function(card, idx){
+    var p = products[idx];
+    var thumb = card.querySelector('.work-thumb');
+    if(p.coverUrl && p.coverUrl.trim()){
+      thumb.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
+    }
+    card.addEventListener('click', function(){
+      var id = parseInt(card.getAttribute('data-id'),10);
+      var prod = products.find(function(x){ return x.id===id; });
+      if(prod) openProjectModal(prod);
     });
     card.addEventListener('mousemove', function(e){
       var r = card.getBoundingClientRect();
@@ -2438,6 +2818,7 @@ function renderAll(){
   renderHero();
   renderContact();
   renderProjects();
+  renderProducts();
   renderFAQ();
   renderBranding();
   renderMediaSection();
@@ -2522,7 +2903,11 @@ function openProjectModal(p){
 
   var priceEl = document.getElementById('pmodalPrice');
   if(p.price && p.price.trim()){
-    priceEl.textContent = 'Starting around ' + p.price.trim();
+    var priceVal = p.price.trim();
+    // Only prefix numeric-looking ranges ("₹30,000 – ₹50,000") with
+    // "Starting around" — a plain label like "Free" or "Custom pricing"
+    // (common for products) reads fine on its own.
+    priceEl.textContent = /\d/.test(priceVal) ? ('Starting around ' + priceVal) : priceVal;
     priceEl.classList.add('show');
   } else {
     priceEl.textContent = '';
@@ -2595,10 +2980,14 @@ document.addEventListener('DOMContentLoaded', function(){
   initLegalModals();
   initEstimatorChat();
   initContactForm();
+  renderReviews();
+  initReviewsSection();
   initHeroKickerPulseFix();
   initSupabase();
   recordSiteVisit();
+  syncReviewsFromCloud();
   initHeroVideoPlayback();
+  initHeroBgImage();
   initHeroSoundToggle();
   initSpotlightCards();
   initMagneticButtons();
@@ -2767,7 +3156,7 @@ function initWorkModal(){
     if(e.target === this) closeVideoModal();
   });
   document.addEventListener('keydown', function(e){
-    if(e.key==='Escape'){ closeProjectModal(); closeVideoModal(); closeLegalModal(); }
+    if(e.key==='Escape'){ closeProjectModal(); closeVideoModal(); closeLegalModal(); closeReviewModal(); }
   });
 }
 
@@ -3286,6 +3675,242 @@ function pushLeadToCloud(fd, channel){
 }
 
 /* ========================================================================
+   REVIEWS
+   Read-modify-write against reviews/reviews.json in the same Supabase
+   bucket used for leads/traffic — same fire-and-forget pattern as
+   pushLeadToCloud above, but this list is also read back and rendered
+   publicly, so every value passes through escapeHtml() before it touches
+   innerHTML. Reviews go live the instant they're submitted (no approval
+   step), so a honeypot field plus a minimum time-on-form check quietly
+   filters out the most obvious bots without adding friction for real
+   visitors — both fail silently, showing the same success message either
+   way, so nothing here tips off a script about why it didn't publish.
+   ======================================================================== */
+
+var reviewModalOpenedAt = 0;
+var REVIEW_MIN_FORM_MS = 1500;
+
+function starIcon(on){
+  return '<span style="color:'+(on ? 'var(--accent)' : 'var(--border-strong)')+';display:inline-flex;">' +
+    '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg>' +
+  '</span>';
+}
+function starRow(rating){
+  var s = '';
+  for(var i=1;i<=5;i++) s += starIcon(i <= Math.round(rating));
+  return s;
+}
+function reviewInitials(name){
+  var parts = String(name||'').trim().split(/\s+/).filter(Boolean);
+  if(!parts.length) return '?';
+  var a = parts[0][0] || '';
+  var b = parts.length > 1 ? parts[parts.length-1][0] : '';
+  return (a+b).toUpperCase();
+}
+
+function renderReviews(){
+  var belt = document.getElementById('reviewsBelt');
+  var empty = document.getElementById('reviewsEmpty');
+  var grid = document.getElementById('reviewsGrid');
+  if(!belt || !empty || !grid) return;
+
+  if(!REVIEWS.length){
+    belt.style.display = 'none';
+    grid.style.display = 'none';
+    empty.style.display = 'flex';
+    return;
+  }
+
+  empty.style.display = 'none';
+  belt.style.display = 'flex';
+  grid.style.display = 'grid';
+
+  var total = REVIEWS.length;
+  var sum = 0, dist = [0,0,0,0,0];
+  REVIEWS.forEach(function(r){
+    var v = Math.min(5, Math.max(1, Math.round(r.rating||0)));
+    sum += (r.rating||0);
+    dist[v-1]++;
+  });
+  var avg = sum / total;
+  document.getElementById('revAvgNum').textContent = avg.toFixed(1);
+  document.getElementById('revAvgStars').innerHTML = starRow(avg);
+  document.getElementById('revAvgCount').textContent = 'from ' + total + (total === 1 ? ' review' : ' reviews');
+
+  var divider = document.getElementById('revDivider');
+  var distEl = document.getElementById('revDist');
+  if(total >= 3){
+    divider.style.display = 'block';
+    distEl.style.display = 'flex';
+    distEl.innerHTML = [5,4,3,2,1].map(function(star){
+      var count = dist[star-1];
+      var pct = total ? Math.round((count/total)*100) : 0;
+      return '<div class="rdist-row"><span class="lbl">'+star+' '+starIcon(true)+'</span><div class="track"><div class="fill" style="width:'+pct+'%;"></div></div></div>';
+    }).join('');
+  } else {
+    divider.style.display = 'none';
+    distEl.style.display = 'none';
+  }
+
+  var cardsHtml = REVIEWS.map(function(r){
+    var dateStr = '';
+    try{ dateStr = new Date(r.createdAt).toLocaleDateString(undefined, { month:'short', year:'numeric' }); }catch(e){}
+    return '' +
+    '<div class="review-card">' +
+      '<div class="rc-top">' +
+        '<div class="rc-stars">'+starRow(r.rating)+'</div>' +
+        '<span class="rc-service mono">'+escapeHtml(r.service||'')+'</span>' +
+      '</div>' +
+      '<p class="rc-text">'+escapeHtml(r.text)+'</p>' +
+      '<div class="rc-foot">' +
+        '<div class="rc-avatar">'+escapeHtml(reviewInitials(r.name))+'</div>' +
+        '<div class="rc-meta"><b>'+escapeHtml(r.name)+'</b><span>'+escapeHtml(dateStr)+'</span></div>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  cardsHtml += '' +
+    '<div class="review-card add-card" id="reviewAddCard" tabindex="0" role="button" aria-label="Write a review">' +
+      '<div class="add-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>' +
+      '<b>Write a review</b>' +
+      '<span>Tell people what it was like working with us.</span>' +
+    '</div>';
+
+  grid.innerHTML = cardsHtml;
+
+  var addCard = document.getElementById('reviewAddCard');
+  if(addCard){
+    addCard.addEventListener('click', openReviewModal);
+    addCard.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); openReviewModal(); } });
+  }
+
+  if(revealObserver) revealObserver.observe(grid);
+}
+
+function syncReviewsFromCloud(){
+  if(!sbClient){ renderReviews(); return; }
+  var r = sbClient.storage.from(SUPABASE_BUCKET).getPublicUrl('reviews/reviews.json');
+  var url = r && r.data ? r.data.publicUrl : null;
+  if(!url){ renderReviews(); return; }
+  fetch(url + '?t=' + Date.now(), { cache:'no-store' })
+    .then(function(res){ return res.ok ? res.json() : []; })
+    .then(function(list){
+      REVIEWS = Array.isArray(list) ? list : [];
+      renderReviews();
+    })
+    .catch(function(){ renderReviews(); });
+}
+
+function pushReviewToCloud(review){
+  if(!sbClient) return Promise.resolve();
+  var r = sbClient.storage.from(SUPABASE_BUCKET).getPublicUrl('reviews/reviews.json');
+  var url = r && r.data ? r.data.publicUrl : null;
+  var fetchExisting = url
+    ? fetch(url + '?t=' + Date.now(), { cache:'no-store' }).then(function(res){ return res.ok ? res.json() : []; }).catch(function(){ return []; })
+    : Promise.resolve([]);
+  return fetchExisting.then(function(list){
+    var reviews = Array.isArray(list) ? list : [];
+    reviews.unshift(review);
+    if(reviews.length > 300) reviews = reviews.slice(0, 300);
+    var blob = new Blob([JSON.stringify(reviews)], { type:'application/json' });
+    return sbClient.storage.from(SUPABASE_BUCKET).upload('reviews/reviews.json', blob, { cacheControl:'0', upsert:true });
+  });
+}
+
+/* ---- Write-a-review modal ---- */
+
+function openReviewModal(){
+  var backdrop = document.getElementById('rvModalBackdrop');
+  if(!backdrop) return;
+  reviewModalOpenedAt = Date.now();
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  var nameInput = document.getElementById('reviewNameInput');
+  if(nameInput) setTimeout(function(){ nameInput.focus(); }, 350);
+}
+
+function closeReviewModal(){
+  var backdrop = document.getElementById('rvModalBackdrop');
+  if(!backdrop) return;
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setReviewRating(value){
+  document.getElementById('reviewRatingInput').value = value;
+  var labels = ['','Poor','Fair','Good','Very good','Excellent'];
+  document.getElementById('rateHint').textContent = value > 0 ? labels[value] : '';
+  document.querySelectorAll('.rate-star').forEach(function(btn){
+    var v = parseInt(btn.getAttribute('data-value'), 10);
+    btn.classList.toggle('filled', v <= value);
+  });
+}
+
+function initReviewsSection(){
+  document.getElementById('reviewsEmpty').addEventListener('click', openReviewModal);
+  document.getElementById('rvModalClose').addEventListener('click', closeReviewModal);
+  document.getElementById('rvModalCancel').addEventListener('click', closeReviewModal);
+  document.getElementById('rvModalBackdrop').addEventListener('click', function(e){
+    if(e.target === this) closeReviewModal();
+  });
+
+  document.querySelectorAll('.rate-star').forEach(function(btn){
+    var v = parseInt(btn.getAttribute('data-value'), 10);
+    btn.addEventListener('click', function(){ setReviewRating(v); });
+  });
+
+  var textarea = document.getElementById('reviewTextInput');
+  var counter = document.getElementById('reviewCharCount');
+  textarea.addEventListener('input', function(){
+    counter.textContent = textarea.value.length;
+  });
+
+  var form = document.getElementById('reviewForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var fd = new FormData(form);
+    var name = (fd.get('name') || '').toString().trim();
+    var service = (fd.get('service') || '').toString().trim();
+    var rating = parseInt(fd.get('rating'), 10) || 0;
+    var text = (fd.get('text') || '').toString().trim();
+    var honeypot = (fd.get('hp_website') || '').toString().trim();
+    var elapsed = Date.now() - reviewModalOpenedAt;
+
+    if(!name || !service || !rating || text.length < 12){
+      toast('Please fill in every field, with at least a short review.');
+      return;
+    }
+
+    // Quiet spam filter — bots tend to fill hidden fields and submit
+    // instantly. A real visitor never notices this; it just skips the
+    // publish step while still showing the normal success message.
+    var looksLikeSpam = !!honeypot || elapsed < REVIEW_MIN_FORM_MS;
+
+    var review = {
+      id: 'rv_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+      name: name.slice(0, 60),
+      service: service.slice(0, 60),
+      rating: Math.min(5, Math.max(1, rating)),
+      text: text.slice(0, 600),
+      createdAt: new Date().toISOString()
+    };
+
+    if(!looksLikeSpam){
+      REVIEWS.unshift(review);
+      renderReviews();
+      pushReviewToCloud(review).catch(function(err){ console.error('Review sync failed', err); });
+    }
+
+    closeReviewModal();
+    form.reset();
+    setReviewRating(0);
+    counter.textContent = '0';
+    toast('Thanks for the review!');
+  });
+}
+
+/* ========================================================================
    FAQ ACCORDION
    ======================================================================== */
 function initFAQAccordion(){
@@ -3411,22 +4036,40 @@ function applyHeroBgMode(){
   var hero = document.getElementById('hero');
   var bg = document.getElementById('hero-bg');
   var video = document.getElementById('hero-video');
+  var img = document.getElementById('hero-bg-image');
   var soundBtn = document.getElementById('heroSoundBtn');
-  if(!bg || !video) return;
+  if(!bg || !video || !img) return;
+
   if(DATA.heroBg.mode === 'video' && DATA.heroBg.videoUrl){
-    bg.classList.add('mode-video');
-    bg.classList.remove('mode-core');
-    if(hero) hero.classList.add('video-active');
+    bg.className = 'mode-video';
+    if(hero) hero.classList.add('media-active');
     if(soundBtn) soundBtn.classList.add('show');
+    img.classList.remove('ready');
+    img.removeAttribute('src');
     if(video.getAttribute('src') !== DATA.heroBg.videoUrl){
       video.src = DATA.heroBg.videoUrl;
       video.load();
     }
-  } else {
-    bg.classList.add('mode-core');
-    bg.classList.remove('mode-video');
-    if(hero) hero.classList.remove('video-active');
+  } else if(DATA.heroBg.mode === 'image' && DATA.heroBg.imageUrl){
+    bg.className = 'mode-image';
+    if(hero) hero.classList.add('media-active');
     if(soundBtn) soundBtn.classList.remove('show');
+    video.classList.remove('ready');
+    video.pause();
+    video.removeAttribute('src');
+    if(img.getAttribute('src') !== DATA.heroBg.imageUrl){
+      img.classList.remove('ready');
+      img.src = DATA.heroBg.imageUrl;
+    }
+  } else {
+    bg.className = 'mode-core';
+    if(hero) hero.classList.remove('media-active');
+    if(soundBtn) soundBtn.classList.remove('show');
+    video.classList.remove('ready');
+    video.pause();
+    video.removeAttribute('src');
+    img.classList.remove('ready');
+    img.removeAttribute('src');
   }
 }
 
@@ -3724,7 +4367,7 @@ function renderIntroFrameStory(){
   if(!sec) return;
   ssFrames = ssPickFrames();
   ssIsMobileMode = isMobileViewport();
-  if(ssFrames.length > 0){
+  if(ssFrames.length > 0 && DATA.site.introFramesEnabled !== false){
     sec.style.display = '';
     ssImgs = [];
     ssLastGoodIdx = -1;
@@ -3789,6 +4432,14 @@ function initIntroFrameStory(){
 
 function initHeroVideoPlayback(){
   setupAutoplayVideo(document.getElementById('hero-video'));
+}
+
+function initHeroBgImage(){
+  var img = document.getElementById('hero-bg-image');
+  if(!img) return;
+  img.addEventListener('load', function(){
+    img.classList.add('ready');
+  });
 }
 
 function setupAutoplayVideo(video){
@@ -3973,6 +4624,7 @@ function syncHeroVideoFromCloud(){
       if(pointer && pointer.mode){
         DATA.heroBg.mode = pointer.mode;
         DATA.heroBg.videoUrl = pointer.videoUrl || '';
+        DATA.heroBg.imageUrl = pointer.imageUrl || '';
         saveData();
         applyHeroBgMode();
       }
