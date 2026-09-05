@@ -603,6 +603,8 @@ html[data-celebration="independence"] #hero-bg{
 
 .hero-inner{ position:relative; z-index:2; width:100%; }
 .hero-grid{ display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); align-items:center; gap:4vw; }
+.hero-grid.visual-off{ grid-template-columns:1fr; }
+.hero-grid.visual-off .hero-copy{ max-width:820px; }
 .hero-copy{ min-width:0; container-type:inline-size; }
 .hero-kicker{
   display:inline-flex; align-items:center; gap:9px;
@@ -799,17 +801,41 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .reveal-stagger.in > *:nth-child(10){ transition-delay:.86s; }
 
 /* ---- About / value strip ---- */
-.value-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; }
-.value-card{ background:var(--bg); padding:44px 38px; position:relative; overflow:hidden; }
-.value-card::before{
+/* ---- Why us (About) — asymmetric editorial layout instead of a card
+   grid: the heading stays pinned on the left while three numbered rows
+   scroll past on the right, each lighting up under the cursor. Mirrors
+   the hero's two-tone heading treatment (.grad) for cross-section
+   consistency. ---- */
+.why-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(40px,6vw,90px); align-items:start; }
+.why-intro{ position:sticky; top:140px; }
+.why-title{ margin-top:18px; }
+.why-title .grad{ background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.why-list{ display:flex; flex-direction:column; }
+.why-item{
+  display:grid; grid-template-columns:auto 1fr; gap:clamp(20px,4vw,40px); align-items:start;
+  padding:38px 4px; border-top:1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+.why-item:last-child{ border-bottom:1px solid var(--border); }
+.why-item::before{
   content:''; position:absolute; inset:0; opacity:0;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(196,73,26,.16), transparent 60%);
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);
   transition:opacity var(--dur-med); pointer-events:none;
 }
-.value-card:hover::before{ opacity:1; }
-.value-card .num{ font-family:var(--font-mono); color:var(--accent); font-size:12px; letter-spacing:.1em; }
-.value-card h3{ font-size:1.3rem; margin-top:18px; }
-.value-card p{ margin-top:12px; color:var(--text-dim); font-size:.96rem; line-height:1.7; }
+.why-item:hover::before{ opacity:1; }
+.why-num{
+  font-family:var(--font-display); font-weight:700; line-height:1;
+  font-size:clamp(2.6rem,5vw,3.8rem); color:transparent;
+  -webkit-text-stroke:1.5px var(--border-strong);
+  transition:color var(--dur-med) var(--ease-out), -webkit-text-stroke-color var(--dur-med) var(--ease-out);
+  position:relative; z-index:1; letter-spacing:0;
+}
+.why-item:hover .why-num{ color:var(--accent); -webkit-text-stroke:1.5px var(--accent); }
+.why-body{ position:relative; z-index:1; padding-top:8px; }
+.why-body h3{ font-size:1.32rem; transition:color var(--dur-fast) var(--ease-out); }
+.why-item:hover .why-body h3{ color:var(--accent); }
+.why-body p{ margin-top:12px; color:var(--text-dim); font-size:.98rem; line-height:1.72; max-width:50ch; }
+@media (prefers-reduced-motion: reduce){ .why-num, .why-body h3, .why-item::before{ transition:none; } }
 
 /* ---- Services ---- */
 .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -1512,7 +1538,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .hero-grid{ grid-template-columns:1fr; gap:64px; }
   .hero-scene{ justify-self:center; max-width:480px; margin-top:10px; }
   .services-grid{ grid-template-columns:repeat(2,1fr); }
-  .value-grid{ grid-template-columns:1fr; }
+  .why-grid{ grid-template-columns:1fr; gap:48px; }
+  .why-intro{ position:static; }
   .estimator-shell{ grid-template-columns:1fr; }
   .estimator-visual{ border-left:none; border-top:1px solid var(--border); padding:50px; }
   .contact-grid{ grid-template-columns:1fr; gap:44px; }
@@ -1561,7 +1588,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .hero-trust{ gap:10px; }
   .hero-scene{ max-width:280px; }
   .btn{ padding:13px 20px; font-size:14px; }
-  .value-card{ padding:32px 26px; }
+  .why-item{ grid-template-columns:1fr; gap:10px; padding:28px 0; }
+  .why-num{ font-size:2.2rem; }
   .service-card{ padding:28px 24px; }
   .review-card{ padding:26px 22px; }
   .reviews-empty{ padding:50px 26px; }
@@ -1707,7 +1735,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   <div class="hero-fade"></div>
 
   <div class="hero-inner container">
-    <div class="hero-grid">
+    <div class="hero-grid" id="heroGrid">
 
       <div class="hero-copy">
         <span class="hero-kicker"><i></i> Currently taking on new projects</span>
@@ -1775,28 +1803,34 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 <!-- VALUE -->
 <section id="about">
   <div class="container">
-    <div class="section-head reveal">
-      <div>
+    <div class="why-grid">
+      <div class="why-intro reveal">
         <span class="eyebrow">Why us</span>
-        <h2 class="section-title">A studio of one,<br>built like a team of many.</h2>
+        <h2 class="section-title why-title">A studio of one,<br><span class="grad">built like a team of many.</span></h2>
+        <p class="section-sub">You're not a ticket in a queue. Every project is designed, built and shipped by the same person who answers your messages.</p>
       </div>
-      <p class="section-sub">You're not a ticket in a queue. Every project is designed, built and shipped by the same person who answers your messages.</p>
-    </div>
-    <div class="value-grid reveal-stagger">
-      <div class="value-card">
-        <span class="num mono">01</span>
-        <h3>Direct line to your builder</h3>
-        <p>No account managers, no relay chain. You talk straight to the person writing your code, every step of the way.</p>
-      </div>
-      <div class="value-card">
-        <span class="num mono">02</span>
-        <h3>Engineered, not assembled</h3>
-        <p>Cinematic on the surface, disciplined underneath — fast load times, clean code, and real accessibility work.</p>
-      </div>
-      <div class="value-card">
-        <span class="num mono">03</span>
-        <h3>You stay in control</h3>
-        <p>Every site ships with its own admin panel, so text, images and projects can be updated without waiting on a developer.</p>
+      <div class="why-list reveal-stagger">
+        <div class="why-item">
+          <span class="why-num mono">01</span>
+          <div class="why-body">
+            <h3>Direct line to your builder</h3>
+            <p>No account managers, no relay chain. You talk straight to the person writing your code, every step of the way.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="why-num mono">02</span>
+          <div class="why-body">
+            <h3>Engineered, not assembled</h3>
+            <p>Cinematic on the surface, disciplined underneath — fast load times, clean code, and real accessibility work.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <span class="why-num mono">03</span>
+          <div class="why-body">
+            <h3>You stay in control</h3>
+            <p>Every site ships with its own admin panel, so text, images and projects can be updated without waiting on a developer.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2341,7 +2375,8 @@ var DEFAULT_DATA = {
   },
   site: {
     logoUrl: "",
-    introFramesEnabled: true
+    introFramesEnabled: true,
+    heroVisualEnabled: true
   },
   siteTheme: {
     active: "default",
@@ -2494,6 +2529,7 @@ function syncSiteDataFromCloud(){
       localStorage.setItem(STORE_KEY, JSON.stringify(DATA));
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
+      applyHeroVisual(); // re-check visibility now that the real heroVisualEnabled flag has arrived
     })
     .catch(function(){ /* no cloud copy yet, or offline — keep local content */ });
 }
@@ -4081,8 +4117,19 @@ function applyHeroBgMode(){
 function applyHeroVisual(){
   var img = document.getElementById('heroVisualImg');
   var video = document.getElementById('heroVisualVideo');
+  var scene = document.getElementById('heroVisual') ? document.getElementById('heroVisual').closest('.hero-scene') : null;
+  var grid = document.getElementById('heroGrid');
   if(!img || !video) return;
   var hv = DATA.heroVisual || {};
+
+  if(DATA.site && DATA.site.heroVisualEnabled === false){
+    if(scene) scene.style.display = 'none';
+    if(grid) grid.classList.add('visual-off');
+    video.pause();
+    return;
+  }
+  if(scene) scene.style.display = '';
+  if(grid) grid.classList.remove('visual-off');
 
   if(hv.mode === 'video' && hv.videoUrl){
     img.classList.remove('show');
@@ -4711,17 +4758,60 @@ function syncIntroFramesFromCloud(){
 
 function splitTitleWords(){
   document.querySelectorAll('.section-title').forEach(function(el){
-    var lines = el.innerHTML.split(/<br\s*\/?>/i);
-    var wordIndex = 0;
-    var html = lines.map(function(line){
-      var words = line.trim().split(/\s+/).filter(Boolean);
-      return words.map(function(w){
-        wordIndex++;
-        return '<span class="sw"><span class="sw-i" style="transition-delay:' + (wordIndex*45) + 'ms">' + w + '</span></span>';
-      }).join(' ');
-    }).join('<br>');
-    el.innerHTML = html;
+    var wordIndex = { n: 0 };
+    var frag = splitNodeWords(el, wordIndex);
+    el.innerHTML = '';
+    el.appendChild(frag);
   });
+}
+
+function splitNodeWords(node, wordIndex){
+  var frag = document.createDocumentFragment();
+  Array.prototype.forEach.call(node.childNodes, function(child){
+    if(child.nodeType === Node.TEXT_NODE){
+      var words = child.textContent.split(/\s+/).filter(Boolean);
+      words.forEach(function(w){
+        wordIndex.n++;
+        var sw = document.createElement('span');
+        sw.className = 'sw';
+        var swi = document.createElement('span');
+        swi.className = 'sw-i';
+        swi.style.transitionDelay = (wordIndex.n * 45) + 'ms';
+        swi.textContent = w;
+        sw.appendChild(swi);
+        frag.appendChild(sw);
+        frag.appendChild(document.createTextNode(' '));
+      });
+    } else if(child.nodeType === Node.ELEMENT_NODE){
+      if(child.tagName === 'BR'){
+        frag.appendChild(document.createElement('br'));
+      } else if(child.classList.contains('grad')){
+        // Gradient text-clip spans don't reliably render once their words
+        // are individually split into nested animated spans (the clip can
+        // end up invisible, especially across a line wrap) — keep this one
+        // atomic instead, same as the untouched markup the hero heading
+        // uses successfully. It still enters with the same word-cascade
+        // rhythm, just as a single unit.
+        wordIndex.n++;
+        var gsw = document.createElement('span');
+        gsw.className = 'sw';
+        var gswi = document.createElement('span');
+        gswi.className = 'sw-i';
+        gswi.style.transitionDelay = (wordIndex.n * 45) + 'ms';
+        gswi.appendChild(child.cloneNode(true));
+        gsw.appendChild(gswi);
+        frag.appendChild(gsw);
+      } else {
+        var clone = document.createElement(child.tagName);
+        Array.prototype.forEach.call(child.attributes, function(attr){
+          clone.setAttribute(attr.name, attr.value);
+        });
+        clone.appendChild(splitNodeWords(child, wordIndex));
+        frag.appendChild(clone);
+      }
+    }
+  });
+  return frag;
 }
 
 /* ---- Count hero stat numbers up from 0 once the preloader clears.
@@ -4755,7 +4845,7 @@ function animateHeroStats(){
 /* ---- Mouse-tracked spotlight glow on service and value cards ---- */
 
 function initSpotlightCards(){
-  document.querySelectorAll('.service-card, .value-card').forEach(function(card){
+  document.querySelectorAll('.service-card, .why-item').forEach(function(card){
     card.addEventListener('mousemove', function(e){
       var r = card.getBoundingClientRect();
       card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
