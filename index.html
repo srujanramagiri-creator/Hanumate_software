@@ -836,6 +836,9 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .why-item:hover .why-body h3{ color:var(--accent); }
 .why-body p{ margin-top:12px; color:var(--text-dim); font-size:.98rem; line-height:1.72; max-width:50ch; }
 @media (prefers-reduced-motion: reduce){ .why-num, .why-body h3, .why-item::before{ transition:none; } }
+.about-logo{ display:none; margin-top:40px; height:52px; width:auto; object-fit:contain; opacity:0; transition:opacity .6s var(--ease-out); }
+.about-logo.show{ display:block; opacity:1; }
+@media (prefers-reduced-motion: reduce){ .about-logo{ transition:none; } }
 
 /* ---- Services ---- */
 .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -1808,6 +1811,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <span class="eyebrow">Why us</span>
         <h2 class="section-title why-title">A studio of one,<br><span class="grad">built like a team of many.</span></h2>
         <p class="section-sub">You're not a ticket in a queue. Every project is designed, built and shipped by the same person who answers your messages.</p>
+        <img id="aboutLogo" class="about-logo" alt="" src="">
       </div>
       <div class="why-list reveal-stagger">
         <div class="why-item">
@@ -2351,6 +2355,9 @@ var DEFAULT_DATA = {
     trustText: "Designed in India. Built for anywhere.",
     trustBadge: "01"
   },
+  about: {
+    logoUrl: ""
+  },
   contact: {
     whatsapp: "919912888172",
     phone: "+91 99128 88172",
@@ -2478,6 +2485,7 @@ function loadData(){
     // shallow-merge to guarantee new default fields exist even on old saved data
     var merged = clone(DEFAULT_DATA);
     merged.hero = Object.assign({}, merged.hero, parsed.hero || {});
+    merged.about = Object.assign({}, merged.about, parsed.about || {});
     merged.contact = Object.assign({}, merged.contact, parsed.contact || {});
     merged.introFrames = (parsed.introFrames && parsed.introFrames.length) ? parsed.introFrames : merged.introFrames;
     merged.introFramesMobile = (parsed.introFramesMobile && parsed.introFramesMobile.length) ? parsed.introFramesMobile : merged.introFramesMobile;
@@ -2519,6 +2527,7 @@ function syncSiteDataFromCloud(){
     .then(function(cloud){
       if(!cloud || !cloud.projects || !cloud.hero || !cloud.contact) return;
       DATA.hero = Object.assign({}, DEFAULT_DATA.hero, cloud.hero);
+      DATA.about = Object.assign({}, DEFAULT_DATA.about, cloud.about || {});
       DATA.contact = cloud.contact;
       DATA.site = cloud.site || DATA.site;
       DATA.siteTheme = cloud.siteTheme || DATA.siteTheme;
@@ -2530,6 +2539,7 @@ function syncSiteDataFromCloud(){
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
       applyHeroVisual(); // re-check visibility now that the real heroVisualEnabled flag has arrived
+      applyAboutLogo(); // re-check now that the real about.logoUrl has arrived
     })
     .catch(function(){ /* no cloud copy yet, or offline — keep local content */ });
 }
@@ -3029,6 +3039,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initMagneticButtons();
   applyHeroBgMode();
   applyHeroVisual();
+  applyAboutLogo();
   observeHeroVideos();
   initIntroFrameStory();
   renderStoryVideoSection();
@@ -4153,6 +4164,19 @@ function applyHeroVisual(){
     img.classList.remove('show');
     video.classList.remove('show');
     video.pause();
+  }
+}
+
+function applyAboutLogo(){
+  var logo = document.getElementById('aboutLogo');
+  if(!logo) return;
+  var url = (DATA.about && DATA.about.logoUrl) ? DATA.about.logoUrl.trim() : '';
+  if(url){
+    if(logo.getAttribute('src') !== url){ logo.src = url; }
+    logo.classList.add('show');
+  } else {
+    logo.classList.remove('show');
+    logo.removeAttribute('src');
   }
 }
 
