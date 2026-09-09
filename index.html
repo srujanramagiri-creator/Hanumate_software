@@ -870,6 +870,62 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .service-card h3{ font-size:1.18rem; margin-bottom:10px; }
 .service-card p{ color:var(--text-dim); font-size:.94rem; line-height:1.65; }
 .service-tags{ margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
+
+/* ---- Pricing — four tiers, one visually promoted as "Most popular."
+   The border on every card traces the cursor on hover (a masked
+   radial-gradient ring driven by the same --mx/--my custom properties
+   the interior spotlight already tracks), so exploring a card feels
+   like running a finger along its edge rather than a static highlight. ---- */
+.pricing-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; align-items:stretch; margin-top:34px; }
+.pricing-card{
+  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg);
+  padding:40px 30px 36px; position:relative; display:flex; flex-direction:column;
+  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.pricing-card::before{
+  content:''; position:absolute; inset:0; border-radius:inherit; opacity:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);
+  transition:opacity var(--dur-med); pointer-events:none;
+}
+.pricing-card::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; padding:1.5px;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), var(--accent), color-mix(in srgb, var(--accent) 30%, transparent) 45%, transparent 72%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  opacity:0; transition:opacity var(--dur-med); pointer-events:none;
+}
+.pricing-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); }
+.pricing-card:hover::before, .pricing-card:hover::after{ opacity:1; }
+.pricing-card.featured{
+  background:linear-gradient(165deg, color-mix(in srgb, var(--accent) 7%, var(--bg-card)) 0%, var(--bg-card) 55%);
+  border-color:var(--accent);
+  box-shadow:0 24px 48px -20px color-mix(in srgb, var(--accent) 45%, transparent);
+  transform:scale(1.045);
+}
+.pricing-card.featured:hover{ transform:scale(1.045) translateY(-6px); }
+.pricing-badge{
+  position:absolute; top:0; right:26px; transform:translateY(-50%); z-index:1;
+  background:var(--grad-amber); color:#fff; font-family:var(--font-mono); font-size:10px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; padding:7px 14px; border-radius:999px;
+  box-shadow:0 8px 18px -6px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.pricing-name{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
+.pricing-price{ display:flex; align-items:baseline; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.pricing-price .amount{ font-family:var(--font-display); font-size:2.15rem; font-weight:700; color:var(--text); line-height:1; }
+.pricing-price .amount .currency{ font-size:.55em; font-weight:600; margin-right:1px; }
+.pricing-price .note{ font-size:.8rem; color:var(--text-dimmer); }
+.pricing-value-note{ font-size:.78rem; color:var(--text-dimmer); margin-top:6px; }
+.pricing-value-note s{ text-decoration-color:var(--sindoor); }
+.pricing-tagline{ margin-top:14px; color:var(--text-dim); font-size:.9rem; line-height:1.6; min-height:40px; }
+.pricing-features{ margin-top:26px; display:flex; flex-direction:column; gap:13px; flex:1; }
+.pricing-features li{ display:flex; align-items:flex-start; gap:10px; font-size:.88rem; color:var(--text-dim); line-height:1.5; }
+.pricing-features li svg{ width:15px; height:15px; flex:none; margin-top:2px; stroke:var(--accent); }
+.pricing-ideal{ margin-top:22px; padding-top:18px; border-top:1px solid var(--border); font-size:.82rem; color:var(--text-dim); line-height:1.55; }
+.pricing-ideal b{ color:var(--text); }
+.pricing-cta{ margin-top:28px; width:100%; justify-content:center; position:relative; z-index:1; }
+.pricing-note{ text-align:center; margin-top:36px; color:var(--text-dim); font-size:.92rem; }
+.pricing-note a{ color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+@media (prefers-reduced-motion: reduce){ .pricing-card, .pricing-card::before, .pricing-card::after{ transition:none; } }
 .service-tags span{ font-family:var(--font-mono); font-size:10.5px; padding:5px 10px; border:1px solid var(--border); border-radius:var(--radius-full); color:var(--text-dimmer); }
 
 /* ---- Editorial services list — numbered rows instead of six identical
@@ -1541,6 +1597,9 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .hero-grid{ grid-template-columns:1fr; gap:64px; }
   .hero-scene{ justify-self:center; max-width:480px; margin-top:10px; }
   .services-grid{ grid-template-columns:repeat(2,1fr); }
+  .pricing-grid{ grid-template-columns:repeat(2,1fr); }
+  .pricing-card.featured{ transform:none; }
+  .pricing-card.featured:hover{ transform:translateY(-6px); }
   .why-grid{ grid-template-columns:1fr; gap:48px; }
   .why-intro{ position:static; }
   .estimator-shell{ grid-template-columns:1fr; }
@@ -1560,6 +1619,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   section{ padding:100px 0; }
   .work-grid{ grid-template-columns:1fr; }
   .services-grid{ grid-template-columns:1fr; }
+  .pricing-grid{ grid-template-columns:1fr; }
   .service-row{ grid-template-columns:36px 1fr; row-gap:12px; padding:26px 4px; }
   .service-row:hover{ padding-left:4px; }
   .sr-icon{ display:none; }
@@ -1681,6 +1741,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
       <a href="#media" id="navVideosLink" style="display:none;">Videos</a>
       <a href="#reviews">Reviews</a>
       <a href="#services">Services</a>
+      <a href="#pricing">Pricing</a>
       <a href="#estimator">Meet IRA</a>
       <a href="#about">About</a>
       <a href="#process">Process</a>
@@ -1700,6 +1761,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   <a href="#media" id="navVideosLinkMobile" style="display:none;">Videos</a>
   <a href="#reviews">Reviews</a>
   <a href="#services">Services</a>
+  <a href="#pricing">Pricing</a>
   <a href="#estimator">Meet IRA</a>
   <a href="#about">About</a>
   <a href="#process">Process</a>
@@ -2020,6 +2082,23 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
     </div>
 
     <div class="reviews-grid reveal-stagger" id="reviewsGrid" style="display:none;"></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Packages</span>
+        <h2 class="section-title">Pricing that scales<br>with what you need.</h2>
+      </div>
+      <p class="section-sub">One-time project pricing, no recurring fees. Pick a starting point — every project still gets scoped to what you actually need before we begin.</p>
+    </div>
+
+    <div class="pricing-grid reveal-stagger" id="pricingGrid"></div>
+
+    <p class="pricing-note">Need something that doesn't fit neatly into a tier? <a href="#estimator">Chat with IRA</a> for an instant estimate.</p>
   </div>
 </section>
 
@@ -2358,6 +2437,33 @@ var DEFAULT_DATA = {
   about: {
     logoUrl: ""
   },
+  pricing: [
+    {
+      id: "starter", name: "Starter", price: "\u20b914,999", priceNote: "one-time", totalValue: "\u20b915,000",
+      tagline: "A clean, professional and mobile-friendly website designed to establish your business online and make it easy for customers to connect with you.",
+      features: ["Custom-designed website", "Mobile, tablet & desktop responsive", "Business information", "Services/products section", "Photo gallery", "WhatsApp integration", "Contact/enquiry form", "Basic SEO", "Admin login", "Update photos from admin panel", "Update basic business information", "Website deployment"],
+      idealFor: "Local businesses, restaurants, salons, small businesses, professionals and startups.",
+      highlighted: false, ctaLabel: "Choose Starter"
+    },
+    {
+      id: "growth", name: "Growth", price: "\u20b935,000", priceNote: "one-time",
+      tagline: "For growing businesses that need a full site and real control.",
+      features: ["Up to 6 pages", "Fully custom design \u2014 no templates", "Your own admin panel", "WhatsApp & contact integration", "2 rounds of revisions", "Delivered in 12\u201315 days"],
+      highlighted: true, ctaLabel: "Choose Growth"
+    },
+    {
+      id: "pro", name: "Pro", price: "\u20b965,000", priceNote: "one-time",
+      tagline: "For a premium, animated, AI-powered experience.",
+      features: ["Up to 10 pages", "Cinematic animation & micro-interactions", "Full custom admin panel", "AI chat / price estimator built in", "SEO optimization", "3 rounds of revisions", "30 days of priority support"],
+      highlighted: false, ctaLabel: "Choose Pro"
+    },
+    {
+      id: "enterprise", name: "Enterprise", price: "Custom quote", priceNote: "",
+      tagline: "For large, multi-service businesses that need bespoke systems.",
+      features: ["Unlimited pages", "Custom AI tools & automations", "Multi-admin roles & dashboards", "Dedicated support & maintenance", "Ongoing feature development", "Scope & timeline tailored to you"],
+      highlighted: false, ctaLabel: "Talk to us"
+    }
+  ],
   contact: {
     whatsapp: "919912888172",
     phone: "+91 99128 88172",
@@ -2496,6 +2602,7 @@ function loadData(){
     merged.siteTheme = Object.assign({}, merged.siteTheme, parsed.siteTheme || {});
     merged.mediaVideos = parsed.mediaVideos || merged.mediaVideos;
     merged.faqs = (parsed.faqs && parsed.faqs.length) ? parsed.faqs : merged.faqs;
+    merged.pricing = (parsed.pricing && parsed.pricing.length) ? parsed.pricing : merged.pricing;
     merged.projects = (parsed.projects && parsed.projects.length) ? parsed.projects : merged.projects;
     return merged;
   }catch(e){ return clone(DEFAULT_DATA); }
@@ -2535,6 +2642,7 @@ function syncSiteDataFromCloud(){
       DATA.products = cloud.products || DATA.products || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
+      DATA.pricing = (cloud.pricing && cloud.pricing.length) ? cloud.pricing : DATA.pricing;
       localStorage.setItem(STORE_KEY, JSON.stringify(DATA));
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
@@ -2735,6 +2843,38 @@ function renderFAQ(){
 }
 
 
+function renderPricing(){
+  var grid = document.getElementById('pricingGrid');
+  if(!grid) return;
+  var tiers = DATA.pricing || [];
+  var waDigits = (DATA.contact && DATA.contact.whatsapp) ? DATA.contact.whatsapp.replace(/\D/g,'') : '';
+
+  grid.innerHTML = tiers.map(function(t){
+    var msg = "Hi! I'm interested in the " + t.name + " package for my website.";
+    var waHref = waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(msg)) : '#contact';
+    var featuresHtml = (t.features || []).map(function(f){
+      return '<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>'+escapeHtml(f)+'</span></li>';
+    }).join('');
+    var priceMatch = /^([^\d]*)(\d.*)$/.exec(t.price || '');
+    var priceHtml = priceMatch
+      ? '<span class="currency">'+escapeHtml(priceMatch[1])+'</span>'+escapeHtml(priceMatch[2])
+      : escapeHtml(t.price || '');
+    return '' +
+    '<div class="pricing-card'+(t.highlighted ? ' featured' : '')+'">' +
+      (t.highlighted ? '<span class="pricing-badge">Most popular</span>' : '') +
+      '<span class="pricing-name">'+escapeHtml(t.name)+'</span>' +
+      '<div class="pricing-price"><span class="amount">'+priceHtml+'</span>'+(t.priceNote ? '<span class="note">'+escapeHtml(t.priceNote)+'</span>' : '')+'</div>' +
+      (t.totalValue ? '<div class="pricing-value-note">Total value <s>'+escapeHtml(t.totalValue)+'</s></div>' : '') +
+      '<p class="pricing-tagline">'+escapeHtml(t.tagline||'')+'</p>' +
+      '<ul class="pricing-features">'+featuresHtml+'</ul>' +
+      (t.idealFor ? '<p class="pricing-ideal"><b>Ideal for:</b> '+escapeHtml(t.idealFor)+'</p>' : '') +
+      '<a class="btn '+(t.highlighted ? 'btn-primary' : 'btn-ghost')+' pricing-cta" href="'+waHref+'" target="_blank" rel="noopener">'+escapeHtml(t.ctaLabel || ('Choose ' + t.name))+'</a>' +
+    '</div>';
+  }).join('');
+  initSpotlightCards(); // re-bind since these cards are rebuilt on every render, including after cloud sync
+}
+
+
 function escapeHtml(s){
   return String(s==null?'':s).replace(/[&<>"']/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
@@ -2866,6 +3006,7 @@ function renderAll(){
   renderProjects();
   renderProducts();
   renderFAQ();
+  renderPricing();
   renderBranding();
   renderMediaSection();
   applyCelebrationTheme();
@@ -4869,7 +5010,7 @@ function animateHeroStats(){
 /* ---- Mouse-tracked spotlight glow on service and value cards ---- */
 
 function initSpotlightCards(){
-  document.querySelectorAll('.service-card, .why-item').forEach(function(card){
+  document.querySelectorAll('.service-card, .why-item, .pricing-card').forEach(function(card){
     card.addEventListener('mousemove', function(e){
       var r = card.getBoundingClientRect();
       card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
