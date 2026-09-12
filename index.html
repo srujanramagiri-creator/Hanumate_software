@@ -7,7 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Hanuman Digital Studio">
+<meta name="apple-mobile-web-app-title" content="Hanumate Software">
 <meta name="google-site-verification" content="HyjHMMXwlycWkO3Ui2FqtNn3tmkYFpPVJjGpbqJeIg8" />
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DZL71MLLL"></script>
@@ -18,22 +18,22 @@
 
   gtag('config', 'G-8DZL71MLLL');
 </script>
-<title>Hanuman Digital Studio — Premium Web Apps &amp; 3D Experiences</title>
-<meta name="description" content="Hanuman Digital Studio builds premium, hand-coded websites, admin panels and AI tools for local businesses — cinematic 3D experiences, not templates.">
+<title>Hanumate Software — Premium Web Apps &amp; 3D Experiences</title>
+<meta name="description" content="Hanumate Software builds premium, hand-coded websites, admin panels and AI tools for local businesses — cinematic 3D experiences, not templates.">
 <link rel="canonical" href="https://hanumanwebapp.com/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Hanuman Digital Studio">
-<meta property="og:title" content="Hanuman Digital Studio — Premium Web Apps & 3D Experiences">
+<meta property="og:site_name" content="Hanumate Software">
+<meta property="og:title" content="Hanumate Software — Premium Web Apps & 3D Experiences">
 <meta property="og:description" content="Hand-coded, premium websites, admin panels and AI tools for local businesses — cinematic digital experiences, not templates.">
 <meta property="og:url" content="https://hanumanwebapp.com/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Hanuman Digital Studio — Premium Web Apps & 3D Experiences">
+<meta name="twitter:title" content="Hanumate Software — Premium Web Apps & 3D Experiences">
 <meta name="twitter:description" content="Hand-coded, premium websites, admin panels and AI tools for local businesses — cinematic digital experiences, not templates.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c4491a'/%3E%3Ctext x='50' y='68' font-family='Arial' font-weight='800' font-size='58' fill='%23fbeae0' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c4491a'/%3E%3Ctext x='50' y='68' font-family='Arial' font-weight='800' font-size='58' fill='%23fbeae0' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <style>
 /* ========================================================================
-   HANUMAN DIGITAL STUDIO — "FORGE" DESIGN SYSTEM
+   HANUMATE SOFTWARE — "FORGE" DESIGN SYSTEM
    ======================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap');
@@ -836,9 +836,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .why-item:hover .why-body h3{ color:var(--accent); }
 .why-body p{ margin-top:12px; color:var(--text-dim); font-size:.98rem; line-height:1.72; max-width:50ch; }
 @media (prefers-reduced-motion: reduce){ .why-num, .why-body h3, .why-item::before{ transition:none; } }
-.about-logo{ display:none; margin-top:40px; height:52px; width:auto; object-fit:contain; opacity:0; transition:opacity .6s var(--ease-out); }
-.about-logo.show{ display:block; opacity:1; }
-@media (prefers-reduced-motion: reduce){ .about-logo{ transition:none; } }
 
 /* ---- Services ---- */
 .services-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -1339,15 +1336,55 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 /* ========================================================================
    PROCESS
    ======================================================================== */
+.process-rail{ position:relative; padding-left:40px; }
+.process-rail-track{
+  position:absolute; left:3px; top:6px; bottom:6px; width:2px;
+  background:var(--border); border-radius:2px;
+}
+.process-rail-fill{
+  position:absolute; left:3px; top:6px; width:2px; height:0;
+  background:linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius:2px; transition:height .25s linear;
+}
 .process-list{ display:flex; flex-direction:column; }
 .process-item{
+  position:relative;
   display:grid; grid-template-columns:110px 1fr; gap:32px; padding:36px 0;
-  border-top:1px solid var(--border); align-items:start;
+  border-top:1px solid var(--border); align-items:start; overflow:hidden;
 }
+.process-item:first-child{ border-top:none; }
 .process-item:last-child{ border-bottom:1px solid var(--border); }
-.process-phase{ font-family:var(--font-mono); color:var(--accent); font-size:13px; letter-spacing:.08em; }
-.process-item h3{ font-size:1.5rem; }
+.process-dot{
+  position:absolute; left:-40px; top:44px; width:9px; height:9px;
+  border-radius:50%; background:var(--bg); border:2px solid var(--border-strong);
+  transition:background .5s var(--ease-out), border-color .5s var(--ease-out),
+             transform .5s var(--ease-out), box-shadow .5s var(--ease-out);
+}
+.process-item.active .process-dot{
+  background:var(--accent); border-color:var(--accent); transform:scale(1.25);
+  box-shadow:0 0 0 6px rgba(196,73,26,.14);
+}
+.process-phase{
+  position:relative; z-index:1; font-family:var(--font-mono); color:var(--accent);
+  font-size:13px; letter-spacing:.08em; transition:letter-spacing .5s var(--ease-out), opacity .5s;
+  opacity:.55;
+}
+.process-item.active .process-phase{ letter-spacing:.16em; opacity:1; }
+.process-body{ position:relative; z-index:1; }
+.process-item h3{ font-size:1.5rem; transition:transform .5s var(--ease-out), color .5s var(--ease-out); }
+.process-item.active h3{ transform:translateX(4px); color:var(--accent); }
 .process-item p{ margin-top:10px; color:var(--text-dim); max-width:60ch; line-height:1.7; }
+.process-num{
+  position:absolute; right:4px; top:12px; z-index:0; pointer-events:none; user-select:none;
+  font-family:var(--font-display); font-weight:800; line-height:1;
+  font-size:clamp(2.5rem, 9vw, 7rem); color:var(--text); opacity:.03;
+  transform:translateY(6px) scale(.92);
+  transition:opacity .8s var(--ease-out), transform .8s var(--ease-out);
+}
+.process-item.active .process-num{ opacity:.07; transform:translateY(0) scale(1); }
+@media (prefers-reduced-motion: reduce){
+  .process-rail-fill, .process-dot, .process-phase, .process-item h3, .process-num{ transition:none; }
+}
 
 /* ========================================================================
    ESTIMATOR (CHAT)
@@ -1632,6 +1669,9 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .hero-scene{ max-width:340px; aspect-ratio:1/1.15; }
   .hs-scroll{ font-size:10px; padding:9px 14px; }
   .process-item{ grid-template-columns:1fr; gap:10px; }
+  .process-rail{ padding-left:26px; }
+  .process-dot{ left:-26px; top:38px; }
+  .process-num{ font-size:2.75rem; top:6px; right:0; }
   .footer-top{ flex-direction:column; }
   .footer-links{ gap:40px; }
   #chat-panel{ right:16px; left:16px; width:auto; bottom:calc(96px + env(safe-area-inset-bottom, 0px)); }
@@ -1696,7 +1736,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  "name": "Hanuman Digital Studio",
+  "name": "Hanumate Software",
   "description": "Hand-coded, premium websites, admin panels and AI tools for local businesses — cinematic digital experiences, not templates.",
   "url": "https://hanumanwebapp.com/",
   "email": "hanumandigitalstudio.software@gmail.com",
@@ -1722,7 +1762,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 
 <!-- PRELOADER -->
 <div id="preloader">
-  <div class="preloader-mark">HANUMAN <span>DIGITAL STUDIO</span></div>
+  <div class="preloader-mark">HANUMATE <span>SOFTWARE</span></div>
   <div class="preloader-bar"><i id="preloadBarFill"></i></div>
   <div class="preloader-pct" id="preloadPct">0%</div>
 </div>
@@ -1733,11 +1773,12 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   <div class="container">
     <a href="#hero" class="logo">
       <span class="mark" id="navLogoMark">H</span>
-      <span>HANUMAN<small>Digital Studio</small></span>
+      <span>HANUMATE<small>Software</small></span>
     </a>
     <nav class="nav-links">
       <a href="#work">Work</a>
       <a href="#products">Products</a>
+      <a href="#campaigns">Ads</a>
       <a href="#media" id="navVideosLink" style="display:none;">Videos</a>
       <a href="#reviews">Reviews</a>
       <a href="#services">Services</a>
@@ -1758,6 +1799,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work">Work</a>
   <a href="#products">Products</a>
+  <a href="#campaigns">Ads</a>
   <a href="#media" id="navVideosLinkMobile" style="display:none;">Videos</a>
   <a href="#reviews">Reviews</a>
   <a href="#services">Services</a>
@@ -1808,7 +1850,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
           <span class="line">Websites built like</span>
           <span class="line grad">AAA experiences.</span>
         </h1>
-        <p class="hero-desc">Hanuman Digital Studio designs and hand-codes premium websites, admin panels and AI tools for local businesses — clinics, restaurants, studios, professionals. No templates. No page builders. Just engineered, cinematic software with your name on it.</p>
+        <p class="hero-desc">Hanumate Software designs and hand-codes premium websites, admin panels and AI tools for local businesses — clinics, restaurants, studios, professionals. No templates. No page builders. Just engineered, cinematic software with your name on it.</p>
         <div class="hero-actions">
           <a href="#work" class="btn btn-primary">See our work<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
           <button class="btn btn-ghost" id="heroEstimatorBtn">Get a price estimate</button>
@@ -1873,7 +1915,6 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <span class="eyebrow">Why us</span>
         <h2 class="section-title why-title">A studio of one,<br><span class="grad">built like a team of many.</span></h2>
         <p class="section-sub">You're not a ticket in a queue. Every project is designed, built and shipped by the same person who answers your messages.</p>
-        <img id="aboutLogo" class="about-logo" alt="" src="">
       </div>
       <div class="why-list reveal-stagger">
         <div class="why-item">
@@ -2009,6 +2050,27 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </section>
 
+<!-- AD CREATIVE (id kept as "campaigns" — "ads"/"ad" in an id or class is a
+     classic ad-blocker filter pattern, and we'd rather not have the one
+     section selling ad work get silently hidden by uBlock/AdBlock) -->
+<section id="campaigns">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Ad creative</span>
+        <h2 class="section-title">Now shooting for<br>the scroll, not past it.</h2>
+      </div>
+      <p class="section-sub">Social, search and display ad creative — designed to earn the click, not just fill the slot.</p>
+    </div>
+    <div class="work-grid reveal-stagger" id="campaignsGrid" style="display:none;"></div>
+    <div class="products-empty reveal" id="campaignsEmpty">
+      <div class="pe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
+      <h3>Nothing posted yet</h3>
+      <p>Ad campaigns will show up here as they go live — first ones are already in the works.</p>
+    </div>
+  </div>
+</section>
+
 <!-- MEDIA / VIDEOS -->
 <section id="media" style="display:none;">
   <div class="container">
@@ -2032,22 +2094,34 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <h2 class="section-title">Four phases,<br>one point of contact.</h2>
       </div>
     </div>
-    <div class="process-list reveal">
-      <div class="process-item">
-        <span class="process-phase mono">PHASE 01</span>
-        <div><h3>Discover</h3><p>A short call or chat to understand your business, your customers, and what "premium" should actually mean for your brand.</p></div>
-      </div>
-      <div class="process-item">
-        <span class="process-phase mono">PHASE 02</span>
-        <div><h3>Design</h3><p>A visual system — palette, type, motion, layout — built specifically for you before a single section is coded.</p></div>
-      </div>
-      <div class="process-item">
-        <span class="process-phase mono">PHASE 03</span>
-        <div><h3>Build</h3><p>Hand-coded front end, 3D scenes if needed, and any admin panel, booking flow or AI tool your project calls for.</p></div>
-      </div>
-      <div class="process-item">
-        <span class="process-phase mono">PHASE 04</span>
-        <div><h3>Launch &amp; hand-off</h3><p>Your site goes live, you get a walkthrough of your admin panel, and I stay reachable for the first weeks after launch.</p></div>
+    <div class="process-rail" id="processRail">
+      <div class="process-rail-track" aria-hidden="true"></div>
+      <div class="process-rail-fill" id="processRailFill" aria-hidden="true"></div>
+      <div class="process-list reveal-stagger">
+        <div class="process-item" data-phase="01">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 01</span>
+          <div class="process-body"><h3>Discover</h3><p>A short call or chat to understand your business, your customers, and what "premium" should actually mean for your brand.</p></div>
+          <span class="process-num" aria-hidden="true">01</span>
+        </div>
+        <div class="process-item" data-phase="02">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 02</span>
+          <div class="process-body"><h3>Design</h3><p>A visual system — palette, type, motion, layout — built specifically for you before a single section is coded.</p></div>
+          <span class="process-num" aria-hidden="true">02</span>
+        </div>
+        <div class="process-item" data-phase="03">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 03</span>
+          <div class="process-body"><h3>Build</h3><p>Hand-coded front end, 3D scenes if needed, and any admin panel, booking flow or AI tool your project calls for.</p></div>
+          <span class="process-num" aria-hidden="true">03</span>
+        </div>
+        <div class="process-item" data-phase="04">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 04</span>
+          <div class="process-body"><h3>Launch &amp; hand-off</h3><p>Your site goes live, you get a walkthrough of your admin panel, and I stay reachable for the first weeks after launch.</p></div>
+          <span class="process-num" aria-hidden="true">04</span>
+        </div>
       </div>
     </div>
   </div>
@@ -2189,7 +2263,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
         <div class="form-field"><label>Tell me about your project</label><textarea name="message" required placeholder="What are you looking to build?"></textarea></div>
         <div class="form-consent">
           <input type="checkbox" id="consentCheckbox" name="consent" required>
-          <label for="consentCheckbox">I agree to the <a href="#" id="openTermsOfServiceConsent">Terms of Service</a> and <a href="#" id="openPrivacyPolicyConsent">Privacy Policy</a>, and consent to Hanuman Digital Studio storing my details to process this inquiry.</label>
+          <label for="consentCheckbox">I agree to the <a href="#" id="openTermsOfServiceConsent">Terms of Service</a> and <a href="#" id="openPrivacyPolicyConsent">Privacy Policy</a>, and consent to Hanumate Software storing my details to process this inquiry.</label>
         </div>
         <div class="form-btn-row">
           <button type="submit" class="btn btn-primary">Send<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></button>
@@ -2213,7 +2287,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
       <div class="footer-links">
         <div class="footer-col">
           <h4>Sitemap</h4>
-          <a href="#work">Work</a><a href="#products">Products</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#estimator">Estimator</a><a href="#contact">Contact</a>
+          <a href="#work">Work</a><a href="#products">Products</a><a href="#campaigns">Ads</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#estimator">Estimator</a><a href="#contact">Contact</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -2228,7 +2302,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© <span id="yearNow"></span> Hanuman Digital Studio. All rights reserved.</span>
+      <span>© <span id="yearNow"></span> Hanumate Software. All rights reserved.</span>
       <span style="display:flex;gap:18px;">
         <a href="#" id="openPrivacyPolicyBottom" style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dimmer);">Privacy Policy</a>
         <a href="#" id="openTermsOfServiceBottom" style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-dimmer);">Terms of Service</a>
@@ -2427,7 +2501,7 @@ var DEFAULT_DATA = {
     kicker: "Currently taking on new projects",
     line1: "Websites built like",
     line2: "AAA experiences.",
-    desc: "Hanuman Digital Studio designs and hand-codes premium websites, admin panels and AI tools for local businesses — clinics, restaurants, studios, professionals. No templates. No page builders. Just engineered, cinematic software with your name on it.",
+    desc: "Hanumate Software designs and hand-codes premium websites, admin panels and AI tools for local businesses — clinics, restaurants, studios, professionals. No templates. No page builders. Just engineered, cinematic software with your name on it.",
     stat1v: "06", stat1l: "Projects delivered",
     stat2v: "01", stat2l: "Founder — no outsourcing",
     stat3v: "3D", stat3l: "Immersive, not templated",
@@ -2570,7 +2644,11 @@ var DEFAULT_DATA = {
   // from client `projects` above. Same object shape, so the existing
   // project modal renders these too. Starts empty on purpose; filled in
   // as real products are added, never with placeholder entries.
-  products: []
+  products: [],
+  // Ad creative work (social/search/display campaigns) — same object shape
+  // as projects/products again, so it reuses the same card grid and modal.
+  // Starts empty; filled in from Admin → Ads as real campaigns go live.
+  ads: []
 };
 
 
@@ -2604,6 +2682,7 @@ function loadData(){
     merged.faqs = (parsed.faqs && parsed.faqs.length) ? parsed.faqs : merged.faqs;
     merged.pricing = (parsed.pricing && parsed.pricing.length) ? parsed.pricing : merged.pricing;
     merged.projects = (parsed.projects && parsed.projects.length) ? parsed.projects : merged.projects;
+    merged.ads = (parsed.ads && parsed.ads.length) ? parsed.ads : merged.ads;
     return merged;
   }catch(e){ return clone(DEFAULT_DATA); }
 }
@@ -2640,6 +2719,7 @@ function syncSiteDataFromCloud(){
       DATA.siteTheme = cloud.siteTheme || DATA.siteTheme;
       DATA.projects = cloud.projects;
       DATA.products = cloud.products || DATA.products || [];
+      DATA.ads = cloud.ads || DATA.ads || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
       DATA.pricing = (cloud.pricing && cloud.pricing.length) ? cloud.pricing : DATA.pricing;
@@ -2647,7 +2727,6 @@ function syncSiteDataFromCloud(){
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
       applyHeroVisual(); // re-check visibility now that the real heroVisualEnabled flag has arrived
-      applyAboutLogo(); // re-check now that the real about.logoUrl has arrived
     })
     .catch(function(){ /* no cloud copy yet, or offline — keep local content */ });
 }
@@ -2807,6 +2886,62 @@ function renderProducts(){
       var id = parseInt(card.getAttribute('data-id'),10);
       var prod = products.find(function(x){ return x.id===id; });
       if(prod) openProjectModal(prod);
+    });
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      var x = ((e.clientX - r.left)/r.width - 0.5) * 2;
+      var y = ((e.clientY - r.top)/r.height - 0.5) * 2;
+      thumb.style.transform = 'rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg)';
+    });
+    card.addEventListener('mouseleave', function(){ thumb.style.transform=''; });
+  });
+
+  reInitReveal(grid.querySelectorAll('.work-card'));
+}
+
+/* ---- Ad creative — same card/modal system as Work & Products, sourced
+   from DATA.ads. Empty state shown honestly until real campaigns are added. ---- */
+function renderAds(){
+  var grid = document.getElementById('campaignsGrid');
+  var empty = document.getElementById('campaignsEmpty');
+  if(!grid || !empty) return;
+
+  var ads = DATA.ads || [];
+  if(!ads.length){
+    grid.style.display = 'none';
+    empty.style.display = 'flex';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+
+  grid.innerHTML = ads.map(function(p){
+    var hasCover = !!(p.coverUrl && p.coverUrl.trim());
+    var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
+    return '' +
+    '<div class="work-card" data-id="'+p.id+'" data-cursor-text="View">' +
+      '<div class="work-thumb '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
+        (hasLogo ? '<div class="wt-logo"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
+        '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>' +
+        '<div class="noise"></div>' +
+      '</div>' +
+      '<div class="work-body">' +
+        '<div><span class="work-cat mono">'+escapeHtml(p.cat)+'</span><h3>'+escapeHtml(p.title)+'</h3><p>'+escapeHtml(p.desc.slice(0,70))+(p.desc.length>70?'…':'')+'</p></div>' +
+        '<button class="work-open" aria-label="Open campaign details"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.work-card').forEach(function(card, idx){
+    var p = ads[idx];
+    var thumb = card.querySelector('.work-thumb');
+    if(p.coverUrl && p.coverUrl.trim()){
+      thumb.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
+    }
+    card.addEventListener('click', function(){
+      var id = parseInt(card.getAttribute('data-id'),10);
+      var ad = ads.find(function(x){ return x.id===id; });
+      if(ad) openProjectModal(ad);
     });
     card.addEventListener('mousemove', function(e){
       var r = card.getBoundingClientRect();
@@ -3005,6 +3140,7 @@ function renderAll(){
   renderContact();
   renderProjects();
   renderProducts();
+  renderAds();
   renderFAQ();
   renderPricing();
   renderBranding();
@@ -3091,10 +3227,11 @@ function openProjectModal(p){
   var priceEl = document.getElementById('pmodalPrice');
   if(p.price && p.price.trim()){
     var priceVal = p.price.trim();
-    // Only prefix numeric-looking ranges ("₹30,000 – ₹50,000") with
-    // "Starting around" — a plain label like "Free" or "Custom pricing"
-    // (common for products) reads fine on its own.
-    priceEl.textContent = /\d/.test(priceVal) ? ('Starting around ' + priceVal) : priceVal;
+    // Only prefix an actual currency amount ("₹30,000 – ₹50,000") with
+    // "Starting around" — a plain label ("Free", "Custom pricing") or a
+    // result stat ("3.2x ROAS", "2.1M views") reads fine on its own.
+    var looksLikeCurrency = /^[₹$€£]/.test(priceVal) || /^Rs\.?\s?\d/i.test(priceVal);
+    priceEl.textContent = looksLikeCurrency ? ('Starting around ' + priceVal) : priceVal;
     priceEl.classList.add('show');
   } else {
     priceEl.textContent = '';
@@ -3136,7 +3273,7 @@ function openProjectModal(p){
     liveBtn.href = '#';
     liveBtn.onclick = function(e){
       e.preventDefault();
-      toast('No live link added yet — add one from Admin → Projects.');
+      toast('No link added yet for this one — add it from the matching Admin panel.');
     };
   }
   document.getElementById('pmodalBackdrop').classList.add('open');
@@ -3178,9 +3315,9 @@ document.addEventListener('DOMContentLoaded', function(){
   initHeroSoundToggle();
   initSpotlightCards();
   initMagneticButtons();
+  initProcessRail();
   applyHeroBgMode();
   applyHeroVisual();
-  applyAboutLogo();
   observeHeroVideos();
   initIntroFrameStory();
   renderStoryVideoSection();
@@ -3361,7 +3498,7 @@ var PRIVACY_POLICY_HTML =
   '<div class="legal-disclaimer">This policy explains what actually happens on this site in plain terms, aligned with India’s Digital Personal Data Protection Act, 2023 (DPDP Act) and, where applicable, the EU GDPR. It is not a substitute for legal advice for your specific situation.</div>' +
 
   '<h3>Who this is</h3>' +
-  '<p>This website is operated by Hanuman Digital Studio ("Studio", "we", "us"), a solo web development studio based in Kamareddy, Telangana, India, acting as the Data Fiduciary for personal data collected through this site. For any privacy question, reach out at <a href="mailto:hanumandigitalstudio.software@gmail.com">hanumandigitalstudio.software@gmail.com</a>.</p>' +
+  '<p>This website is operated by Hanumate Software ("Studio", "we", "us"), a solo web development studio based in Kamareddy, Telangana, India, acting as the Data Fiduciary for personal data collected through this site. For any privacy question, reach out at <a href="mailto:hanumandigitalstudio.software@gmail.com">hanumandigitalstudio.software@gmail.com</a>.</p>' +
 
   '<h3>Legal basis for processing</h3>' +
   '<p>We only process your personal data where you’ve given clear, informed, affirmative consent — such as ticking the consent box before submitting the contact form — or where it’s necessary to take steps you’ve requested ahead of a service contract with us. You can withdraw consent at any time; see "Your rights" below.</p>' +
@@ -3419,7 +3556,7 @@ var TERMS_OF_SERVICE_HTML =
   '<div class="legal-disclaimer">A general-purpose terms page for a services website — not a substitute for a lawyer’s review, especially before entering into any paid client contract.</div>' +
 
   '<h3>Who this is</h3>' +
-  '<p>This website is operated by Hanuman Digital Studio, a solo web development studio based in Kamareddy, Telangana, India ("we", "us", "the studio"). By using this site, you agree to the terms below.</p>' +
+  '<p>This website is operated by Hanumate Software, a solo web development studio based in Kamareddy, Telangana, India ("we", "us", "the studio"). By using this site, you agree to the terms below.</p>' +
 
   '<h3>What’s on this site</h3>' +
   '<p>This site showcases past work, describes services offered, and provides an informational cost estimator and AI assistant to help you scope a potential project. Nothing on this site — including anything the AI assistant or estimator says — is a binding quote, contract, or guarantee of price, timeline, or outcome. Actual project terms are agreed separately, in writing, once we’ve discussed your specific requirements.</p>' +
@@ -3428,13 +3565,13 @@ var TERMS_OF_SERVICE_HTML =
   '<p>Projects shown in the Work section reflect real work delivered by the studio. Descriptions are kept accurate to the best of our knowledge and updated as projects evolve.</p>' +
 
   '<h3>Intellectual property</h3>' +
-  '<p>The design, code, and content of this website belong to Hanuman Digital Studio unless otherwise noted. Client logos, names, or project screenshots shown in the portfolio remain the property of their respective owners and are shown with permission as examples of work delivered.</p>' +
+  '<p>The design, code, and content of this website belong to Hanumate Software unless otherwise noted. Client logos, names, or project screenshots shown in the portfolio remain the property of their respective owners and are shown with permission as examples of work delivered.</p>' +
 
   '<h3>No warranty</h3>' +
   '<p>This site and its content are provided "as is." While we take reasonable care to keep it accurate and running smoothly, we don’t guarantee it will be uninterrupted, error-free, or fit for any particular purpose beyond general informational use.</p>' +
 
   '<h3>Limitation of liability</h3>' +
-  '<p>To the extent permitted by law, Hanuman Digital Studio isn’t liable for any indirect, incidental, or consequential loss arising from your use of this website. This doesn’t affect any separate written agreement for actual project work, which is governed by its own terms.</p>' +
+  '<p>To the extent permitted by law, Hanumate Software isn’t liable for any indirect, incidental, or consequential loss arising from your use of this website. This doesn’t affect any separate written agreement for actual project work, which is governed by its own terms.</p>' +
 
   '<h3>Third-party links &amp; tools</h3>' +
   '<p>This site links out to WhatsApp and uses Google Fonts and Supabase-hosted media. We’re not responsible for the content or practices of those third-party services once you leave this site or interact with them directly.</p>' +
@@ -3484,7 +3621,7 @@ function initLegalModals(){
    ======================================================================== */
 
 var STEPS = [
-  { key:'type', q:"Hey! 👋 I'm IRA, Hanuman Digital Studio's AI assistant. Tell me about your project anytime and I'll help figure out what fits — or let's knock out a quick estimate. What kind of project are you looking to build?",
+  { key:'type', q:"Hey! 👋 I'm IRA, Hanumate Software's AI assistant. Tell me about your project anytime and I'll help figure out what fits — or let's knock out a quick estimate. What kind of project are you looking to build?",
     options:[
       {label:'Business website', value:'business'},
       {label:'E-commerce store', value:'ecommerce'},
@@ -3754,7 +3891,7 @@ function projectsContextBlock(){
 
 
 function aiSystemPrompt(){
-  return "You are IRA, the AI consultant on Hanuman Digital Studio's website — a solo web development studio in India run by Rudra, building premium, hand-coded websites and web apps for local businesses. Your job is to actually help visitors figure out what they need, not just recite a service list. Only mention your name (IRA) if someone asks who you are or what your name is — don't introduce yourself by name unprompted.\n\n" +
+  return "You are IRA, the AI consultant on Hanumate Software's website — a solo web development studio in India run by Rudra, building premium, hand-coded websites and web apps for local businesses. Your job is to actually help visitors figure out what they need, not just recite a service list. Only mention your name (IRA) if someone asks who you are or what your name is — don't introduce yourself by name unprompted.\n\n" +
 
     "HOW TO TALK: Talk like a real person in a casual chat — the register of ChatGPT, Gemini, or Claude in a friendly conversation, not a customer-service script. Use contractions and short, natural sentences. Never use stiff phrases like \"What brings you here today\" or \"perhaps revamp an existing one\" — just talk the way you actually would to someone. If someone just says \"hi\" or greets you, greet them back warmly and casually and ask what they're working on — don't launch into a formal interrogation. If their need is vague, ask ONE short casual follow-up before recommending anything. If they've already given enough detail, skip straight to a recommendation — don't make people repeat themselves.\n\n" +
 
@@ -4305,19 +4442,6 @@ function applyHeroVisual(){
     img.classList.remove('show');
     video.classList.remove('show');
     video.pause();
-  }
-}
-
-function applyAboutLogo(){
-  var logo = document.getElementById('aboutLogo');
-  if(!logo) return;
-  var url = (DATA.about && DATA.about.logoUrl) ? DATA.about.logoUrl.trim() : '';
-  if(url){
-    if(logo.getAttribute('src') !== url){ logo.src = url; }
-    logo.classList.add('show');
-  } else {
-    logo.classList.remove('show');
-    logo.removeAttribute('src');
   }
 }
 
@@ -5033,6 +5157,45 @@ function initMagneticButtons(){
     });
     btn.addEventListener('mouseleave', function(){ btn.style.transform = ''; });
   });
+}
+
+/* ---- Process section: scroll-linked rail fill + active phase highlight ---- */
+
+function initProcessRail(){
+  var rail = document.getElementById('processRail');
+  var fill = document.getElementById('processRailFill');
+  if(!rail || !fill) return;
+  var items = Array.prototype.slice.call(rail.querySelectorAll('.process-item'));
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ticking = false;
+
+  function update(){
+    ticking = false;
+    var vh = window.innerHeight;
+    var rect = rail.getBoundingClientRect();
+    var triggerY = vh * 0.6;
+    var progress = (triggerY - rect.top) / rect.height;
+    progress = Math.max(0, Math.min(1, progress));
+    // px height, not %, since the rail's own height is content-driven (auto) and
+    // percentage heights don't resolve for an absolutely-positioned child in that case
+    var trackHeight = rail.offsetHeight - 12; // matches the 6px top/bottom inset on the track
+    fill.style.height = Math.max(0, progress * trackHeight) + 'px';
+
+    items.forEach(function(item){
+      var r = item.getBoundingClientRect();
+      var isActive = r.top < triggerY && r.bottom > vh * 0.18;
+      item.classList.toggle('active', isActive);
+    });
+  }
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  window.addEventListener('resize', onScroll);
+  update();
+  if(reduced && items[0]) items[0].classList.add('active'); // still show one active state, just skip the scroll-tied motion
 }
 
 /* initHeroSceneParallax() removed along with the copper archway markup/CSS —
