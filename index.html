@@ -889,18 +889,6 @@ html[data-celebration="ganesh"] .ganesh-garland.gg-right{ right:0; transform:sca
 @keyframes scrolldrop{ 0%{ transform:translateY(-10px);} 100%{ transform:translateY(34px);} }
 
 /* ========================================================================
-   MARQUEE
-   ======================================================================== */
-.marquee-wrap{ border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:22px 0; overflow:hidden; }
-.marquee-track{ display:flex; gap:60px; width:max-content; animation:marquee 26s linear infinite; }
-@keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
-.marquee-track span{
-  font-family:var(--font-display); font-size:1.3rem; color:var(--text-dimmer);
-  display:flex; align-items:center; gap:22px; white-space:nowrap;
-}
-.marquee-track span i{ width:6px; height:6px; border-radius:50%; background:var(--accent); }
-
-/* ========================================================================
    SECTION LAYOUT
    ======================================================================== */
 section{ position:relative; padding:150px 0; overflow:hidden; }
@@ -1070,99 +1058,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .pricing-note{ text-align:center; margin-top:36px; color:var(--text-dim); font-size:.92rem; }
 .pricing-note a{ color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
 @media (prefers-reduced-motion: reduce){ .pricing-card, .pricing-card::before, .pricing-card::after{ transition:none; } }
-
-/* ---- Offers: festival specials and limited-time deals, styled as a
-   horizontally-scrolling strip of coupon cards -- discount stub, dashed
-   "tear" divider with punched circular notches, tap-to-copy promo code
-   -- the pattern shoppers already know from Amazon/Flipkart/Swiggy,
-   rather than a plain content card. Deliberately themeable via
-   var(--accent)/var(--accent-2): an offer card during Ganesh Chaturthi
-   or Diwali automatically picks up that festival's colors with zero
-   extra code, since celebration themes only ever repoint those two
-   variables. ---- */
-.offers-carousel{ position:relative; display:flex; align-items:center; gap:14px; margin-top:34px; }
-.offers-track{
-  display:flex; gap:22px; overflow-x:auto; scroll-snap-type:x proximity;
-  padding:6px 2px 22px; scrollbar-width:none; flex:1; min-width:0;
-}
-.offers-track::-webkit-scrollbar{ display:none; }
-.offers-arrow{
-  flex:none; width:46px; height:46px; border-radius:50%;
-  border:1px solid var(--border-strong); background:var(--bg-card); color:var(--text);
-  display:flex; align-items:center; justify-content:center; cursor:pointer;
-  transition:background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-}
-.offers-arrow:hover{ background:var(--accent); color:#fff; border-color:var(--accent); transform:scale(1.06); }
-.offers-arrow svg{ width:18px; height:18px; }
-@media (max-width:900px){ .offers-arrow{ display:none; } }
-
-.offer-coupon{
-  flex:0 0 auto; width:380px; scroll-snap-align:start;
-  display:grid; grid-template-columns:112px 1fr;
-  background:var(--bg-card); border:1px solid var(--border); border-radius:18px;
-  overflow:hidden; position:relative;
-  transition:border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-}
-.offer-coupon:hover{ border-color:var(--border-strong); transform:translateY(-4px); }
-@media (max-width:480px){ .offer-coupon{ width:296px; grid-template-columns:92px 1fr; } }
-
-/* The punched notches -- circles matching the page background,
-   positioned right on the seam between the two columns, half hidden by
-   the card's own overflow:hidden so only the "bite" shows. */
-.offer-coupon::before, .offer-coupon::after{
-  content:''; position:absolute; left:112px; width:24px; height:24px; border-radius:50%;
-  background:var(--bg); z-index:2;
-}
-.offer-coupon::before{ top:0; transform:translate(-50%,-50%); }
-.offer-coupon::after{ bottom:0; transform:translate(-50%,50%); }
-@media (max-width:480px){ .offer-coupon::before, .offer-coupon::after{ left:92px; } }
-
-.offer-stub{
-  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:8px; padding:20px 8px; text-align:center;
-  background:linear-gradient(160deg, var(--accent), var(--accent-2));
-}
-.offer-stub .os-icon{ font-size:22px; line-height:1; filter:drop-shadow(0 2px 4px rgba(0,0,0,.2)); }
-.offer-stub .os-highlight{
-  font-family:var(--font-display); font-weight:800; font-size:1.4rem; line-height:1.08;
-  color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.15);
-}
-
-.offer-info{
-  position:relative; padding:20px 22px 20px 26px;
-  border-left:2px dashed color-mix(in srgb, var(--border-strong) 70%, transparent);
-  display:flex; flex-direction:column;
-}
-.offer-badge{
-  align-self:flex-start; display:inline-flex; align-items:center; gap:5px;
-  font-family:var(--font-mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase;
-  color:var(--accent); background:color-mix(in srgb, var(--accent) 12%, transparent);
-  border:1px solid color-mix(in srgb, var(--accent) 28%, transparent);
-  padding:4px 10px; border-radius:var(--radius-full);
-}
-.offer-info h3{ margin-top:10px; font-size:1.06rem; line-height:1.25; }
-.offer-info p{
-  margin-top:6px; color:var(--text-dim); font-size:.85rem; line-height:1.5;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-}
-.offer-foot{ margin-top:auto; padding-top:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-.offer-code{
-  display:inline-flex; align-items:center; gap:8px; appearance:none;
-  font-family:var(--font-mono); font-size:11.5px; letter-spacing:.04em; font-weight:700; color:var(--text);
-  background:color-mix(in srgb, var(--bg) 55%, transparent);
-  border:1px dashed var(--border-strong); border-radius:8px; padding:6px 6px 6px 12px;
-  cursor:pointer; transition:border-color var(--dur-fast) var(--ease-out);
-}
-.offer-code:hover{ border-color:var(--accent); }
-.offer-code .oc-copy{
-  display:flex; align-items:center; justify-content:center; width:20px; height:20px; flex:none;
-  border-radius:6px; background:var(--accent); color:#fff;
-}
-.offer-code .oc-copy svg{ width:11px; height:11px; }
-.offer-code.copied .oc-copy{ background:#2e9e5b; }
-.offer-meta{ font-size:10.5px; letter-spacing:.03em; text-transform:uppercase; color:var(--text-dimmer); white-space:nowrap; }
-.offer-cta{ margin-top:14px; width:100%; justify-content:center; }
-@media (prefers-reduced-motion: reduce){ .offer-coupon{ transition:none; } .offer-coupon:hover{ transform:none; } }
 
 .service-tags span{ font-family:var(--font-mono); font-size:10.5px; padding:5px 10px; border:1px solid var(--border); border-radius:var(--radius-full); color:var(--text-dimmer); }
 
@@ -1886,9 +1781,13 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .two-col{ grid-template-columns:1fr; }
 }
 
-/* Tablets in portrait & small laptops — the full nav row gets cramped
-   before the rest of the layout does, so it collapses a bit earlier */
-@media (max-width:900px){
+/* Tablets in portrait & landscape, plus small laptops — the full nav row
+   (11 links + CTA button) needs roughly 1060px on its own and doesn't
+   actually fit until the container is ~1240px wide, so the breakpoint is
+   set there rather than at 900px: below that, iPads in landscape, Surface-
+   style tablets and small laptop windows were showing an overflowing,
+   cut-off nav bar instead of the hamburger menu. */
+@media (max-width:1260px){
   .nav-links, .nav-cta{ display:none; }
   .burger{ display:flex; }
 }
@@ -1971,6 +1870,348 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .scroll-cue{ display:none; }
 }
 
+
+/* ========================================================================
+   GLASSMORPHISM LAYER — "warm glass"
+   One material system on top of the Forge design system. Everything is
+   driven by the --glass-* tokens, so celebration themes (which re-tint
+   --ember / --amber) and the dark hero-media override both carry through.
+
+     tier 1  whisper  — pills, chips, ghost buttons        (light fill)
+     tier 2  pane     — cards, slabs, FAQ, contact, shell  (standard)
+     tier 3  overlay  — nav, mobile menu, modals, chat     (dense fill)
+     featured         — the "Most popular" pricing card    (ember-tinted)
+
+   Dial it down:  lower --glass-blur, or set --aurora-opacity:0 (or delete
+   the .glass-aurora div) to remove the colour glow behind the panes.
+   ======================================================================== */
+:root{
+  --glass-blur:      22px;
+  --glass-blur-sm:   12px;
+  --glass-blur-lg:   32px;
+  --glass-sat:       175%;
+
+  --glass-fill:        linear-gradient(140deg, rgba(255,255,255,.68) 0%, rgba(255,251,245,.40) 46%, rgba(255,243,230,.28) 100%);
+  --glass-fill-soft:   linear-gradient(140deg, rgba(255,255,255,.54) 0%, rgba(255,250,243,.30) 100%);
+  --glass-fill-strong: linear-gradient(145deg, rgba(255,254,251,.92) 0%, rgba(255,247,238,.84) 100%);
+  --glass-edge:        rgba(150,90,45,.16);
+  --glass-edge-hover:  color-mix(in srgb, var(--accent) 42%, rgba(150,90,45,.16));
+  --glass-hairline:    rgba(150,90,45,.14);
+  --glass-rim:         inset 0 1px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.55), inset 0 -1px 0 rgba(255,255,255,.22);
+  --glass-shadow:      0 1px 2px rgba(80,40,15,.05), 0 16px 36px -16px rgba(110,55,20,.26), 0 36px 72px -40px rgba(196,73,26,.24);
+  --glass-shadow-lift: 0 2px 4px rgba(80,40,15,.06), 0 26px 50px -18px rgba(110,55,20,.34), 0 50px 96px -46px rgba(196,73,26,.34);
+  --glass-shadow-sm:   0 10px 24px -14px rgba(110,55,20,.30);
+  --glass-shadow-overlay: 0 2px 6px rgba(60,30,10,.08), 0 40px 90px -30px rgba(50,24,8,.5);
+}
+
+/* When a video/photo sits behind the hero the site flips to dark locally —
+   the glass flips with it: clear, white-tinted panes instead of ivory. */
+#hero.media-active{
+  --glass-fill:      linear-gradient(140deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.07) 100%);
+  --glass-fill-soft: linear-gradient(140deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 100%);
+  --glass-edge:      rgba(255,255,255,.24);
+  --glass-edge-hover:rgba(255,255,255,.5);
+  --glass-rim:       inset 0 1px 0 rgba(255,255,255,.42), inset 1px 0 0 rgba(255,255,255,.18);
+  --glass-shadow-sm: 0 12px 28px -14px rgba(0,0,0,.55);
+}
+
+/* ---- Colour glow behind the page: without something to blur, frosted glass
+   just looks like a pale card. Fixed to the viewport (not per-section), so
+   the panes slide over it as you scroll. Kept faint on purpose. ---- */
+.glass-aurora{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; opacity:var(--aurora-opacity,1); }
+.glass-aurora i{ position:absolute; border-radius:50%; }
+.glass-aurora .ga1{
+  width:52vw; height:52vw; left:-14vw; top:2vh;
+  background:radial-gradient(circle, color-mix(in srgb, var(--ember-2) 20%, transparent) 0%, transparent 66%);
+  animation:gaDrift1 38s ease-in-out infinite alternate;
+}
+.glass-aurora .ga2{
+  width:46vw; height:46vw; right:-12vw; top:30vh;
+  background:radial-gradient(circle, color-mix(in srgb, color-mix(in srgb, var(--amber-soft) 55%, var(--ember-2)) 38%, transparent) 0%, transparent 66%);
+  animation:gaDrift2 46s ease-in-out infinite alternate;
+}
+.glass-aurora .ga3{
+  width:40vw; height:40vw; left:26vw; bottom:-16vh;
+  background:radial-gradient(circle, color-mix(in srgb, var(--ember) 13%, transparent) 0%, transparent 68%);
+  animation:gaDrift3 42s ease-in-out infinite alternate;
+}
+@keyframes gaDrift1{ from{ transform:translate3d(0,0,0) scale(1); }    to{ transform:translate3d(9vw,7vh,0) scale(1.12); } }
+@keyframes gaDrift2{ from{ transform:translate3d(0,0,0) scale(1.08); } to{ transform:translate3d(-8vw,-6vh,0) scale(.94); } }
+@keyframes gaDrift3{ from{ transform:translate3d(0,0,0) scale(1); }    to{ transform:translate3d(7vw,-8vh,0) scale(1.15); } }
+@media (prefers-reduced-motion: reduce){ .glass-aurora i{ animation:none; } }
+@media (max-width:760px){ .glass-aurora .ga3{ display:none; } }
+
+/* ---- Hero gutters: .hero-inner{width:100%} was overriding the container
+   width, so hero copy touched the screen edges. Restore the normal gutters. ---- */
+.hero-inner{ width:min(100% - 48px, var(--container)); }
+@media (max-width:480px){ .hero-inner{ width:min(100% - 32px, var(--container)); } }
+
+/* ========================================================================
+   TIER 2 — PANES
+   ======================================================================== */
+.service-card, .pricing-card, .review-card, .reviews-belt, .work-card, .video-card,
+.faq-item, .contact-method, .estimator-shell, .contact-form,
+.services-list, .why-list, .process-item{
+  background:var(--glass-fill);
+  border:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:var(--glass-rim), var(--glass-shadow);
+}
+/* hosts for the specular glare pseudo-element */
+.faq-item, .contact-method, .estimator-shell, .reviews-belt, .contact-form{ position:relative; }
+
+/* smooth shadow lift alongside each card's existing hover transform */
+.service-card, .review-card, .video-card, .work-card{
+  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-med) var(--ease-out);
+}
+.pricing-card{
+  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-med) var(--ease-out);
+}
+.service-card:hover, .review-card:hover, .video-card:hover, .work-card:hover, .pricing-card:hover{
+  border-color:var(--glass-edge-hover);
+  box-shadow:var(--glass-rim), var(--glass-shadow-lift);
+}
+.faq-item.open{ border-color:var(--glass-edge-hover); box-shadow:var(--glass-rim), var(--glass-shadow-lift); }
+
+/* ---- Specular glare: a soft white highlight that follows the cursor across
+   the pane, like light catching the surface. Sits above the glass fill and
+   below all content (negative z-index inside the pane's own stacking
+   context). Position comes from --mx/--my, set by the small script at the
+   end of the page. ---- */
+.work-card::before, .video-card::before, .faq-item::before, .contact-method::before,
+.estimator-shell::before, .reviews-belt::before, .contact-form::before, .process-item::before{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+  background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), rgba(255,255,255,0) 62%);
+  opacity:0; transition:opacity var(--dur-med) var(--ease-out);
+}
+.work-card:hover::before, .video-card:hover::before, .faq-item:hover::before, .contact-method:hover::before,
+.estimator-shell:hover::before, .reviews-belt:hover::before, .contact-form:hover::before, .process-item:hover::before{ opacity:1; }
+
+/* keep the rim visible above opaque cover images on media cards */
+.work-card::after, .video-card::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:5;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.34), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+/* ---- Featured pricing card — the one warm, glowing pane on the page ---- */
+.pricing-card.featured{
+  background:linear-gradient(150deg, rgba(255,255,255,.80) 0%, color-mix(in srgb, var(--accent) 10%, rgba(255,246,236,.55)) 52%, color-mix(in srgb, var(--accent) 22%, rgba(255,236,220,.45)) 100%);
+  border-color:color-mix(in srgb, var(--accent) 58%, rgba(255,255,255,.4));
+  box-shadow:var(--glass-rim),
+             0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
+             0 34px 70px -26px color-mix(in srgb, var(--accent) 55%, transparent),
+             0 64px 120px -64px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* ---- Editorial lists become single glass slabs (dividers stay) ---- */
+.services-list, .why-list{ border-radius:var(--radius-lg); overflow:hidden; position:relative; }
+.service-row{ padding:36px 34px; border-bottom-color:var(--glass-hairline); }
+.service-row:hover{ padding-left:46px; }
+.service-row:last-child{ border-bottom:none; }
+.why-item{ padding:34px; border-top-color:var(--glass-hairline); }
+.why-item:first-child{ border-top-color:transparent; }
+.why-item:last-child{ border-bottom:none; }
+
+/* ---- Process: each phase is a pane; the rail + dots still line up because
+   the padding is inside the item, not outside it. The active phase lights
+   up via ::after (opacity only, so it isn't held back by the stagger delay). ---- */
+.process-item{ padding:36px 34px; margin-bottom:14px; border-radius:var(--radius-md); }
+.process-item:first-child{ border-top:1px solid var(--glass-edge); }
+.process-item:last-child{ border-bottom:1px solid var(--glass-edge); margin-bottom:0; }
+.process-item::after{
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
+  background:linear-gradient(140deg, color-mix(in srgb, var(--accent) 14%, rgba(255,255,255,.5)) 0%, color-mix(in srgb, var(--accent) 5%, transparent) 100%);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 34%, transparent);
+  opacity:0; transition:opacity .6s var(--ease-out);
+}
+.process-item.active::after{ opacity:1; }
+.process-num{ right:18px; }
+
+/* ---- Contact form as a pane ---- */
+.contact-form{ padding:34px; border-radius:var(--radius-lg); }
+
+/* ---- Empty states — soft glass, dashed edge kept (it means "empty slot") ---- */
+.review-card.add-card, .reviews-empty, .products-empty{
+  background:var(--glass-fill-soft);
+  -webkit-backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  box-shadow:var(--glass-rim);
+}
+.review-card.add-card:hover{ background:var(--glass-fill); box-shadow:var(--glass-rim), var(--glass-shadow); }
+
+/* ========================================================================
+   TIER 1 — WHISPER
+   ======================================================================== */
+.hero-kicker, .btn-ghost, .hero-sound-btn, .hero-stats{
+  background:var(--glass-fill-soft);
+  border-color:var(--glass-edge);
+  -webkit-backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
+  box-shadow:var(--glass-rim), var(--glass-shadow-sm);
+}
+/* amber-soft on a light pane was too faint to read; use the deeper amber there */
+.hero-kicker{ color:var(--amber); }
+#hero.media-active .hero-kicker{ color:var(--amber-soft, var(--accent-2)); }
+
+/* hero stats: the old full-width hairline becomes a glass capsule */
+.hero-stats{
+  border:1px solid var(--glass-edge); border-radius:var(--radius-lg);
+  padding:18px 30px; gap:12px 44px; width:fit-content; max-width:100%;
+}
+
+/* tags, chips, small pills */
+.service-tags span, .tag-pill, .rc-service, .pmodal .ptags span{
+  background:rgba(255,255,255,.5); border-color:var(--glass-edge);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+}
+.work-open{ background:rgba(255,255,255,.5); border-color:var(--glass-edge); box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 8px 18px -12px rgba(110,55,20,.4); }
+
+/* hero visual: a faint diagonal glare + rim so the ember block reads as a
+   pane of tinted glass rather than a flat gradient */
+.hero-visual::after{
+  content:''; position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(118deg, rgba(255,255,255,.26) 0%, rgba(255,255,255,.06) 30%, rgba(255,255,255,0) 46%),
+             radial-gradient(120% 70% at 100% 100%, rgba(255,255,255,.10), transparent 60%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.30), inset 0 1px 0 rgba(255,255,255,.55);
+}
+/* "Scroll to explore" — tinted glass over the ember block */
+.hs-scroll{
+  background:color-mix(in srgb, var(--sindoor) 58%, transparent);
+  border:1px solid rgba(255,255,255,.30);
+  -webkit-backdrop-filter:blur(16px) saturate(170%);
+  backdrop-filter:blur(16px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 14px 30px -12px rgba(60,32,14,.5);
+}
+.hs-scroll:hover{ box-shadow:inset 0 1px 0 rgba(255,255,255,.4), 0 18px 36px -12px rgba(60,32,14,.6); }
+
+/* ---- Glossy finish on the ember buttons ---- */
+.btn-primary{
+  background-image:linear-gradient(180deg, rgba(255,255,255,.24) 0%, rgba(255,255,255,0) 55%), var(--grad-ember);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 -1px 0 rgba(0,0,0,.14), 0 8px 30px -8px rgba(196,73,26,.65);
+}
+.btn-primary:hover{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.42), inset 0 -1px 0 rgba(0,0,0,.14), 0 14px 34px -8px rgba(196,73,26,.85);
+}
+@keyframes btnBreathe{
+  0%,100%{ box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 -1px 0 rgba(0,0,0,.14), 0 8px 30px -8px rgba(196,73,26,.65); }
+  50%    { box-shadow:inset 0 1px 0 rgba(255,255,255,.38), inset 0 -1px 0 rgba(0,0,0,.14), 0 8px 34px -6px rgba(196,73,26,.9); }
+}
+
+/* ---- Form fields ---- */
+.form-field input, .form-field textarea, .form-field select{
+  background:rgba(255,255,255,.52); border-color:rgba(150,90,45,.22);
+  box-shadow:inset 0 1px 2px rgba(80,40,15,.06), inset 0 1px 0 rgba(255,255,255,.7);
+}
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus{
+  background:rgba(255,255,255,.80); border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(196,73,26,.15), inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+/* ---- Estimator preview bubbles (nested inside the shell → fill only) ---- */
+.ecp-bubble.user{ background:rgba(255,255,255,.66); border-color:var(--glass-edge); box-shadow:var(--glass-rim); }
+.ecp-bubble.ira, .msg.user{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 0 rgba(0,0,0,.12), 0 10px 22px -12px color-mix(in srgb, var(--sindoor) 75%, transparent);
+}
+
+/* ========================================================================
+   TIER 3 — OVERLAYS
+   ======================================================================== */
+#nav.scrolled{
+  background-color:rgba(255,250,243,.66);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border-bottom-color:var(--glass-edge);
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.7), 0 16px 36px -24px rgba(110,55,20,.42);
+}
+.mobile-menu{
+  background:linear-gradient(160deg, rgba(255,252,247,.80) 0%, rgba(255,240,224,.68) 100%);
+  -webkit-backdrop-filter:blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+}
+
+footer{
+  background:linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,243,230,.50) 100%);
+  border-top:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur)) saturate(var(--glass-sat));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+/* ---- Modals: the scrim is lightened so the frosted pane reads as glass
+   over a blurred page instead of a black box on a black screen. The pane
+   itself sits inside the blurred scrim (nested backdrop-filters don't
+   stack in browsers), so its frost comes from a dense translucent fill. ---- */
+.pmodal-backdrop{
+  background:rgba(30,16,8,.44);
+  -webkit-backdrop-filter:blur(12px) saturate(120%);
+  backdrop-filter:blur(12px) saturate(120%);
+}
+.pmodal{
+  background:var(--glass-fill-strong);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:var(--glass-rim), var(--glass-shadow-overlay);
+}
+.pmodal-close{ background:rgba(255,255,255,.55); border-color:var(--glass-edge); box-shadow:inset 0 1px 0 rgba(255,255,255,.9); }
+
+/* ---- Chat widget ---- */
+#chat-panel{
+  background:linear-gradient(145deg, rgba(255,254,251,.85) 0%, rgba(255,247,238,.74) 100%);
+  border:1px solid rgba(255,255,255,.7);
+  -webkit-backdrop-filter:blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  backdrop-filter:blur(var(--glass-blur-lg)) saturate(var(--glass-sat));
+  box-shadow:var(--glass-rim), var(--glass-shadow-overlay);
+}
+.chat-head{ background:linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.22)); border-bottom-color:var(--glass-hairline); }
+.chat-foot{ background:rgba(255,255,255,.28); border-top-color:var(--glass-hairline); }
+.msg.bot, .chat-typing{ background:rgba(255,255,255,.62); border-color:var(--glass-edge); box-shadow:var(--glass-rim); }
+.msg.result{ background:rgba(255,255,255,.62); border-color:var(--glass-edge); box-shadow:var(--glass-rim), var(--glass-shadow-sm); }
+.chat-opt{ background:rgba(255,255,255,.55); border-color:var(--glass-edge); box-shadow:inset 0 1px 0 rgba(255,255,255,.85); }
+.chat-ask-row textarea{ background:rgba(255,255,255,.62); border-color:var(--glass-edge); box-shadow:inset 0 1px 2px rgba(80,40,15,.06); }
+
+/* ========================================================================
+   RESPONSIVE + FALLBACKS
+   ======================================================================== */
+@media (max-width:1080px){
+  .pricing-card.featured{ box-shadow:var(--glass-rim), 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent), 0 30px 60px -26px color-mix(in srgb, var(--accent) 50%, transparent); }
+}
+@media (max-width:760px){
+  :root{ --glass-blur:14px; --glass-blur-lg:22px; --glass-blur-sm:10px; }
+  .service-row{ padding:26px 22px; }
+  .service-row:hover{ padding-left:22px; }
+  .contact-form{ padding:26px 22px; }
+  .process-item{ padding:28px 22px; }
+  .hero-stats{ padding:16px 22px; gap:12px 26px; }
+}
+@media (max-width:480px){
+  .why-item{ padding:26px 22px; }
+  .contact-form{ padding:24px 18px; }
+}
+
+/* No backdrop-filter support (or the user asked for less transparency):
+   swap to near-opaque ivory panes so nothing ever ends up unreadable. */
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  :root{
+    --glass-fill:linear-gradient(0deg, rgba(252,249,243,.96), rgba(252,249,243,.96));
+    --glass-fill-soft:linear-gradient(0deg, rgba(252,249,243,.92), rgba(252,249,243,.92));
+    --glass-fill-strong:linear-gradient(0deg, rgba(252,249,243,.98), rgba(252,249,243,.98));
+  }
+  #nav.scrolled{ background-color:rgba(252,249,243,.94); }
+  .mobile-menu{ background:var(--bg); }
+  #chat-panel{ background:var(--glass-fill-strong); }
+}
+@media (prefers-reduced-transparency: reduce){
+  :root{
+    --glass-fill:linear-gradient(0deg, rgba(252,249,243,.97), rgba(252,249,243,.97));
+    --glass-fill-soft:linear-gradient(0deg, rgba(252,249,243,.95), rgba(252,249,243,.95));
+    --glass-fill-strong:linear-gradient(0deg, rgba(252,249,243,.99), rgba(252,249,243,.99));
+  }
+  *{ -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+  #nav.scrolled{ background-color:rgba(252,249,243,.96); }
+  #chat-panel{ background:var(--glass-fill-strong); }
+  .glass-aurora{ display:none; }
+}
+
 </style>
 
 <script type="application/ld+json">
@@ -1996,6 +2237,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 </head>
 <body>
 <div class="page-bg" aria-hidden="true"></div>
+<div class="glass-aurora" aria-hidden="true"><i class="ga1"></i><i class="ga2"></i><i class="ga3"></i></div>
 <div class="ganesh-garland gg-left" aria-hidden="true"></div>
 <div class="ganesh-garland gg-right" aria-hidden="true"></div>
 <div class="theme-chakra" id="themeChakra"></div>
@@ -2130,25 +2372,45 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span><i></i>Web Apps</span><span><i></i>3D &amp; WebGL</span><span><i></i>Admin Panels</span><span><i></i>AI Chatbots</span><span><i></i>Booking Systems</span><span><i></i>E-Commerce</span>
-    <span><i></i>Web Apps</span><span><i></i>3D &amp; WebGL</span><span><i></i>Admin Panels</span><span><i></i>AI Chatbots</span><span><i></i>Booking Systems</span><span><i></i>E-Commerce</span>
-  </div>
-</div>
-
-<!-- FAQ -->
-<section id="faq">
+<!-- PROCESS -->
+<section id="process">
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">FAQ</span>
-        <h2 class="section-title">Questions people<br>usually ask.</h2>
+        <span class="eyebrow">How it works</span>
+        <h2 class="section-title">Four phases,<br>one point of contact.</h2>
       </div>
-      <p class="section-sub">Can't find your answer here? Drop it straight into the chat with IRA or reach out below.</p>
     </div>
-    <div class="faq-list reveal-stagger" id="faqList"></div>
+    <div class="process-rail" id="processRail">
+      <div class="process-rail-track" aria-hidden="true"></div>
+      <div class="process-rail-fill" id="processRailFill" aria-hidden="true"></div>
+      <div class="process-list reveal-stagger">
+        <div class="process-item" data-phase="01">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 01</span>
+          <div class="process-body"><h3>Discover</h3><p>A short call or chat to understand your business, your customers, and what "premium" should actually mean for your brand.</p></div>
+          <span class="process-num" aria-hidden="true">01</span>
+        </div>
+        <div class="process-item" data-phase="02">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 02</span>
+          <div class="process-body"><h3>Design</h3><p>A visual system — palette, type, motion, layout — built specifically for you before a single section is coded.</p></div>
+          <span class="process-num" aria-hidden="true">02</span>
+        </div>
+        <div class="process-item" data-phase="03">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 03</span>
+          <div class="process-body"><h3>Build</h3><p>Hand-coded front end, 3D scenes if needed, and any admin panel, booking flow or AI tool your project calls for.</p></div>
+          <span class="process-num" aria-hidden="true">03</span>
+        </div>
+        <div class="process-item" data-phase="04">
+          <span class="process-dot" aria-hidden="true"></span>
+          <span class="process-phase mono">PHASE 04</span>
+          <div class="process-body"><h3>Launch &amp; hand-off</h3><p>Your site goes live, you get a walkthrough of your admin panel, and I stay reachable for the first weeks after launch.</p></div>
+          <span class="process-num" aria-hidden="true">04</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -2268,9 +2530,9 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
     <div class="section-head reveal">
       <div>
         <span class="eyebrow">Selected work</span>
-        <h2 class="section-title">Six live builds,<br>six different businesses.</h2>
+        <h2 class="section-title">Proof, not promises.</h2>
       </div>
-      <p class="section-sub">Every project below is a real, hand-built site — click one to open the details, or launch the live experience.</p>
+      <p class="section-sub">Every project below is live and running someone's business right now — not a mockup. Click through for the story, or launch the site itself.</p>
     </div>
     <div class="work-grid reveal-stagger" id="workGrid"></div>
   </div>
@@ -2330,48 +2592,6 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </section>
 
-<!-- PROCESS -->
-<section id="process">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">How it works</span>
-        <h2 class="section-title">Four phases,<br>one point of contact.</h2>
-      </div>
-    </div>
-    <div class="process-rail" id="processRail">
-      <div class="process-rail-track" aria-hidden="true"></div>
-      <div class="process-rail-fill" id="processRailFill" aria-hidden="true"></div>
-      <div class="process-list reveal-stagger">
-        <div class="process-item" data-phase="01">
-          <span class="process-dot" aria-hidden="true"></span>
-          <span class="process-phase mono">PHASE 01</span>
-          <div class="process-body"><h3>Discover</h3><p>A short call or chat to understand your business, your customers, and what "premium" should actually mean for your brand.</p></div>
-          <span class="process-num" aria-hidden="true">01</span>
-        </div>
-        <div class="process-item" data-phase="02">
-          <span class="process-dot" aria-hidden="true"></span>
-          <span class="process-phase mono">PHASE 02</span>
-          <div class="process-body"><h3>Design</h3><p>A visual system — palette, type, motion, layout — built specifically for you before a single section is coded.</p></div>
-          <span class="process-num" aria-hidden="true">02</span>
-        </div>
-        <div class="process-item" data-phase="03">
-          <span class="process-dot" aria-hidden="true"></span>
-          <span class="process-phase mono">PHASE 03</span>
-          <div class="process-body"><h3>Build</h3><p>Hand-coded front end, 3D scenes if needed, and any admin panel, booking flow or AI tool your project calls for.</p></div>
-          <span class="process-num" aria-hidden="true">03</span>
-        </div>
-        <div class="process-item" data-phase="04">
-          <span class="process-dot" aria-hidden="true"></span>
-          <span class="process-phase mono">PHASE 04</span>
-          <div class="process-body"><h3>Launch &amp; hand-off</h3><p>Your site goes live, you get a walkthrough of your admin panel, and I stay reachable for the first weeks after launch.</p></div>
-          <span class="process-num" aria-hidden="true">04</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- REVIEWS -->
 <section id="reviews">
   <div class="container">
@@ -2404,21 +2624,17 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   </div>
 </section>
 
-<!-- OFFERS (hidden entirely when nothing's currently active — see renderOffers) -->
-<section id="offers" style="display:none;">
+<!-- FAQ -->
+<section id="faq">
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">Limited-time</span>
-        <h2 class="section-title">Offers running<br>right now.</h2>
+        <span class="eyebrow">FAQ</span>
+        <h2 class="section-title">Questions people<br>usually ask.</h2>
       </div>
-      <p class="section-sub">Festival specials and limited-time deals. Swipe through — only ever what's actually active, nothing stale left up after it's over.</p>
+      <p class="section-sub">Can't find your answer here? Drop it straight into the chat with IRA or reach out below.</p>
     </div>
-    <div class="offers-carousel reveal">
-      <button class="offers-arrow offers-arrow-prev" id="offersPrev" aria-label="Previous offers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-      <div class="offers-track" id="offersGrid"></div>
-      <button class="offers-arrow offers-arrow-next" id="offersNext" aria-label="More offers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
-    </div>
+    <div class="faq-list reveal-stagger" id="faqList"></div>
   </div>
 </section>
 
@@ -2837,7 +3053,8 @@ var DEFAULT_DATA = {
   site: {
     logoUrl: "",
     introFramesEnabled: true,
-    heroVisualEnabled: true
+    heroVisualEnabled: true,
+    pageBgUrl: ""
   },
   siteTheme: {
     active: "default",
@@ -2923,8 +3140,7 @@ var DEFAULT_DATA = {
   // Ad creative work (social/search/display campaigns) — same object shape
   // as projects/products again, so it reuses the same card grid and modal.
   // Starts empty; filled in from Admin → Ads as real campaigns go live.
-  ads: [],
-  offers: []
+  ads: []
 };
 
 
@@ -2996,7 +3212,6 @@ function syncSiteDataFromCloud(){
       DATA.projects = cloud.projects;
       DATA.products = cloud.products || DATA.products || [];
       DATA.ads = cloud.ads || DATA.ads || [];
-      DATA.offers = cloud.offers || DATA.offers || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
       DATA.pricing = (cloud.pricing && cloud.pricing.length) ? cloud.pricing : DATA.pricing;
@@ -3231,109 +3446,6 @@ function renderAds(){
 }
 
 
-/* ---- Festival/limited-time offers — sourced from DATA.offers. Filters
-   out anything the admin marked inactive or whose validUntil date has
-   passed, so a stale festival offer never lingers on the live site by
-   accident. The whole section (not just the grid) hides itself when
-   there's nothing currently running, rather than showing an empty state
-   -- "no offers right now" reads oddly under a "limited-time" heading. ---- */
-function offerDateLabel(iso){
-  if(!iso) return '';
-  var d = new Date(iso + 'T00:00:00');
-  if(isNaN(d.getTime())) return '';
-  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return 'Valid till ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-}
-
-function renderOffers(){
-  var section = document.getElementById('offers');
-  var track = document.getElementById('offersGrid');
-  if(!section || !track) return;
-
-  var now = new Date();
-  var offers = (DATA.offers || []).filter(function(o){
-    if(o.active === false) return false;
-    if(o.validUntil){
-      var until = new Date(o.validUntil + 'T23:59:59');
-      if(!isNaN(until.getTime()) && until < now) return false;
-    }
-    return true;
-  });
-
-  if(!offers.length){
-    section.style.display = 'none';
-    return;
-  }
-  section.style.display = '';
-
-  var copyIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-  var checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-
-  track.innerHTML = offers.map(function(o){
-    var dateLabel = offerDateLabel(o.validUntil);
-    var footParts = [];
-    if(o.code) footParts.push('<button type="button" class="offer-code" data-code="'+escapeHtml(o.code)+'">'+escapeHtml(o.code)+'<span class="oc-copy">'+copyIcon+'</span></button>');
-    if(dateLabel) footParts.push('<span class="offer-meta mono">'+escapeHtml(dateLabel)+'</span>');
-    var footHtml = footParts.length ? '<div class="offer-foot">'+footParts.join('')+'</div>' : '';
-
-    return '' +
-    '<div class="offer-coupon">' +
-      '<div class="offer-stub">' +
-        (o.icon ? '<span class="os-icon">'+escapeHtml(o.icon)+'</span>' : '') +
-        (o.highlight ? '<span class="os-highlight">'+escapeHtml(o.highlight)+'</span>' : '') +
-      '</div>' +
-      '<div class="offer-info">' +
-        (o.badge ? '<span class="offer-badge">'+escapeHtml(o.badge)+'</span>' : '') +
-        '<h3>'+escapeHtml(o.title||'')+'</h3>' +
-        (o.desc ? '<p>'+escapeHtml(o.desc)+'</p>' : '') +
-        footHtml +
-        (o.ctaText ? '<a href="'+escapeHtml(o.ctaLink||'#contact')+'" class="btn btn-primary btn-sm offer-cta">'+escapeHtml(o.ctaText)+'</a>' : '') +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  track.querySelectorAll('.offer-code').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var code = btn.getAttribute('data-code') || '';
-      var iconWrap = btn.querySelector('.oc-copy');
-      var finish = function(){
-        btn.classList.add('copied');
-        if(iconWrap) iconWrap.innerHTML = checkIcon;
-        setTimeout(function(){
-          btn.classList.remove('copied');
-          if(iconWrap) iconWrap.innerHTML = copyIcon;
-        }, 1700);
-      };
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(code).then(finish).catch(finish);
-      } else {
-        finish();
-      }
-    });
-  });
-
-  reInitReveal(track.querySelectorAll('.offer-coupon'));
-}
-
-/* ---- One-time wiring for the prev/next arrows -- the buttons
-   themselves are static markup (only offersGrid's contents get
-   re-rendered), so this lives outside renderOffers() to avoid stacking
-   duplicate click listeners every time offers re-render. ---- */
-function initOffersCarousel(){
-  var track = document.getElementById('offersGrid');
-  var prev = document.getElementById('offersPrev');
-  var next = document.getElementById('offersNext');
-  if(!track || !prev || !next) return;
-  var scrollByCard = function(dir){
-    var card = track.querySelector('.offer-coupon');
-    var amount = card ? (card.getBoundingClientRect().width + 22) * dir : 320 * dir;
-    track.scrollBy({ left: amount, behavior: 'smooth' });
-  };
-  prev.addEventListener('click', function(){ scrollByCard(-1); });
-  next.addEventListener('click', function(){ scrollByCard(1); });
-}
-
-
 function renderFAQ(){
   var list = document.getElementById('faqList');
   if(!list) return;
@@ -3519,10 +3631,10 @@ function renderAll(){
   renderProjects();
   renderProducts();
   renderAds();
-  renderOffers();
   renderFAQ();
   renderPricing();
   renderBranding();
+  applyPageBg();
   renderMediaSection();
   applyCelebrationTheme();
 }
@@ -3608,6 +3720,18 @@ function renderBranding(){
     if(url) el.innerHTML = '<img src="'+url+'" alt="Logo">';
     else el.textContent = 'H';
   });
+}
+
+/* ---- Site-wide background image — sits behind every section (see
+   .page-bg in the CSS), not just the hero. An admin-uploaded image
+   overrides the built-in default via an inline style; clearing it
+   in the admin panel falls straight back to the CSS default since
+   an empty inline background-image is simply ignored. ---- */
+function applyPageBg(){
+  var el = document.querySelector('.page-bg');
+  if(!el) return;
+  var url = (DATA.site.pageBgUrl || '').trim();
+  el.style.backgroundImage = url ? 'url("' + url + '")' : '';
 }
 
 /* ========================================================================
@@ -3708,7 +3832,6 @@ document.addEventListener('DOMContentLoaded', function(){
   syncReviewsFromCloud();
   initHeroVideoPlayback();
   initHeroBgImage();
-  initOffersCarousel();
   initHeroSoundToggle();
   initSpotlightCards();
   initMagneticButtons();
@@ -5635,5 +5758,31 @@ function initProcessRail(){
 
 })();
 </script>
+
+<script>
+/* Glass glare — feeds the cursor position into --mx/--my on whichever glass
+   pane is under the pointer, so the soft highlight follows the mouse.
+   Delegated on the document so it also covers cards rendered later
+   (reviews, projects, FAQ). Skipped on touch devices and reduced motion. */
+(function(){
+  if(window.matchMedia('(hover:none), (pointer:coarse), (prefers-reduced-motion: reduce)').matches) return;
+  var SEL = '.work-card,.video-card,.review-card,.faq-item,.contact-method,.estimator-shell,.reviews-belt,.contact-form,.process-item,.pricing-card,.service-card,.why-item';
+  var pending = false, lx = 0, ly = 0, target = null;
+  document.addEventListener('pointermove', function(e){
+    var t = e.target && e.target.closest ? e.target.closest(SEL) : null;
+    if(!t) return;
+    target = t; lx = e.clientX; ly = e.clientY;
+    if(pending) return;
+    pending = true;
+    requestAnimationFrame(function(){
+      pending = false;
+      var r = target.getBoundingClientRect();
+      target.style.setProperty('--mx', ((lx - r.left) / r.width * 100) + '%');
+      target.style.setProperty('--my', ((ly - r.top) / r.height * 100) + '%');
+    });
+  }, { passive:true });
+})();
+</script>
+
 </body>
 </html>
