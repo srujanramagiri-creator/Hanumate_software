@@ -31,12 +31,18 @@
 <meta name="twitter:description" content="Hand-coded, premium websites, admin panels and AI tools for local businesses — cinematic digital experiences, not templates.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c4491a'/%3E%3Ctext x='50' y='68' font-family='Arial' font-weight='800' font-size='58' fill='%23fbeae0' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c4491a'/%3E%3Ctext x='50' y='68' font-family='Arial' font-weight='800' font-size='58' fill='%23fbeae0' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<!-- Fonts loaded via <link> (not @import) so the browser can discover and
+     fetch them in parallel with the CSS instead of waiting for the CSS to
+     finish downloading/parsing first — @import is render-blocking and was
+     costing a full extra network round-trip before fonts even started
+     loading, most noticeable on slower mobile connections. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap">
 <style>
 /* ========================================================================
    HANUMATE SOFTWARE — "FORGE" DESIGN SYSTEM
    ======================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Space+Mono:wght@400;700&display=swap');
 
 :root{
   /* ---- Fixed dark literals — kept constant regardless of theme, used
@@ -345,6 +351,18 @@ h1,h2,h3,h4{ font-family:var(--font-display); font-weight:700; letter-spacing:-0
   transition:opacity .8s var(--ease-out), visibility .8s;
 }
 #preloader.done{ opacity:0; visibility:hidden; pointer-events:none; }
+.preloader-video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  opacity:0; z-index:0;
+  transition:opacity 1s var(--ease-out);
+}
+.preloader-video.ready{ opacity:1; }
+.preloader-mark, .preloader-bar, .preloader-pct{ position:relative; z-index:2; }
+/* When an admin-uploaded video is playing, it IS the loading screen —
+   no text, no bar, no percentage on top of it. */
+#preloader.has-loading-video .preloader-mark,
+#preloader.has-loading-video .preloader-bar,
+#preloader.has-loading-video .preloader-pct{ display:none; }
 .preloader-mark{
   font-family:var(--font-display); font-weight:800; font-size:15px;
   letter-spacing:.3em; text-transform:uppercase; color:var(--ink);
@@ -508,13 +526,21 @@ html[data-celebration="ganesh"] #chat-toggle .ping{
 .burger span{ width:16px; height:1.4px; background:var(--text); transition:transform .3s, opacity .3s; }
 .mobile-menu{
   position:fixed; inset:0; z-index:850; background:var(--bg);
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px;
+  display:flex; flex-direction:column; align-items:center; gap:18px;
   transform:translateY(-100%); transition:transform .5s var(--ease-in-out);
-  overflow:hidden;
+  /* The link list (11 links + CTA) is taller than the viewport on plenty
+     of real phones — it was clipped with overflow:hidden and centered,
+     which pushed "Work" up behind the fixed header (invisible AND
+     untappable) and cut the CTA button off the bottom the same way.
+     Scrolling + top-aligned-when-it-overflows fixes both ends. */
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:calc(84px + env(safe-area-inset-top)) 24px calc(32px + env(safe-area-inset-bottom));
+  justify-content:flex-start;
+  justify-content:safe center; /* centers when it fits; falls back to the flex-start above instead of clipping when it doesn't — ignored by browsers that don't understand "safe", which keeps flex-start */
 }
 .mobile-menu.open{ transform:translateY(0); }
-.mobile-menu a{ font-family:var(--font-display); font-size:30px; font-weight:700; max-width:100%; }
-.mobile-menu-cta{ font-family:var(--font-body) !important; font-size:15px !important; font-weight:600 !important; margin-top:10px; }
+.mobile-menu a{ font-family:var(--font-display); font-size:20px; font-weight:700; max-width:100%; }
+.mobile-menu-cta{ font-family:var(--font-body) !important; font-size:14px !important; font-weight:600 !important; margin-top:6px; padding:12px 22px !important; }
 
 /* ========================================================================
    INTRO FRAME STORY — frame-by-frame scroll-scrub, plays before the hero.
@@ -1870,6 +1896,15 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .scroll-cue{ display:none; }
 }
 
+/* Shorter phones (and landscape) — the 11-link menu now scrolls instead of
+   clipping (see .mobile-menu), but tightening the rhythm here means most
+   of these devices don't need to scroll at all to reach every link. */
+@media (max-height:700px){
+  .mobile-menu{ gap:12px; padding-top:calc(64px + env(safe-area-inset-top)); }
+  .mobile-menu a{ font-size:18px; }
+}
+
+
 
 /* ========================================================================
    GLASSMORPHISM LAYER — "warm glass"
@@ -2248,6 +2283,7 @@ footer{
 
 <!-- PRELOADER -->
 <div id="preloader">
+  <video id="preloadVideo" class="preloader-video" muted playsinline preload="auto"></video>
   <div class="preloader-mark">HANUMATE <span>SOFTWARE</span></div>
   <div class="preloader-bar"><i id="preloadBarFill"></i></div>
   <div class="preloader-pct" id="preloadPct">0%</div>
@@ -3039,6 +3075,10 @@ var DEFAULT_DATA = {
     videoUrl: "",
     videoUrlMobile: ""
   },
+  loadingScreen: {
+    videoUrl: "",
+    videoUrlMobile: ""
+  },
   heroBg: {
     mode: "core",
     videoUrl: "",
@@ -3054,6 +3094,7 @@ var DEFAULT_DATA = {
     logoUrl: "",
     introFramesEnabled: true,
     heroVisualEnabled: true,
+    storyVideoEnabled: true,
     pageBgUrl: ""
   },
   siteTheme: {
@@ -3166,6 +3207,7 @@ function loadData(){
     merged.introFrames = (parsed.introFrames && parsed.introFrames.length) ? parsed.introFrames : merged.introFrames;
     merged.introFramesMobile = (parsed.introFramesMobile && parsed.introFramesMobile.length) ? parsed.introFramesMobile : merged.introFramesMobile;
     merged.storyVideo = Object.assign({}, merged.storyVideo, parsed.storyVideo || {});
+    merged.loadingScreen = Object.assign({}, merged.loadingScreen, parsed.loadingScreen || {});
     merged.heroBg = Object.assign({}, merged.heroBg, parsed.heroBg || {});
     merged.heroVisual = Object.assign({}, merged.heroVisual, parsed.heroVisual || {});
     merged.site = Object.assign({}, merged.site, parsed.site || {});
@@ -3219,6 +3261,7 @@ function syncSiteDataFromCloud(){
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
       applyHeroVisual(); // re-check visibility now that the real heroVisualEnabled flag has arrived
+      renderStoryVideoSection(); // re-check visibility now that the real storyVideoEnabled flag has arrived
     })
     .catch(function(){ /* no cloud copy yet, or offline — keep local content */ });
 }
@@ -3845,6 +3888,7 @@ document.addEventListener('DOMContentLoaded', function(){
   syncHeroVisualFromCloud();
   syncIntroFramesFromCloud();
   syncStoryVideoFromCloud();
+  syncLoadingScreenFromCloud();
   syncSiteDataFromCloud();
 });
 
@@ -3859,37 +3903,100 @@ function initHeroKickerPulseFix(){
 
 /* ---- Preloader ---- */
 
-function initPreloader(){
-  var bar = document.getElementById('preloadBarFill');
-  var pct = document.getElementById('preloadPct');
+/* Loading screen video — admin-uploaded. When one is set, it IS the loading
+   screen: full-screen, on its own, playing start to finish — the
+   "HANUMATE SOFTWARE" mark/bar/percentage are hidden entirely (see the
+   #preloader.has-loading-video CSS rule) rather than shown on top of it.
+   Independent of the story video, with its own Supabase pointer file
+   (loading-screen/current.json). Falls back to the plain mark+progress-bar
+   loader (current behavior) whenever no video is set. */
+
+function lsPickVideoUrl(){
+  if(isMobileViewport() && DATA.loadingScreen.videoUrlMobile) return DATA.loadingScreen.videoUrlMobile;
+  return DATA.loadingScreen.videoUrl;
+}
+
+function renderLoadingScreenVideo(){
+  var video = document.getElementById('preloadVideo');
   var pre = document.getElementById('preloader');
-  var p = 0;
-  var timer = setInterval(function(){
-    p += Math.random()*18;
-    if(p > 92) p = 92;
-    bar.style.width = p + '%';
-    pct.textContent = Math.floor(p) + '%';
-  }, 140);
+  if(!video || !pre) return;
+  var activeUrl = lsPickVideoUrl();
+  if(activeUrl){
+    pre.classList.add('has-loading-video');
+    if(video.getAttribute('src') !== activeUrl){
+      video.classList.remove('ready');
+      video.src = activeUrl;
+      video.load();
+    }
+    if(!video.dataset.readyBound){
+      video.dataset.readyBound = '1';
+      video.addEventListener('loadeddata', function(){
+        if(pre.classList.contains('done')) return; // preloader already finished — no point starting it now
+        video.classList.add('ready');
+        var p = video.play();
+        if(p && p.catch) p.catch(function(){});
+      });
+    }
+  } else {
+    pre.classList.remove('has-loading-video');
+    video.removeAttribute('src');
+    video.classList.remove('ready');
+  }
+}
 
-  window.addEventListener('load', finish);
-  setTimeout(finish, 3200); // safety net so it never hangs
-
+function initPreloader(){
+  renderLoadingScreenVideo();
+  var pre = document.getElementById('preloader');
+  var hasVideo = pre.classList.contains('has-loading-video');
   var finished = false;
-  function finish(){
-    if(finished) return; finished = true;
-    clearInterval(timer);
-    bar.style.width = '100%';
-    pct.textContent = '100%';
-    setTimeout(function(){
-      pre.classList.add('done');
-      var heroVid = document.getElementById('hero-video');
-      if(heroVid) heroVid.classList.add('ready');
-      document.querySelectorAll('.hero-title .line').forEach(function(el){ el.classList.add('in'); });
-      var heroScene = document.querySelector('.hero-scene');
-      if(heroScene) heroScene.classList.add('in');
-      animateHeroStats();
-      document.querySelectorAll('.reveal, .reveal-stagger').forEach(checkReveal);
-    }, 380);
+  var finish;
+
+  function revealSite(){
+    pre.classList.add('done');
+    var lsVideo = document.getElementById('preloadVideo');
+    if(lsVideo && !lsVideo.paused) lsVideo.pause(); // done with it — release decode resources
+    var heroVid = document.getElementById('hero-video');
+    if(heroVid) heroVid.classList.add('ready');
+    document.querySelectorAll('.hero-title .line').forEach(function(el){ el.classList.add('in'); });
+    var heroScene = document.querySelector('.hero-scene');
+    if(heroScene) heroScene.classList.add('in');
+    animateHeroStats();
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(checkReveal);
+  }
+
+  if(hasVideo){
+    // Video mode: the uploaded clip plays start to finish with nothing else
+    // on screen — no fake progress bar, and no fixed time cap tied to page
+    // load. The clip's own length sets the pace; we just wait for it to end.
+    var video = document.getElementById('preloadVideo');
+    finish = function(){
+      if(finished) return; finished = true;
+      revealSite();
+    };
+    video.addEventListener('ended', finish);
+    video.addEventListener('error', finish); // broken/corrupt file — don't hang the site
+    setTimeout(finish, 20000); // generous safety net in case the browser never fires ended/error
+  } else {
+    var bar = document.getElementById('preloadBarFill');
+    var pct = document.getElementById('preloadPct');
+    var p = 0;
+    var timer = setInterval(function(){
+      p += Math.random()*18;
+      if(p > 92) p = 92;
+      bar.style.width = p + '%';
+      pct.textContent = Math.floor(p) + '%';
+    }, 140);
+
+    finish = function(){
+      if(finished) return; finished = true;
+      clearInterval(timer);
+      bar.style.width = '100%';
+      pct.textContent = '100%';
+      setTimeout(revealSite, 380);
+    };
+
+    window.addEventListener('load', finish);
+    setTimeout(finish, 3200); // safety net so it never hangs
   }
 }
 
@@ -5006,7 +5113,7 @@ function renderStoryVideoSection(){
   // browser (see ssResizeCanvas for the full explanation).
   sec.style.height = window.innerHeight + 'px';
   var activeUrl = svPickVideoUrl();
-  if(activeUrl){
+  if(activeUrl && DATA.site.storyVideoEnabled !== false){
     sec.style.display = '';
     if(video.getAttribute('src') !== activeUrl){
       video.src = activeUrl;
@@ -5567,6 +5674,31 @@ function syncStoryVideoFromCloud(){
         DATA.storyVideo.videoUrlMobile = pointer.videoUrlMobile || '';
         saveData();
         renderStoryVideoSection();
+      }
+    })
+    .catch(function(){ /* no pointer yet — stay empty, this is expected pre-launch */ });
+}
+
+
+function loadingScreenPointerPublicUrl(){
+  if(!sbClient) return null;
+  var r = sbClient.storage.from(SUPABASE_BUCKET).getPublicUrl('loading-screen/current.json');
+  return r && r.data ? r.data.publicUrl : null;
+}
+
+
+function syncLoadingScreenFromCloud(){
+  if(!sbClient) return;
+  var url = loadingScreenPointerPublicUrl();
+  if(!url) return;
+  fetch(url + '?t=' + Date.now(), { cache:'no-store' })
+    .then(function(res){ return res.ok ? res.json() : null; })
+    .then(function(pointer){
+      if(pointer){
+        DATA.loadingScreen.videoUrl = pointer.videoUrl || '';
+        DATA.loadingScreen.videoUrlMobile = pointer.videoUrlMobile || '';
+        saveData();
+        renderLoadingScreenVideo();
       }
     })
     .catch(function(){ /* no pointer yet — stay empty, this is expected pre-launch */ });
