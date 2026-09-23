@@ -2963,7 +2963,7 @@ footer{
           </div>
           <div class="price-preview">
             <span class="lbl mono">Estimated project range</span>
-            <div class="amt">From ₹7K</div>
+            <div class="amt">From ₹4,999</div>
             <span class="sub">+ domain, hosting &amp; other charges — final number depends on your requirements</span>
           </div>
         </div>
@@ -3482,6 +3482,7 @@ function loadData(){
     merged.pricing = (parsed.pricing && parsed.pricing.length) ? parsed.pricing : merged.pricing;
     merged.monthly = (parsed.monthly && parsed.monthly.length) ? parsed.monthly : merged.monthly;
     merged.projects = (parsed.projects && parsed.projects.length) ? parsed.projects : merged.projects;
+    merged.products = (parsed.products && parsed.products.length) ? parsed.products : merged.products;
     merged.ads = (parsed.ads && parsed.ads.length) ? parsed.ads : merged.ads;
     return merged;
   }catch(e){ return clone(DEFAULT_DATA); }
