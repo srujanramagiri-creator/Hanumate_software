@@ -1040,75 +1040,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .service-card p{ color:var(--text-dim); font-size:.94rem; line-height:1.65; }
 .service-tags{ margin-top:18px; display:flex; gap:8px; flex-wrap:wrap; }
 
-/* ---- Pricing — four tiers, one visually promoted as "Most popular."
-   The border on every card traces the cursor on hover (a masked
-   radial-gradient ring driven by the same --mx/--my custom properties
-   the interior spotlight already tracks), so exploring a card feels
-   like running a finger along its edge rather than a static highlight. ---- */
-.pricing-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:22px; align-items:stretch; margin-top:34px; }
-.pricing-card{
-  flex:1 1 250px; max-width:292px;
-  background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg);
-  padding:40px 30px 36px; position:relative; display:flex; flex-direction:column;
-  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-fast);
-}
-.pricing-card::before{
-  content:''; position:absolute; inset:0; border-radius:inherit; opacity:0;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%);
-  transition:opacity var(--dur-med); pointer-events:none;
-}
-.pricing-card::after{
-  content:''; position:absolute; inset:0; border-radius:inherit; padding:1.5px;
-  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), var(--accent), color-mix(in srgb, var(--accent) 30%, transparent) 45%, transparent 72%);
-  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  opacity:0; transition:opacity var(--dur-med); pointer-events:none;
-}
-.pricing-card:hover{ transform:translateY(-6px); border-color:var(--border-strong); }
-.pricing-card:hover::before, .pricing-card:hover::after{ opacity:1; }
-.pricing-card.featured{
-  background:linear-gradient(165deg, color-mix(in srgb, var(--accent) 7%, var(--bg-card)) 0%, var(--bg-card) 55%);
-  border-color:var(--accent);
-  box-shadow:0 24px 48px -20px color-mix(in srgb, var(--accent) 45%, transparent);
-  transform:scale(1.045);
-}
-.pricing-card.featured:hover{ transform:scale(1.045) translateY(-6px); }
-.pricing-badge{
-  position:absolute; top:0; right:26px; transform:translateY(-50%); z-index:1;
-  background:var(--grad-amber); color:#fff; font-family:var(--font-mono); font-size:10px; font-weight:700;
-  letter-spacing:.08em; text-transform:uppercase; padding:7px 14px; border-radius:999px;
-  box-shadow:0 8px 18px -6px color-mix(in srgb, var(--accent) 60%, transparent);
-}
-.pricing-name{ font-family:var(--font-mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
-.pricing-price{ display:flex; align-items:baseline; gap:8px; margin-top:16px; flex-wrap:wrap; }
-.pricing-price .amount{ font-family:var(--font-display); font-size:2.15rem; font-weight:700; color:var(--text); line-height:1; }
-.pricing-price .amount .currency{ font-size:.55em; font-weight:600; margin-right:1px; }
-.pricing-price .note{ font-size:.8rem; color:var(--text-dimmer); }
-.pricing-value-note{ font-size:.78rem; color:var(--text-dimmer); margin-top:6px; }
-.pricing-value-note s{ text-decoration-color:var(--sindoor); }
-.pricing-tagline{ margin-top:14px; color:var(--text-dim); font-size:.9rem; line-height:1.6; min-height:40px; }
-.pricing-features{ margin-top:26px; display:flex; flex-direction:column; gap:13px; flex:1; }
-.pricing-features li{ display:flex; align-items:flex-start; gap:10px; font-size:.88rem; color:var(--text-dim); line-height:1.5; }
-.pricing-features li svg{ width:15px; height:15px; flex:none; margin-top:2px; stroke:var(--accent); }
-.pricing-ideal{ margin-top:22px; padding-top:18px; border-top:1px solid var(--border); font-size:.82rem; color:var(--text-dim); line-height:1.55; }
-.pricing-ideal b{ color:var(--text); }
-.pricing-cta{ margin-top:28px; width:100%; justify-content:center; position:relative; z-index:1; }
-.pricing-note{ text-align:center; margin-top:36px; color:var(--text-dim); font-size:.92rem; }
-.pricing-note a{ color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
-@media (prefers-reduced-motion: reduce){ .pricing-card, .pricing-card::before, .pricing-card::after{ transition:none; } }
-
-/* ---- Monthly plans — sits directly under Packages and reuses the exact
-   .pricing-card look, just two-up and a touch wider. An "excluded" feature
-   (e.g. Domain not included) gets a muted X instead of a tick. ---- */
-#monthly{ padding-top:0; }
-.monthly-grid{ max-width:780px; margin-left:auto; margin-right:auto; }
-.monthly-grid .pricing-card{ flex:1 1 300px; max-width:370px; }
-.pricing-features li.is-off{ color:var(--text-dimmer); }
-.pricing-features li.is-off svg{ stroke:var(--text-dimmer); opacity:.9; }
-@media (max-width:760px){
-  .monthly-grid .pricing-card{ flex-basis:100%; max-width:none; }
-}
-
 .service-tags span{ font-family:var(--font-mono); font-size:10.5px; padding:5px 10px; border:1px solid var(--border); border-radius:var(--radius-full); color:var(--text-dimmer); }
 
 /* ---- Editorial services list — numbered rows instead of six identical
@@ -1345,106 +1276,168 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
    can peek toward the browser edges; arrows sit near those edges too.
    Digital Products keeps the older .work-grid list layout above.
    ======================================================================== */
-.wc-shell{ margin-top:8px; }
+.wc-shell{
+  --cw:clamp(196px, 24vw, 350px);          /* centre-card width — everything scales from it */
+  margin-top:clamp(20px,3vw,44px);
+}
 .wc-track{
   position:relative;
   width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
 }
 .wc-stage{
-  position:relative;
-  height:clamp(380px, 100vw, 560px);
-  overflow:hidden;
-  touch-action:pan-y;
+  --shift:0px;
+  position:relative; height:calc(var(--cw) * 1.778 + 56px);
+  overflow:hidden; touch-action:pan-y; -webkit-user-select:none; user-select:none; outline:none;
 }
+.wc-stage:focus-visible{ outline:2px solid var(--accent); outline-offset:-6px; border-radius:28px; }
+
 .wc-card{
-  position:absolute; top:50%; left:50%;
-  width:min(300px, 58vw);
-  aspect-ratio:3/5.2;
-  border-radius:var(--radius-lg);
-  overflow:hidden;
-  cursor:pointer;
-  border:1px solid var(--border);
-  box-shadow:0 30px 60px -24px rgba(0,0,0,.5);
-  transition:transform .6s var(--ease-out), opacity .6s var(--ease-out), filter .6s var(--ease-out), border-color var(--dur-fast);
-  transform:translate(-50%,-50%) translateX(calc(var(--offset,0) * 62%)) scale(var(--scale,1));
-  opacity:var(--opacity,1);
-  filter:brightness(var(--bright,1));
-  z-index:1;
+  --x:0; --s:1; --ly:0px;
+  position:absolute; left:50%; top:calc(50% - var(--shift));
+  width:var(--cw); aspect-ratio:9/16; border-radius:calc(var(--cw) * .075);
+  transform:translate(-50%,-50%) translateX(calc(var(--cw) * var(--x))) translateY(var(--ly)) scale(var(--s));
+  transition:transform .85s var(--ease-out), opacity .5s var(--ease-out), box-shadow .6s var(--ease-out);
+  will-change:transform; cursor:pointer;
+  box-shadow:0 26px 50px -26px color-mix(in srgb, var(--sindoor) 40%, transparent);
 }
-.wc-card.is-active{ border-color:var(--border-strong); }
+.wc-card[data-pos="0"]{  --x:0;     --s:1;   z-index:5;
+  box-shadow:0 44px 70px -26px color-mix(in srgb, var(--accent) 55%, transparent), 0 10px 26px -12px rgba(60,30,20,.24); }
+.wc-card[data-pos="-1"]{ --x:-.5;   --s:.8;  z-index:4; }
+.wc-card[data-pos="1"]{  --x:.5;    --s:.8;  z-index:4; }
+.wc-card[data-pos="-2"]{ --x:-.864; --s:.64; z-index:3; }
+.wc-card[data-pos="2"]{  --x:.864;  --s:.64; z-index:3; }
+.wc-card[data-pos="hide"]{ --x:0; --s:.5; opacity:0; pointer-events:none; z-index:1; }
+.wc-card[data-pos="0"]:hover{ --ly:-8px; }
+.wc-card:focus-visible{ outline:2px solid var(--accent); outline-offset:5px; }
+
+/* face — each project keeps its own brand gradient / cover image */
 .wc-visual{
-  position:absolute; inset:0;
+  position:absolute; inset:0; border-radius:inherit; overflow:hidden;
   display:flex; align-items:center; justify-content:center; text-align:center;
-  background-color:var(--surface-2); padding:0 22px;
+  background-color:var(--surface-2); padding:0 18px;
+  border:1px solid rgba(255,255,255,.55);
 }
 .wc-visual.has-cover{ background-size:cover; background-position:center; background-repeat:no-repeat; }
 .wc-visual.has-cover .wt-word{ display:none; }
-.wc-visual::after{
-  content:''; position:absolute; inset:0; z-index:1;
-  background:linear-gradient(200deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.6) 100%);
+.wc-visual::after{      /* soft top-light sheen, like the reference's glassy face */
+  content:''; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,0) 34%, rgba(20,10,8,0) 60%, rgba(20,10,8,.34) 100%);
 }
 .wc-visual .noise{
-  position:absolute; inset:0; opacity:.5; mix-blend-mode:overlay; z-index:1;
+  position:absolute; inset:0; opacity:.4; mix-blend-mode:overlay; z-index:1; pointer-events:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .wc-visual .wt-word{
-  position:relative; z-index:2;
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em; line-height:1.1;
-  font-size:clamp(1.3rem, 4vw, 1.9rem); opacity:.92;
+  position:relative; z-index:2; margin-top:-8%;
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em; line-height:1.08;
+  font-size:calc(var(--cw) * .1); opacity:.95;
+  transition:opacity .45s var(--ease-out);
 }
 
-/* ---- top-left index + category chip, overlaid on the card art ---- */
-.wc-topmeta{ position:absolute; top:16px; left:16px; z-index:3; display:flex; align-items:center; gap:10px; }
-.wc-topmeta .wc-idx{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:rgba(253,246,236,.7); }
+/* dusk tint on the side cards so the centre reads as the hero */
+.wc-tint{
+  position:absolute; inset:0; z-index:2; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(120,84,100,.34), rgba(120,84,100,.56));
+  opacity:0; transition:opacity .7s var(--ease-out);
+}
+.wc-card[data-pos="-1"] .wc-tint, .wc-card[data-pos="1"] .wc-tint{ opacity:.68; }
+.wc-card[data-pos="-2"] .wc-tint, .wc-card[data-pos="2"] .wc-tint{ opacity:.88; }
+
+/* centre-only chrome */
+.wc-topmeta, .wc-ring, .wc-footer{ transition:opacity .45s var(--ease-out), transform .6s var(--ease-out); }
+.wc-card:not([data-pos="0"]) .wc-topmeta,
+.wc-card:not([data-pos="0"]) .wc-ring,
+.wc-card:not([data-pos="0"]) .wc-footer,
+.wc-card:not([data-pos="0"]) .wt-word{ opacity:0; }
+.wc-card:not([data-pos="0"]) .wc-footer{ transform:translateY(8px); }
+
+/* glass header band: index + category */
+.wc-topmeta{
+  position:absolute; inset:0 0 auto 0; z-index:3;
+  display:flex; align-items:center; gap:10px;
+  padding:calc(var(--cw) * .045) calc(var(--cw) * .048) calc(var(--cw) * .11);
+  background:linear-gradient(180deg, rgba(60,34,28,.58) 0%, rgba(60,34,28,.28) 55%, rgba(60,34,28,0) 100%);
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);
+          mask-image:linear-gradient(180deg,#000 55%,transparent);
+}
+.wc-topmeta .wc-idx{ font-family:var(--font-mono); font-size:clamp(10px,1vw,11.5px); letter-spacing:.1em; color:rgba(255,246,236,.82); }
 .wc-topmeta .wc-cat{
-  font-family:var(--font-mono); font-size:9px; letter-spacing:.07em; text-transform:uppercase;
+  font-family:var(--font-mono); font-size:clamp(8px,.8vw,9.5px); letter-spacing:.07em; text-transform:uppercase;
   padding:6px 11px; border-radius:var(--radius-full);
-  background:rgba(255,255,255,.1); backdrop-filter:blur(6px);
-  color:#fdf6ec; border:1px solid rgba(255,255,255,.35);
-  max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  background:rgba(255,255,255,.12); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  color:#fdf6ec; border:1px solid rgba(255,255,255,.4);
+  max-width:calc(var(--cw) * .62); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
 }
 
-/* ---- bottom-sheet info card baked into every card — the shared
-   opacity/brightness vars on .wc-card dim it along with the art, so
-   only the centred card reads clearly. ---- */
+/* ring: shows the client logo when there is one, otherwise the pulse dot */
+.wc-ring{
+  position:absolute; z-index:3; right:calc(var(--cw) * .085); top:calc(var(--cw) * .3);
+  width:calc(var(--cw) * .125); aspect-ratio:1; border-radius:50%; overflow:hidden;
+  border:1px solid rgba(255,255,255,.65); background:rgba(255,255,255,.2);
+  display:grid; place-items:center;
+  -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px);
+}
+.wc-ring img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* bottom glass pill: title + View Project */
 .wc-footer{
-  position:absolute; left:12px; right:12px; bottom:12px; z-index:3;
-  background:var(--bg-card); border-radius:calc(var(--radius-lg) - 10px);
-  padding:14px 16px 16px; box-shadow:0 12px 28px -14px rgba(0,0,0,.4);
+  position:absolute; z-index:3; left:calc(var(--cw) * .045); right:calc(var(--cw) * .045); bottom:calc(var(--cw) * .04);
+  padding:calc(var(--cw) * .045) calc(var(--cw) * .05) calc(var(--cw) * .05);
+  border-radius:calc(var(--cw) * .06);
+  background:linear-gradient(180deg, rgba(255,243,247,.94), rgba(253,232,240,.92));
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 10px 24px -12px rgba(90,40,60,.38), inset 0 1px 0 #fff;
 }
-.wc-footer h3{ font-size:1rem; line-height:1.3; color:var(--text); }
-.wc-footer .work-open{ width:100%; justify-content:center; margin-top:12px; }
+.wc-footer h3{
+  font-family:var(--font-body); font-weight:700; letter-spacing:-.01em; line-height:1.25; color:#3a2430;
+  font-size:clamp(.82rem, 1.1vw, 1.02rem);
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+.wc-footer .work-open{ width:100%; justify-content:center; margin-top:calc(var(--cw) * .035); }
 
+/* arrows — white glass discs, parked well outside the fan */
 .wc-arrow{
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:50px; height:50px; border-radius:50%; z-index:10; padding:0;
-  display:flex; align-items:center; justify-content:center;
-  background:color-mix(in srgb, var(--bg-card) 78%, transparent);
-  backdrop-filter:blur(8px);
-  border:1px solid var(--border-strong); color:var(--text-dim);
-  cursor:pointer; transition:background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-fast);
+  position:absolute; top:calc(50% - 28px); transform:translateY(-50%); z-index:10; padding:0;
+  width:64px; height:64px; margin-top:0; border-radius:50%;
+  display:grid; place-items:center; cursor:pointer; color:var(--text);
+  background:rgba(255,255,255,.94); border:1px solid #fff;
+  box-shadow:0 14px 30px -12px rgba(70,35,25,.32), inset 0 1px 0 #fff;
+  transition:transform .3s var(--ease-out), box-shadow .3s var(--ease-out), opacity .3s;
 }
-.wc-arrow svg{ width:20px; height:20px; display:block; }
-.wc-arrow:hover{ background:var(--bg-card); border-color:var(--accent); color:var(--accent); }
-.wc-arrow:active{ transform:translateY(-50%) scale(.92); }
-.wc-prev{ left:24px; }
-.wc-next{ right:24px; }
+.wc-arrow svg{ width:22px; height:22px; display:block; }
+.wc-arrow:hover{ transform:translateY(-50%) scale(1.08); box-shadow:0 18px 34px -12px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 #fff; }
+.wc-arrow:active{ transform:translateY(-50%) scale(.95); }
+.wc-arrow:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.wc-arrow[aria-disabled="true"]{ opacity:.35; pointer-events:none; }
+.wc-prev{ left:max(6px, calc(50% - var(--cw) * 1.75 - 32px)); right:auto; }
+.wc-next{ right:max(6px, calc(50% - var(--cw) * 1.75 - 32px)); left:auto; }
 
-.wc-dots{ display:flex; justify-content:center; gap:8px; margin-top:22px; }
+.wc-dots{ position:relative; z-index:2; display:flex; justify-content:center; gap:8px; margin-top:6px; flex-wrap:wrap; }
 .wc-dot{
   width:8px; height:8px; border-radius:50%; padding:0;
-  background:var(--border-strong); border:none; cursor:pointer;
+  background:color-mix(in srgb, var(--accent) 22%, transparent); border:none; cursor:pointer;
   transition:background var(--dur-fast), width var(--dur-fast);
 }
 .wc-dot.active{ background:var(--accent); width:24px; border-radius:var(--radius-full); }
 
+/* shared backdrop host (Ad creative + Selected work) */
+#work{ position:relative; overflow:hidden; }
+#work > .container{ position:relative; z-index:2; }
+#work .reel-decor{ transform:scaleX(-1); }
+#work .rd-diamond.d1{ top:40%; right:-2%; }
+#work .rd-diamond.d2{ top:60%; right:5%; }
+#work .rd-orb{ top:26%; }
+
 @media (max-width:640px){
-  .wc-stage{ height:clamp(300px, 112vw, 410px); }
-  .wc-card{ width:min(230px, 64vw); }
-  .wc-arrow{ width:40px; height:40px; }
-  .wc-arrow svg{ width:16px; height:16px; }
-  .wc-prev{ left:10px; }
-  .wc-next{ right:10px; }
+  .wc-shell{ --cw:clamp(184px, 56vw, 250px); }
+  .wc-stage{ --shift:38px; height:calc(var(--cw) * 1.778 + 104px); }
+  .wc-arrow{ top:auto; bottom:6px; transform:none; width:52px; height:52px; }
+  .wc-arrow:hover{ transform:scale(1.08); } .wc-arrow:active{ transform:scale(.95); }
+  .wc-prev{ left:calc(50% - 62px); }
+  .wc-next{ right:auto; left:calc(50% + 10px); }
+}
+@media (prefers-reduced-motion: reduce){
+  .wc-card, .wc-tint, .wc-topmeta, .wc-footer, .wc-arrow{ transition:none; }
 }
 
 /* ---- Empty state for the Digital Products grid — same honest,
@@ -1516,6 +1509,172 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 @media (max-width:760px){ .video-grid{ grid-template-columns:1fr; } }
 
 
+/* ========================================================================
+   AD REELS — coverflow carousel (Ad creative section)
+   ======================================================================== */
+#campaigns{ position:relative; overflow:hidden; }
+#campaigns > .container{ position:relative; z-index:2; }
+.sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+/* --- decorative backdrop --- */
+.reel-decor{ position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.rd-grid{
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, transparent) 1px, transparent 1px);
+  background-size:72px 72px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 55% at 50% 62%, #000 25%, transparent 78%);
+          mask-image:radial-gradient(ellipse 70% 55% at 50% 62%, #000 25%, transparent 78%);
+}
+.rd-arcs{ position:absolute; left:-4%; bottom:-6%; width:min(46vw,620px); height:auto; }
+.rd-arcs circle{ stroke:color-mix(in srgb, var(--accent) 22%, transparent); stroke-width:1; }
+.rd-blob{
+  position:absolute; left:-10%; bottom:-14%; width:56vw; height:36vw; max-width:760px; max-height:500px;
+  border-radius:50%;
+  background:radial-gradient(ellipse at 40% 40%, color-mix(in srgb, var(--accent-2) 26%, transparent), transparent 68%);
+  filter:blur(6px);
+}
+.rd-diamond{
+  position:absolute; border-radius:clamp(22px,3vw,44px); transform:rotate(45deg);
+  background:linear-gradient(145deg, rgba(255,255,255,.78), color-mix(in srgb, var(--accent) 14%, rgba(255,255,255,.25)));
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 24px 50px -22px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 rgba(255,255,255,.9);
+  -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+}
+.rd-diamond.d1{ width:clamp(120px,15vw,230px); aspect-ratio:1; right:2%; top:16%; opacity:.9; }
+.rd-diamond.d2{ width:clamp(90px,11vw,170px); aspect-ratio:1; right:9%; top:32%; opacity:.7; }
+.rd-orb{
+  position:absolute; right:12%; top:66%; width:30px; height:30px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #fff, color-mix(in srgb, var(--accent) 35%, #ffd9c4));
+  box-shadow:0 8px 18px -6px color-mix(in srgb, var(--accent) 50%, transparent);
+  opacity:.75;
+}
+.rd-ring{
+  position:absolute; right:-3%; bottom:-9%; width:clamp(160px,17vw,270px); aspect-ratio:1; border-radius:50%;
+  background:conic-gradient(from 210deg, var(--amber-soft), #fff6e6, var(--amber), var(--amber-soft));
+  -webkit-mask:radial-gradient(circle, transparent 62%, #000 63%);
+          mask:radial-gradient(circle, transparent 62%, #000 63%);
+  opacity:.9;
+}
+
+/* --- stage --- */
+.reel-stage{
+  --cw:clamp(196px, 24vw, 350px);          /* center-card width; everything scales from it */
+  position:relative; margin-top:clamp(28px,4vw,56px);
+  height:calc(var(--cw) * 1.778 + 56px);
+  touch-action:pan-y; -webkit-user-select:none; user-select:none;
+  outline:none;
+}
+.reel-stage:focus-visible{ outline:2px solid var(--accent); outline-offset:8px; border-radius:28px; }
+.reel-track{ position:absolute; inset:0; }
+
+.reel-card{
+  --x:0; --s:1; --ly:0px;
+  position:absolute; left:50%; top:50%;
+  width:var(--cw); aspect-ratio:9/16; border-radius:calc(var(--cw) * .075);
+  transform:translate(-50%,-50%) translateX(calc(var(--cw) * var(--x))) translateY(var(--ly)) scale(var(--s));
+  transition:transform .85s var(--ease-out), opacity .5s var(--ease-out), box-shadow .6s var(--ease-out);
+  will-change:transform; cursor:pointer;
+  box-shadow:0 26px 50px -26px color-mix(in srgb, var(--sindoor) 40%, transparent);
+}
+.reel-card[data-pos="0"]{  --x:0;     --s:1;   z-index:5; cursor:default;
+  box-shadow:0 44px 70px -26px color-mix(in srgb, var(--accent) 55%, transparent), 0 10px 26px -12px rgba(60,30,20,.22); }
+.reel-card[data-pos="-1"]{ --x:-.5;   --s:.8;  z-index:4; }
+.reel-card[data-pos="1"]{  --x:.5;    --s:.8;  z-index:4; }
+.reel-card[data-pos="-2"]{ --x:-.864; --s:.64; z-index:3; }
+.reel-card[data-pos="2"]{  --x:.864;  --s:.64; z-index:3; }
+.reel-card[data-pos="hide"]{ --x:0; --s:.5; opacity:0; pointer-events:none; z-index:1; }
+.reel-card.is-real[data-pos="0"]{ cursor:pointer; }
+.reel-card.is-real[data-pos="0"]:hover{ --ly:-8px; }
+.reel-card:focus-visible{ outline:2px solid var(--accent); outline-offset:5px; }
+
+/* face — gradient (or the reel's poster image) */
+.reel-face{
+  position:absolute; inset:0; border-radius:inherit; overflow:hidden;
+  background:linear-gradient(172deg, var(--c1) 0%, var(--c2) 48%, var(--c3) 100%);
+  background-size:cover; background-position:center;
+  border:1px solid rgba(255,255,255,.6);
+}
+.reel-card.v0{ --c1:color-mix(in srgb, var(--accent-2) 24%, #fff0e2); --c2:color-mix(in srgb, var(--accent) 60%, #ffd0aa); --c3:color-mix(in srgb, #e08a9e 55%, #ffe3d8); }
+.reel-card.v1{ --c1:color-mix(in srgb, var(--accent-2) 34%, #fff3e0); --c2:color-mix(in srgb, var(--accent-2) 62%, #f6b98d); --c3:color-mix(in srgb, var(--accent) 40%, #ffd6c4); }
+.reel-card.v2{ --c1:color-mix(in srgb, #e8a0a8 40%, #fff0ea); --c2:color-mix(in srgb, var(--accent) 52%, #f0a58f); --c3:color-mix(in srgb, var(--sindoor) 30%, #ffd2c0); }
+.reel-card.v3{ --c1:color-mix(in srgb, var(--accent) 22%, #fff4e8); --c2:color-mix(in srgb, var(--sindoor) 55%, #e79a78); --c3:color-mix(in srgb, #d98aa0 50%, #ffe0d0); }
+.reel-card.v4{ --c1:color-mix(in srgb, var(--accent-2) 28%, #fff1e0); --c2:color-mix(in srgb, var(--accent) 50%, #f3b48a); --c3:color-mix(in srgb, var(--amber) 34%, #ffdcc8); }
+
+/* dusk tint on the side cards so the center reads as the hero */
+.reel-tint{
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(96,58,78,.30), rgba(96,58,78,.52));
+  opacity:0; transition:opacity .7s var(--ease-out);
+}
+.reel-card[data-pos="-1"] .reel-tint, .reel-card[data-pos="1"] .reel-tint{ opacity:.62; }
+.reel-card[data-pos="-2"] .reel-tint, .reel-card[data-pos="2"] .reel-tint{ opacity:.85; }
+
+/* readability shade under text on real posters */
+.reel-shade{ position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg, rgba(40,20,20,.35) 0%, rgba(40,20,20,0) 26%, rgba(40,20,20,0) 62%, rgba(40,20,20,.4) 100%); }
+
+/* center-only chrome */
+.reel-head, .reel-pill{ transition:opacity .45s var(--ease-out), transform .6s var(--ease-out); }
+.reel-card:not([data-pos="0"]) .reel-head,
+.reel-card:not([data-pos="0"]) .reel-pill{ opacity:0; }
+.reel-card:not([data-pos="0"]) .reel-pill{ transform:translateY(8px); }
+
+.reel-head{
+  position:absolute; inset:0 0 auto 0; padding:calc(var(--cw) * .045) calc(var(--cw) * .048) calc(var(--cw) * .11);
+  background:linear-gradient(180deg, rgba(92,54,74,.62) 0%, rgba(92,54,74,.30) 55%, rgba(92,54,74,0) 100%);
+  -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px);
+  -webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);
+          mask-image:linear-gradient(180deg,#000 55%,transparent);
+  color:#fff; font-family:var(--font-body); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(.82rem, 1.15vw, 1.08rem); text-shadow:0 1px 8px rgba(60,30,40,.25);
+}
+
+.reel-pill{
+  position:absolute; left:calc(var(--cw) * .045); right:calc(var(--cw) * .045); bottom:calc(var(--cw) * .04);
+  min-height:calc(var(--cw) * .165); padding:10px 16px; border-radius:calc(var(--cw) * .06);
+  display:flex; align-items:center; justify-content:center; gap:10px; text-align:center;
+  background:linear-gradient(180deg, rgba(255,243,247,.92), rgba(253,226,238,.9));
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 10px 24px -12px rgba(90,40,60,.35), inset 0 1px 0 #fff;
+  color:#3a2430; font-family:var(--font-body); font-weight:600; letter-spacing:-.01em; line-height:1.25;
+  font-size:clamp(.82rem, 1.1vw, 1.04rem);
+}
+.reel-pill svg{ flex:none; width:16px; height:16px; fill:currentColor; }
+.reel-pill span{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* arrows */
+.reel-arrow{
+  position:absolute; top:50%; z-index:8; width:64px; height:64px; margin-top:-32px; border-radius:50%;
+  display:grid; place-items:center; cursor:pointer; color:var(--text);
+  background:rgba(255,255,255,.94); border:1px solid #fff;
+  box-shadow:0 14px 30px -12px rgba(70,35,25,.32), inset 0 1px 0 #fff;
+  transition:transform .3s var(--ease-out), box-shadow .3s var(--ease-out), opacity .3s;
+}
+.reel-arrow svg{ width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:2.5; }
+.reel-arrow:hover{ transform:scale(1.08); box-shadow:0 18px 34px -12px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 #fff; }
+.reel-arrow:active{ transform:scale(.95); }
+.reel-arrow:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+.reel-arrow[aria-disabled="true"]{ opacity:.35; pointer-events:none; }
+.reel-arrow[hidden]{ display:none; }
+.reel-prev{ left:max(6px, calc(50% - var(--cw) * 1.75 - 32px)); }
+.reel-next{ right:max(6px, calc(50% - var(--cw) * 1.75 - 32px)); }
+
+@media (max-width:640px){
+  .reel-stage{ --cw:clamp(184px, 56vw, 250px); height:calc(var(--cw) * 1.778 + 104px); }
+  .reel-track{ inset:0 0 76px 0; }
+  .reel-arrow{ top:auto; bottom:2px; margin:0; width:52px; height:52px; }
+  .reel-prev{ left:calc(50% - 62px); }
+  .reel-next{ right:auto; left:calc(50% + 10px); }
+  .rd-diamond.d2, .rd-orb{ display:none; }
+  .rd-diamond.d1{ top:9%; right:-8%; opacity:.45; }
+  #work .rd-diamond.d1{ top:30%; right:-14%; }
+}
+@media (prefers-reduced-motion: reduce){
+  .reel-card, .reel-tint, .reel-head, .reel-pill, .reel-arrow{ transition:none; }
+}
+
 /* ---- Project modal ---- */
 .pmodal-cover{
   width:calc(100% + 80px); margin:-40px -40px 24px -40px;
@@ -1544,12 +1703,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 .pmodal p{ margin-top:16px; color:var(--text-dim); line-height:1.7; }
 .pmodal .ptags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
 .pmodal .ptags span{ font-family:var(--font-mono); font-size:10.5px; padding:6px 11px; border:1px solid var(--border); border-radius:var(--radius-full); color:var(--text-dimmer); }
-.pmodal .pmodal-price{
-  margin-top:22px; font-family:var(--font-display); font-size:1.4rem; font-weight:700;
-  background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent;
-  display:none;
-}
-.pmodal .pmodal-price.show{ display:block; }
 .pmodal .pmodal-features{ margin-top:18px; display:none; flex-direction:column; gap:11px; list-style:none; }
 .pmodal .pmodal-features.show{ display:flex; }
 .pmodal .pmodal-features li{
@@ -1718,39 +1871,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 }
 
 /* ========================================================================
-   ESTIMATOR (CHAT)
-   ======================================================================== */
-.estimator-shell{
-  border:1px solid var(--border-strong); border-radius:var(--radius-lg);
-  background:linear-gradient(160deg, var(--bg-card), var(--bg-alt));
-  padding:0; overflow:hidden; display:grid; grid-template-columns:1fr 1fr;
-}
-.estimator-copy{ padding:56px 50px; }
-.estimator-copy ul{ margin-top:26px; display:flex; flex-direction:column; gap:14px; }
-.estimator-copy li{ display:flex; gap:12px; align-items:flex-start; color:var(--text-dim); font-size:.95rem; }
-.estimator-copy li svg{ width:16px; height:16px; stroke:var(--accent); flex:none; margin-top:3px; }
-.estimator-visual{
-  position:relative; border-left:1px solid var(--border);
-  display:flex; align-items:center; justify-content:center; padding:40px;
-  background:radial-gradient(circle at 50% 40%, rgba(196,73,26,.13), transparent 65%);
-}
-.estimator-visual .price-preview{ text-align:center; }
-.estimator-visual .price-preview .lbl{ font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dimmer); }
-.estimator-visual .price-preview .amt{ font-family:var(--font-display); font-size:3rem; margin-top:10px; background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.estimator-visual .price-preview .sub{ margin-top:8px; font-size:.85rem; color:var(--text-dimmer); }
-
-/* ---- Tiny "meet IRA" chat preview above the price card — introduces
-   her as a guide having an exchange, not just a form that spits out a
-   number. ---- */
-.estimator-visual .ev-inner{ display:flex; flex-direction:column; align-items:center; width:100%; }
-.ecp{ display:flex; flex-direction:column; gap:10px; width:100%; max-width:330px; margin-bottom:30px; }
-.ecp-bubble{ padding:12px 16px; border-radius:16px; font-size:.84rem; line-height:1.5; max-width:88%; }
-.ecp-bubble.user{ align-self:flex-end; background:var(--bg-card); border:1px solid var(--border); border-bottom-right-radius:4px; color:var(--text-dim); }
-.ecp-ira-wrap{ align-self:flex-start; max-width:88%; }
-.ecp-label{ font-family:var(--font-mono); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dimmer); margin-bottom:5px; padding-left:2px; }
-.ecp-bubble.ira{ background:var(--grad-ember); color:var(--on-accent); border-bottom-left-radius:4px; max-width:none; }
-
-/* ========================================================================
    FAQ
    ======================================================================== */
 .faq-list{ display:flex; flex-direction:column; gap:14px; }
@@ -1856,7 +1976,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:28px; border-top:1px solid var(--border); flex-wrap:wrap; gap:14px; }
 .footer-bottom span{ font-family:var(--font-mono); font-size:11.5px; color:var(--text-dimmer); }
 /* ========================================================================
-   CHAT WIDGET (ESTIMATOR BUBBLE)
+   CHAT WIDGET (IRA BUBBLE)
    ======================================================================== */
 #chat-toggle{
   position:fixed;
@@ -1910,7 +2030,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 .msg.user{ align-self:flex-end; background:var(--grad-ember); color:var(--on-accent); padding:12px 15px; border-radius:16px 4px 16px 16px; font-weight:500; }
 .msg.result{ align-self:stretch; background:var(--bg-alt); border:1px solid var(--border-strong); border-radius:16px; padding:20px; text-align:center; }
 .msg.result .r-lbl{ font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-dimmer); }
-.msg.result .r-amt{ font-family:var(--font-display); font-size:1.9rem; margin-top:8px; background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.msg.result .r-amt{ font-family:var(--font-display); font-size:1.4rem; line-height:1.2; margin-top:8px; background:var(--grad-amber); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .msg.result .r-note{ font-size:.78rem; color:var(--text-dim); margin-top:8px; }
 .msg.result .r-disclaimer{ font-size:.72rem; color:var(--text-dimmer); line-height:1.5; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
 
@@ -1966,13 +2086,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .hero-grid{ grid-template-columns:1fr; gap:64px; }
   .hero-scene{ justify-self:center; max-width:480px; margin-top:10px; }
   .services-grid{ grid-template-columns:repeat(2,1fr); }
-  .pricing-card{ flex-basis:45%; max-width:420px; }
-  .pricing-card.featured{ transform:none; }
-  .pricing-card.featured:hover{ transform:translateY(-6px); }
   .why-grid{ grid-template-columns:1fr; gap:48px; }
   .why-intro{ position:static; }
-  .estimator-shell{ grid-template-columns:1fr; }
-  .estimator-visual{ border-left:none; border-top:1px solid var(--border); padding:50px; }
   .contact-grid{ grid-template-columns:1fr; gap:44px; }
   .two-col{ grid-template-columns:1fr; }
 }
@@ -1991,7 +2106,6 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 @media (max-width:760px){
   section{ padding:100px 0; }
   .services-grid{ grid-template-columns:1fr; }
-  .pricing-card{ flex-basis:100%; max-width:none; }
   .service-row{ grid-template-columns:36px 1fr; row-gap:12px; padding:26px 4px; }
   .service-row:hover{ padding-left:4px; }
   .sr-icon{ display:none; }
@@ -2031,9 +2145,6 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   .service-card{ padding:28px 24px; }
   .review-card{ padding:26px 22px; }
   .reviews-empty{ padding:50px 26px; }
-  .estimator-copy{ padding:40px 26px; }
-  .estimator-visual{ padding:36px 26px; }
-  .estimator-visual .price-preview .amt{ font-size:2.5rem; }
   .pmodal{ padding:28px; }
   .contact-method{ padding:16px 18px; }
   .section-head{ gap:20px; }
@@ -2085,7 +2196,6 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
      tier 1  whisper  — pills, chips, ghost buttons        (light fill)
      tier 2  pane     — cards, slabs, FAQ, contact, shell  (standard)
      tier 3  overlay  — nav, mobile menu, modals, chat     (dense fill)
-     featured         — the "Most popular" pricing card    (ember-tinted)
 
    Dial it down:  lower --glass-blur, or set --aurora-opacity:0 (or delete
    the .glass-aurora div) to remove the colour glow behind the panes.
@@ -2109,8 +2219,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   --glass-shadow-overlay: 0 2px 6px rgba(60,30,10,.08), 0 40px 90px -30px rgba(50,24,8,.5);
 }
 
-/* The kicker badge, sound toggle, stats capsule and "Get a price
-   estimate" button sit directly on top of whatever photo/video is
+/* The kicker badge, sound toggle, stats capsule and hero
+   buttons sit directly on top of whatever photo/video is
    active, so their glass needs real opacity of its own rather than the
    thin, mostly-see-through tint used elsewhere on the page -- otherwise
    they wash out against a busy or similarly-light photo. Text on these
@@ -2162,8 +2272,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 /* ========================================================================
    TIER 2 — PANES
    ======================================================================== */
-.service-card, .pricing-card, .review-card, .reviews-belt, .work-card, .video-card,
-.faq-item, .contact-method, .estimator-shell, .contact-form,
+.service-card, .review-card, .reviews-belt, .work-card, .video-card,
+.faq-item, .contact-method, .contact-form,
 .services-list, .why-list, .process-item{
   background:var(--glass-fill);
   border:1px solid var(--glass-edge);
@@ -2172,16 +2282,13 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   box-shadow:var(--glass-rim), var(--glass-shadow);
 }
 /* hosts for the specular glare pseudo-element */
-.faq-item, .contact-method, .estimator-shell, .reviews-belt, .contact-form{ position:relative; }
+.faq-item, .contact-method, .reviews-belt, .contact-form{ position:relative; }
 
 /* smooth shadow lift alongside each card's existing hover transform */
 .service-card, .review-card, .video-card, .work-card{
   transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-med) var(--ease-out);
 }
-.pricing-card{
-  transition:transform var(--dur-fast) var(--ease-out), border-color var(--dur-fast), box-shadow var(--dur-med) var(--ease-out);
-}
-.service-card:hover, .review-card:hover, .video-card:hover, .work-card:hover, .pricing-card:hover{
+.service-card:hover, .review-card:hover, .video-card:hover, .work-card:hover{
   border-color:var(--glass-edge-hover);
   box-shadow:var(--glass-rim), var(--glass-shadow-lift);
 }
@@ -2193,28 +2300,18 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
    context). Position comes from --mx/--my, set by the small script at the
    end of the page. ---- */
 .work-card::before, .video-card::before, .faq-item::before, .contact-method::before,
-.estimator-shell::before, .reviews-belt::before, .contact-form::before, .process-item::before{
+.reviews-belt::before, .contact-form::before, .process-item::before{
   content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:-1;
   background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.55), rgba(255,255,255,0) 62%);
   opacity:0; transition:opacity var(--dur-med) var(--ease-out);
 }
 .work-card:hover::before, .video-card:hover::before, .faq-item:hover::before, .contact-method:hover::before,
-.estimator-shell:hover::before, .reviews-belt:hover::before, .contact-form:hover::before, .process-item:hover::before{ opacity:1; }
+.reviews-belt:hover::before, .contact-form:hover::before, .process-item:hover::before{ opacity:1; }
 
 /* keep the rim visible above opaque cover images on media cards */
 .work-card::after, .video-card::after{
   content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:5;
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.34), inset 0 1px 0 rgba(255,255,255,.7);
-}
-
-/* ---- Featured pricing card — the one warm, glowing pane on the page ---- */
-.pricing-card.featured{
-  background:linear-gradient(150deg, rgba(255,255,255,.80) 0%, color-mix(in srgb, var(--accent) 10%, rgba(255,246,236,.55)) 52%, color-mix(in srgb, var(--accent) 22%, rgba(255,236,220,.45)) 100%);
-  border-color:color-mix(in srgb, var(--accent) 58%, rgba(255,255,255,.4));
-  box-shadow:var(--glass-rim),
-             0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent),
-             0 34px 70px -26px color-mix(in srgb, var(--accent) 55%, transparent),
-             0 64px 120px -64px color-mix(in srgb, var(--accent) 45%, transparent);
 }
 
 /* ---- Editorial lists become single glass slabs (dividers stay) ---- */
@@ -2323,9 +2420,8 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   box-shadow:0 0 0 3px rgba(196,73,26,.15), inset 0 1px 0 rgba(255,255,255,.9);
 }
 
-/* ---- Estimator preview bubbles (nested inside the shell → fill only) ---- */
-.ecp-bubble.user{ background:rgba(255,255,255,.66); border-color:var(--glass-edge); box-shadow:var(--glass-rim); }
-.ecp-bubble.ira, .msg.user{
+/* ---- Chat user bubbles ---- */
+.msg.user{
   box-shadow:inset 0 1px 0 rgba(255,255,255,.32), inset 0 -1px 0 rgba(0,0,0,.12), 0 10px 22px -12px color-mix(in srgb, var(--sindoor) 75%, transparent);
 }
 
@@ -2388,7 +2484,6 @@ footer{
    RESPONSIVE + FALLBACKS
    ======================================================================== */
 @media (max-width:1080px){
-  .pricing-card.featured{ box-shadow:var(--glass-rim), 0 0 0 1px color-mix(in srgb, var(--accent) 14%, transparent), 0 30px 60px -26px color-mix(in srgb, var(--accent) 50%, transparent); }
 }
 @media (max-width:760px){
   :root{ --glass-blur:14px; --glass-blur-lg:22px; --glass-blur-sm:10px; }
@@ -2652,8 +2747,6 @@ footer{
       <a href="#media" id="navVideosLink" style="display:none;">Videos</a>
       <a href="#reviews">Reviews</a>
       <a href="#services">Services</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#estimator">Meet IRA</a>
       <a href="#about">About</a>
       <a href="#process">Process</a>
       <a href="#faq">FAQ</a>
@@ -2673,8 +2766,6 @@ footer{
   <a href="#media" id="navVideosLinkMobile" style="display:none;">Videos</a>
   <a href="#reviews">Reviews</a>
   <a href="#services">Services</a>
-  <a href="#pricing">Pricing</a>
-  <a href="#estimator">Meet IRA</a>
   <a href="#about">About</a>
   <a href="#process">Process</a>
   <a href="#faq">FAQ</a>
@@ -2724,7 +2815,6 @@ footer{
         <p class="hero-desc">Hanumate Software designs and hand-codes premium websites, admin panels and AI tools for local businesses — clinics, restaurants, studios, professionals. No templates. No page builders. Just engineered, cinematic software with your name on it.</p>
         <div class="hero-actions">
           <a href="#work" class="btn btn-primary">See our work<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
-          <button class="btn btn-ghost" id="heroEstimatorBtn">Get a price estimate</button>
           <button class="hero-sound-btn" id="heroSoundBtn" aria-label="Turn video sound on">
             <svg class="snd-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
             <svg class="snd-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
@@ -2879,8 +2969,8 @@ footer{
         <div class="sr-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/><line x1="20" y1="14" x2="23" y2="14"/></svg></div>
         <div class="sr-body">
           <h3>AI Chatbots &amp; Assistants</h3>
-          <p>From support bots to on-site cost estimators, wired into your content so answers are actually relevant.</p>
-          <div class="service-tags"><span>Cost estimators</span><span>Support bots</span></div>
+          <p>From support bots to smart on-site assistants, wired into your content so answers are actually relevant.</p>
+          <div class="service-tags"><span>AI assistants</span><span>Support bots</span></div>
         </div>
         <div class="sr-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
@@ -2910,6 +3000,16 @@ footer{
 
 <!-- WORK -->
 <section id="work">
+  <!-- decorative backdrop (purely visual; mirrored vs. the Ad creative one) -->
+  <div class="reel-decor" aria-hidden="true">
+    <span class="rd-grid"></span>
+    <svg class="rd-arcs" viewBox="0 0 600 600" fill="none"><circle cx="0" cy="600" r="250"/><circle cx="0" cy="600" r="330"/><circle cx="0" cy="600" r="410"/><circle cx="0" cy="600" r="490"/></svg>
+    <span class="rd-blob"></span>
+    <span class="rd-diamond d1"></span>
+    <span class="rd-diamond d2"></span>
+    <span class="rd-orb"></span>
+    <span class="rd-ring"></span>
+  </div>
   <div class="container">
     <div class="section-head reveal">
       <div>
@@ -2921,12 +3021,13 @@ footer{
     <div class="wc-shell reveal" id="workCarousel">
       <div class="wc-track">
         <button class="wc-arrow wc-prev" id="workPrev" type="button" aria-label="Previous project">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"/></svg>
         </button>
-        <div class="wc-stage" id="workStage" aria-roledescription="carousel" aria-label="Selected work"></div>
+        <div class="wc-stage" id="workStage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Selected work"></div>
         <button class="wc-arrow wc-next" id="workNext" type="button" aria-label="Next project">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"/></svg>
         </button>
+        <p class="sr-only" id="workStatus" aria-live="polite"></p>
       </div>
     </div>
     <div class="wc-dots" id="workDots"></div>
@@ -2956,6 +3057,16 @@ footer{
      classic ad-blocker filter pattern, and we'd rather not have the one
      section selling ad work get silently hidden by uBlock/AdBlock) -->
 <section id="campaigns">
+  <!-- decorative backdrop (purely visual) -->
+  <div class="reel-decor" aria-hidden="true">
+    <span class="rd-grid"></span>
+    <svg class="rd-arcs" viewBox="0 0 600 600" fill="none"><circle cx="0" cy="600" r="250"/><circle cx="0" cy="600" r="330"/><circle cx="0" cy="600" r="410"/><circle cx="0" cy="600" r="490"/></svg>
+    <span class="rd-blob"></span>
+    <span class="rd-diamond d1"></span>
+    <span class="rd-diamond d2"></span>
+    <span class="rd-orb"></span>
+    <span class="rd-ring"></span>
+  </div>
   <div class="container">
     <div class="section-head reveal">
       <div>
@@ -2964,11 +3075,16 @@ footer{
       </div>
       <p class="section-sub">Ad reels, straight from Instagram — posted here the moment they go live.</p>
     </div>
-    <div class="video-grid reveal-stagger" id="campaignsGrid" style="display:none;"></div>
-    <div class="products-empty reveal" id="campaignsEmpty">
-      <div class="pe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
-      <h3>Nothing posted yet</h3>
-      <p>Ad reels will show up here as they go live — first ones are already in the works.</p>
+
+    <div class="reel-stage reveal" id="reelStage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Ad reels">
+      <div class="reel-track" id="reelTrack"></div>
+      <button class="reel-arrow reel-prev" id="reelPrev" type="button" aria-label="Previous reel">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"/></svg>
+      </button>
+      <button class="reel-arrow reel-next" id="reelNext" type="button" aria-label="Next reel">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"/></svg>
+      </button>
+      <p class="sr-only" id="reelStatus" aria-live="polite"></p>
     </div>
   </div>
 </section>
@@ -3030,77 +3146,6 @@ footer{
       <p class="section-sub">Can't find your answer here? Drop it straight into the chat with IRA or reach out below.</p>
     </div>
     <div class="faq-list reveal-stagger" id="faqList"></div>
-  </div>
-</section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Packages</span>
-        <h2 class="section-title">Pricing that scales<br>with what you need.</h2>
-      </div>
-      <p class="section-sub">One-time project pricing, no recurring fees. Pick a starting point — every project still gets scoped to what you actually need before we begin.</p>
-    </div>
-
-    <div class="pricing-grid reveal-stagger" id="pricingGrid"></div>
-
-    <p class="pricing-note">Need something that doesn't fit neatly into a tier? <a href="#estimator">Chat with IRA</a> for an instant estimate.</p>
-  </div>
-</section>
-
-<!-- MONTHLY PLANS -->
-<section id="monthly">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Monthly plans</span>
-        <h2 class="section-title">Keep your site running<br>and getting better.</h2>
-      </div>
-      <p class="section-sub">Once your site is live, a monthly plan keeps it hosted, secure and up to date — with ongoing improvements as your business grows.</p>
-    </div>
-
-    <div class="pricing-grid monthly-grid reveal-stagger" id="monthlyGrid"></div>
-  </div>
-</section>
-
-<!-- ESTIMATOR -->
-<section id="estimator">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Project cost estimator</span>
-        <h2 class="section-title">Get a real number<br>in under a minute.</h2>
-      </div>
-    </div>
-    <div class="estimator-shell reveal">
-      <div class="estimator-copy">
-        <p class="section-sub" style="margin-top:0;max-width:none;">Answer four quick questions in a chat with IRA, our AI assistant — no email, no waiting for a callback. You'll get an instant price range based on real project scope.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Instant range, not a "we'll get back to you" form</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Based on real feature complexity, not guesswork</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Take your range straight into a WhatsApp chat</li>
-        </ul>
-        <button class="btn btn-primary" style="margin-top:32px;" id="estimatorOpenBtn">Chat with IRA<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></button>
-      </div>
-      <div class="estimator-visual">
-        <div class="ev-inner">
-          <div class="ecp">
-            <div class="ecp-bubble user">I need a website for my restaurant.</div>
-            <div class="ecp-ira-wrap">
-              <div class="ecp-label">IRA · AI project guide</div>
-              <div class="ecp-bubble ira">Let's go beyond a menu — live ordering, WhatsApp bookings, an AI concierge. Here's roughly what that runs:</div>
-            </div>
-          </div>
-          <div class="price-preview">
-            <span class="lbl mono">Estimated project range</span>
-            <div class="amt">From ₹4,999</div>
-            <span class="sub">+ domain, hosting &amp; other charges — final number depends on your requirements</span>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -3176,7 +3221,7 @@ footer{
       <div class="footer-links">
         <div class="footer-col">
           <h4>Sitemap</h4>
-          <a href="#work">Work</a><a href="#products">Products</a><a href="#campaigns">Ads</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#estimator">Estimator</a><a href="#contact">Contact</a>
+          <a href="#work">Work</a><a href="#products">Products</a><a href="#campaigns">Ads</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -3266,7 +3311,6 @@ footer{
     <h3 id="pmodalTitle"></h3>
     <p id="pmodalDesc"></p>
     <div class="ptags" id="pmodalTags"></div>
-    <div class="pmodal-price" id="pmodalPrice"></div>
     <ul class="pmodal-features" id="pmodalFeatures"></ul>
     <div class="pactions">
       <a href="#" target="_blank" rel="noopener" class="btn btn-primary" id="pmodalLive">Open live experience<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>
@@ -3338,7 +3382,7 @@ footer{
 </div>
 
 <!-- CHAT WIDGET -->
-<button id="chat-toggle" aria-label="Chat with IRA — cost estimator & AI assistant" data-cursor-text="Chat"><img id="chatToggleLogo" alt="IRA"><span class="ping">₹</span></button>
+<button id="chat-toggle" aria-label="Chat with IRA — AI assistant" data-cursor-text="Chat"><img id="chatToggleLogo" alt="IRA"><span class="ping"></span></button>
 
 <div id="chat-panel">
   <div class="chat-head">
@@ -3411,54 +3455,6 @@ var DEFAULT_DATA = {
   about: {
     logoUrl: ""
   },
-  pricing: [
-    {
-      id: "basic", name: "Basic", price: "₹4,999", priceNote: "one-time",
-      tagline: "A simple, single-page presence built clean and fast — no fancy animations, no fancy design, just the essentials done right.",
-      features: ["1-page website", "Mobile responsive", "Business info", "WhatsApp/contact button", "Basic contact form", "1 revision", "3\u20135 day delivery"],
-      highlighted: false, ctaLabel: "Choose Basic"
-    },
-    {
-      id: "starter", name: "Starter", price: "₹9,999", priceNote: "one-time",
-      tagline: "A proper website — custom-designed and fully functional, not just a placeholder page.",
-      features: ["3\u20134 pages", "Custom design", "WhatsApp integration", "Contact/enquiry form", "Basic SEO", "2 revisions", "7-day delivery"],
-      highlighted: false, ctaLabel: "Choose Starter"
-    },
-    {
-      id: "growth", name: "Growth", price: "₹24,999", priceNote: "one-time",
-      tagline: "For growing businesses that need a full site, real control and the data to back it up.",
-      features: ["Up to 6 pages", "Fully custom design", "Admin panel", "Analytics", "WhatsApp + enquiry system", "SEO", "2\u20133 revisions", "12\u201315 day delivery"],
-      highlighted: true, ctaLabel: "Choose Growth"
-    },
-    {
-      id: "pro", name: "Pro", price: "₹59,999", priceNote: "one-time",
-      tagline: "The full Hanumate treatment \u2014 animation, AI and a dashboard built around how you actually work.",
-      features: ["Up to 10 pages", "Advanced animations", "Custom dashboard", "AI feature(s)", "Advanced enquiry/lead system", "Advanced SEO", "Custom integrations", "Priority support"],
-      highlighted: false, ctaLabel: "Choose Pro"
-    },
-    {
-      id: "enterprise", name: "Enterprise", price: "Custom quote", priceNote: "",
-      tagline: "For large, multi-service businesses that need bespoke systems.",
-      features: ["Unlimited pages", "Custom AI tools & automations", "Multi-admin roles & dashboards", "Dedicated support & maintenance", "Ongoing feature development", "Scope & timeline tailored to you"],
-      highlighted: false, ctaLabel: "Talk to us"
-    }
-  ],
-  // Monthly plans — a feature can be a plain string (ticked) or
-  // { text, included:false } for something that is NOT part of the plan.
-  monthly: [
-    {
-      id: "care", name: "Care", price: "₹899", priceNote: "per month",
-      tagline: "Your site stays live, secure and looked after.",
-      features: [{ text: "Domain not included", included: false }, "Vercel hosting", "SSL", "Minor website updates/changes", "Basic maintenance"],
-      highlighted: false, ctaLabel: "Choose Care"
-    },
-    {
-      id: "grow", name: "Grow", price: "₹1,499", priceNote: "per month",
-      tagline: "Everything in Care, plus ongoing improvements as you grow.",
-      features: ["Everything in Care", "Medium updates/changes", "More polished/professional improvements", "Mobile + tablet + desktop optimization", "Ongoing design improvements"],
-      highlighted: false, ctaLabel: "Choose Grow"
-    }
-  ],
   contact: {
     whatsapp: "919912888172",
     phone: "+91 99128 88172",
@@ -3611,8 +3607,6 @@ function loadData(){
     merged.siteTheme = Object.assign({}, merged.siteTheme, parsed.siteTheme || {});
     merged.mediaVideos = parsed.mediaVideos || merged.mediaVideos;
     merged.faqs = (parsed.faqs && parsed.faqs.length) ? parsed.faqs : merged.faqs;
-    merged.pricing = (parsed.pricing && parsed.pricing.length) ? parsed.pricing : merged.pricing;
-    merged.monthly = (parsed.monthly && parsed.monthly.length) ? parsed.monthly : merged.monthly;
     merged.projects = (parsed.projects && parsed.projects.length) ? parsed.projects : merged.projects;
     merged.products = (parsed.products && parsed.products.length) ? parsed.products : merged.products;
     merged.ads = (parsed.ads && parsed.ads.length) ? parsed.ads : merged.ads;
@@ -3655,8 +3649,6 @@ function syncSiteDataFromCloud(){
       DATA.ads = cloud.ads || DATA.ads || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
-      DATA.pricing = (cloud.pricing && cloud.pricing.length) ? cloud.pricing : DATA.pricing;
-      DATA.monthly = (cloud.monthly && cloud.monthly.length) ? cloud.monthly : (DATA.monthly && DATA.monthly.length ? DATA.monthly : DEFAULT_DATA.monthly);
       localStorage.setItem(STORE_KEY, JSON.stringify(DATA));
       renderAll();
       renderIntroFrameStory(); // re-check visibility now that the real introFramesEnabled flag has arrived
@@ -3740,6 +3732,9 @@ function renderContact(){
    workCarouselIndex tracks which project is centred; updateWorkCarousel()
    re-applies the per-card offset transforms + active states. ---- */
 var workCarouselIndex = 0;
+var workSuppressClick = false;
+
+function workWraps(){ return (DATA.projects || []).length >= 5; }   // 5+ cards fill every slot, so loop; fewer just clamp
 
 function renderProjects(){
   var stage = document.getElementById('workStage');
@@ -3752,16 +3747,17 @@ function renderProjects(){
     var hasCover = !!(p.coverUrl && p.coverUrl.trim());
     var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
     return '' +
-    '<div class="wc-card" data-idx="'+idx+'" data-cursor-text="View">' +
+    '<div class="wc-card" data-idx="'+idx+'" data-cursor-text="View" role="group" aria-roledescription="slide" aria-label="Project '+(idx+1)+' of '+projects.length+'">' +
       '<div class="wc-visual '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
-        (hasLogo ? '<div class="wt-logo"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
-        '<div class="wc-topmeta"><span class="wc-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="wc-cat">'+escapeHtml(p.cat)+'</span></div>' +
         (hasCover ? '' : '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>') +
         '<div class="noise"></div>' +
+        '<span class="wc-tint"></span>' +
+        '<div class="wc-topmeta"><span class="wc-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="wc-cat">'+escapeHtml(p.cat)+'</span></div>' +
+        (hasLogo ? '<div class="wc-ring"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
       '</div>' +
       '<div class="wc-footer">' +
         '<h3>'+escapeHtml(p.title)+'</h3>' +
-        '<button type="button" class="work-open btn btn-primary btn-sm" aria-label="Open project details">View Project<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
+        '<button type="button" class="work-open btn btn-primary btn-sm" tabindex="-1" aria-label="Open project details: '+escapeHtml(p.title)+'">View Project<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -3772,13 +3768,15 @@ function renderProjects(){
     if(p.coverUrl && p.coverUrl.trim()){
       visual.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
     }
-    // Whole card is one click target — a peeking neighbour brings itself
-    // to centre; the already-centred card opens its case study. The
-    // "View Project" button inside .wc-footer bubbles up to this same
-    // handler rather than needing its own listener.
+    // One click target: a peeking neighbour comes to centre, the centred
+    // card opens its case study (the View Project button bubbles here too).
     card.addEventListener('click', function(){
+      if(workSuppressClick){ workSuppressClick = false; return; }
       if(idx === workCarouselIndex){ openProjectModal(p); }
       else { goToWorkProject(idx); }
+    });
+    card.addEventListener('keydown', function(e){
+      if((e.key === 'Enter' || e.key === ' ') && idx === workCarouselIndex){ e.preventDefault(); openProjectModal(p); }
     });
   });
 
@@ -3798,7 +3796,7 @@ function renderProjects(){
 function goToWorkProject(idx){
   var len = (DATA.projects || []).length;
   if(!len) return;
-  workCarouselIndex = ((idx % len) + len) % len;
+  workCarouselIndex = workWraps() ? ((idx % len) + len) % len : Math.max(0, Math.min(len-1, idx));
   updateWorkCarousel();
 }
 
@@ -3806,23 +3804,20 @@ function updateWorkCarousel(){
   var projects = DATA.projects || [];
   var len = projects.length;
   if(!len) return;
-  var cur = workCarouselIndex;
+  var cur = workCarouselIndex, wrap = workWraps();
   var stage = document.getElementById('workStage');
   if(!stage) return;
 
   stage.querySelectorAll('.wc-card').forEach(function(card){
     var idx = parseInt(card.getAttribute('data-idx'),10);
     var diff = idx - cur;
-    if(diff > len/2) diff -= len;
-    if(diff < -len/2) diff += len;
-    var abs = Math.abs(diff);
-    card.style.setProperty('--offset', diff);
-    card.style.setProperty('--scale', abs===0 ? 1 : Math.max(0.72, 1 - abs*0.07));
-    card.style.setProperty('--opacity', abs===0 ? 1 : (abs===1 ? 0.68 : (abs===2 ? 0.34 : 0)));
-    card.style.setProperty('--bright', abs===0 ? 1 : 0.65);
-    card.style.zIndex = String(100 - abs);
-    card.style.pointerEvents = abs <= 3 ? 'auto' : 'none';
-    card.classList.toggle('is-active', abs===0);
+    if(wrap){ diff = ((diff % len) + len) % len; if(diff > len/2) diff -= len; }
+    var active = diff === 0;
+    card.setAttribute('data-pos', Math.abs(diff) <= 2 ? String(diff) : 'hide');
+    card.classList.toggle('is-active', active);
+    card.setAttribute('aria-hidden', active ? 'false' : 'true');
+    card.setAttribute('tabindex', active ? '0' : '-1');
+    card.setAttribute('role', active ? 'button' : 'group');
   });
 
   var dots = document.getElementById('workDots');
@@ -3831,11 +3826,15 @@ function updateWorkCarousel(){
       dot.classList.toggle('active', parseInt(dot.getAttribute('data-idx'),10) === cur);
     });
   }
+  var prev = document.getElementById('workPrev'), next = document.getElementById('workNext');
+  if(prev) prev.setAttribute('aria-disabled', (!wrap && cur === 0) ? 'true' : 'false');
+  if(next) next.setAttribute('aria-disabled', (!wrap && cur === len-1) ? 'true' : 'false');
+  var st = document.getElementById('workStatus');
+  if(st) st.textContent = 'Project '+(cur+1)+' of '+len+': '+projects[cur].title;
 }
 
-/* ---- Arrow-button clicks and touch-swipe navigation for the work
-   carousel. Bound once at startup — renderProjects() only rebuilds the
-   cards themselves, not these static controls. ---- */
+/* ---- Arrow, keyboard and swipe/drag navigation. Bound once at startup —
+   renderProjects() only rebuilds the cards, not these static controls. ---- */
 function initWorkCarousel(){
   var prev = document.getElementById('workPrev');
   var next = document.getElementById('workNext');
@@ -3843,16 +3842,22 @@ function initWorkCarousel(){
   if(next) next.addEventListener('click', function(){ goToWorkProject(workCarouselIndex + 1); });
 
   var stage = document.getElementById('workStage');
-  if(stage){
-    var touchStartX = null;
-    stage.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
-    stage.addEventListener('touchend', function(e){
-      if(touchStartX===null) return;
-      var dx = e.changedTouches[0].clientX - touchStartX;
-      if(Math.abs(dx) > 40){ goToWorkProject(workCarouselIndex + (dx<0?1:-1)); }
-      touchStartX = null;
-    }, {passive:true});
-  }
+  if(!stage) return;
+  stage.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); goToWorkProject(workCarouselIndex - 1); }
+    else if(e.key === 'ArrowRight'){ e.preventDefault(); goToWorkProject(workCarouselIndex + 1); }
+  });
+  var sx = null;
+  stage.addEventListener('pointerdown', function(e){ sx = e.clientX; });
+  window.addEventListener('pointerup', function(e){
+    if(sx === null) return;
+    var dx = e.clientX - sx; sx = null;
+    if(Math.abs(dx) > 45){
+      workSuppressClick = true; goToWorkProject(workCarouselIndex + (dx < 0 ? 1 : -1));
+      setTimeout(function(){ workSuppressClick = false; }, 60);
+    }
+  });
+  window.addEventListener('pointercancel', function(){ sx = null; });
 }
 
 /* ---- Digital products — same card/modal system as Work, sourced from
@@ -3915,52 +3920,115 @@ function renderProducts(){
   reInitReveal(grid.querySelectorAll('.work-card'));
 }
 
-/* ---- Ad reels — sourced from DATA.ads: an Instagram reel link, an
-   optional caption, and an optional poster image. A reel is video, not a
-   case study, so it gets the Media section's card treatment (video-grid /
-   video-card) instead of the Work/Products card+modal system, and opens
-   in the same embed modal Media uses for its Instagram videos — see
-   openAdModal below. Empty state shown honestly until a reel is added. ---- */
+/* ---- Ad reels — coverflow carousel. Sourced from DATA.ads: an Instagram
+   reel link, an optional caption, and an optional poster image. The centre
+   card is the active reel (click to open it in the same embed modal Media
+   uses — see openAdModal below); neighbours peek out either side and are
+   clickable / swipeable. With no reels yet, five honest "Reel coming soon"
+   placeholders keep the section looking finished without faking content. ---- */
+var reelState = { items:[], i:0, wrap:false, bound:false, suppressClick:false };
+
 function renderAds(){
-  var grid = document.getElementById('campaignsGrid');
-  var empty = document.getElementById('campaignsEmpty');
-  if(!grid || !empty) return;
+  var track = document.getElementById('reelTrack');
+  if(!track) return;
 
   var ads = DATA.ads || [];
-  if(!ads.length){
-    grid.style.display = 'none';
-    empty.style.display = 'flex';
-    return;
-  }
-  empty.style.display = 'none';
-  grid.style.display = 'grid';
+  var items = ads.length
+    ? ads.map(function(a){
+        var cap = (a.caption && a.caption.trim()) ? a.caption.trim() : 'Watch the reel';
+        return { real:true, ad:a, caption:cap, thumb:(a.thumbUrl && a.thumbUrl.trim()) || '' };
+      })
+    : [0,1,2,3,4].map(function(){ return { real:false, caption:'Reel coming soon', thumb:'' }; });
 
-  grid.innerHTML = ads.map(function(p){
-    var hasThumb = !!(p.thumbUrl && p.thumbUrl.trim());
-    var caption = (p.caption && p.caption.trim()) ? p.caption.trim() : 'Watch the reel';
+  reelState.items = items;
+  reelState.i = Math.min(reelState.i, items.length - 1);
+  reelState.wrap = items.length >= 5;   // 5+ cards fill every slot, so loop; fewer just clamp
+
+  track.innerHTML = items.map(function(it, k){
+    var head = it.real ? 'Instagram' : escapeHtml(it.caption);
+    var pill = it.real
+      ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span>'+escapeHtml(it.caption)+'</span>'
+      : '<span>'+escapeHtml(it.caption)+'</span>';
     return '' +
-    '<div class="video-card" data-id="'+p.id+'">' +
-      '<div class="video-thumb'+(hasThumb?'':' thumb-1')+'">' +
-        '<span class="video-badge mono">Instagram</span>' +
-        '<div class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>' +
+    '<div class="reel-card v'+(k%5)+(it.real?' is-real':'')+'" data-k="'+k+'" role="group" aria-roledescription="slide" aria-label="Reel '+(k+1)+' of '+items.length+'">' +
+      '<div class="reel-face"'+(it.thumb ? ' style="background-image:url(\''+it.thumb.replace(/['"()\\]/g,'')+'\')"' : '')+'>' +
+        (it.thumb ? '<span class="reel-shade"></span>' : '') +
+        '<span class="reel-tint"></span>' +
+        '<div class="reel-head">'+head+'</div>' +
+        '<div class="reel-pill">'+pill+'</div>' +
       '</div>' +
-      '<div class="video-body"><h3>'+escapeHtml(caption.slice(0,90))+(caption.length>90?'…':'')+'</h3></div>' +
     '</div>';
   }).join('');
 
-  grid.querySelectorAll('.video-card').forEach(function(card, idx){
-    var p = ads[idx];
-    if(p.thumbUrl && p.thumbUrl.trim()){
-      card.querySelector('.video-thumb').style.backgroundImage = 'url("'+p.thumbUrl.trim()+'")';
-    }
-    card.addEventListener('click', function(){
-      var id = parseInt(card.getAttribute('data-id'),10);
-      var ad = ads.find(function(x){ return x.id===id; });
-      if(ad) openAdModal(ad);
-    });
+  reelLayout();
+  if(!reelState.bound){ reelBind(); reelState.bound = true; }
+}
+
+function reelLayout(){
+  var st = reelState, n = st.items.length;
+  var cards = document.querySelectorAll('#reelTrack .reel-card');
+  cards.forEach(function(card, k){
+    var off = k - st.i;
+    if(st.wrap){ off = ((off % n) + n) % n; if(off > n/2) off -= n; }
+    card.setAttribute('data-pos', Math.abs(off) <= 2 ? String(off) : 'hide');
+    var active = off === 0;
+    card.setAttribute('aria-hidden', active ? 'false' : 'true');
+    if(active && st.items[k].real){ card.setAttribute('tabindex','0'); card.setAttribute('role','button'); }
+    else { card.setAttribute('tabindex','-1'); card.setAttribute('role','group'); }
+  });
+  var prev = document.getElementById('reelPrev'), next = document.getElementById('reelNext');
+  prev.hidden = next.hidden = n < 2;
+  prev.setAttribute('aria-disabled', (!st.wrap && st.i === 0) ? 'true' : 'false');
+  next.setAttribute('aria-disabled', (!st.wrap && st.i === n-1) ? 'true' : 'false');
+  var status = document.getElementById('reelStatus');
+  if(status) status.textContent = st.items[0] && st.items[0].real ? ('Reel '+(st.i+1)+' of '+n) : '';
+}
+
+function reelGo(delta){
+  var st = reelState, n = st.items.length;
+  if(n < 2) return;
+  st.i = st.wrap ? ((st.i + delta) % n + n) % n : Math.max(0, Math.min(n-1, st.i + delta));
+  reelLayout();
+}
+
+function reelBind(){
+  var stage = document.getElementById('reelStage');
+  document.getElementById('reelPrev').addEventListener('click', function(){ reelGo(-1); });
+  document.getElementById('reelNext').addEventListener('click', function(){ reelGo(1); });
+
+  // click: side card -> bring to centre; centre real reel -> open it
+  document.getElementById('reelTrack').addEventListener('click', function(e){
+    if(reelState.suppressClick){ reelState.suppressClick = false; return; }
+    var card = e.target.closest('.reel-card'); if(!card) return;
+    var pos = card.getAttribute('data-pos');
+    if(pos === 'hide') return;
+    var off = parseInt(pos, 10);
+    if(off !== 0){ reelGo(off); return; }
+    var it = reelState.items[parseInt(card.getAttribute('data-k'),10)];
+    if(it && it.real) openAdModal(it.ad);
   });
 
-  reInitReveal(grid.querySelectorAll('.video-card'));
+  // keyboard
+  stage.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); reelGo(-1); }
+    else if(e.key === 'ArrowRight'){ e.preventDefault(); reelGo(1); }
+    else if((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('reel-card')){
+      e.preventDefault(); e.target.click();
+    }
+  });
+
+  // swipe / drag
+  var sx = null;
+  stage.addEventListener('pointerdown', function(e){
+    if(e.target.closest('.reel-arrow')) return;
+    sx = e.clientX;
+  });
+  window.addEventListener('pointerup', function(e){
+    if(sx === null) return;
+    var dx = e.clientX - sx; sx = null;
+    if(Math.abs(dx) > 45){ reelState.suppressClick = true; reelGo(dx < 0 ? 1 : -1); setTimeout(function(){ reelState.suppressClick = false; }, 60); }
+  });
+  window.addEventListener('pointercancel', function(){ sx = null; });
 }
 
 /* Opens an ad reel in the same modal/embed system openVideoModal uses for
@@ -4006,87 +4074,6 @@ function renderFAQ(){
     '</div>';
   }).join('');
   initFAQAccordion();
-}
-
-
-function renderPricing(){
-  var grid = document.getElementById('pricingGrid');
-  if(!grid) return;
-  var tiers = DATA.pricing || [];
-  var waDigits = (DATA.contact && DATA.contact.whatsapp) ? DATA.contact.whatsapp.replace(/\D/g,'') : '';
-
-  grid.innerHTML = tiers.map(function(t){
-    var msg = "Hi! I'm interested in the " + t.name + " package for my website.";
-    var waHref = waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(msg)) : '#contact';
-    var featuresHtml = (t.features || []).map(function(f){
-      return '<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>'+escapeHtml(f)+'</span></li>';
-    }).join('');
-    var priceMatch = /^([^\d]*)(\d.*)$/.exec(t.price || '');
-    var priceHtml = priceMatch
-      ? '<span class="currency">'+escapeHtml(priceMatch[1])+'</span>'+escapeHtml(priceMatch[2])
-      : escapeHtml(t.price || '');
-    return '' +
-    '<div class="pricing-card'+(t.highlighted ? ' featured' : '')+'">' +
-      (t.highlighted ? '<span class="pricing-badge">Most popular</span>' : '') +
-      '<span class="pricing-name">'+escapeHtml(t.name)+'</span>' +
-      '<div class="pricing-price"><span class="amount">'+priceHtml+'</span>'+(t.priceNote ? '<span class="note">'+escapeHtml(t.priceNote)+'</span>' : '')+'</div>' +
-      (t.totalValue ? '<div class="pricing-value-note">Total value <s>'+escapeHtml(t.totalValue)+'</s></div>' : '') +
-      '<p class="pricing-tagline">'+escapeHtml(t.tagline||'')+'</p>' +
-      '<ul class="pricing-features">'+featuresHtml+'</ul>' +
-      (t.idealFor ? '<p class="pricing-ideal"><b>Ideal for:</b> '+escapeHtml(t.idealFor)+'</p>' : '') +
-      '<a class="btn '+(t.highlighted ? 'btn-primary' : 'btn-ghost')+' pricing-cta" href="'+waHref+'" target="_blank" rel="noopener">'+escapeHtml(t.ctaLabel || ('Choose ' + t.name))+'</a>' +
-    '</div>';
-  }).join('');
-  initSpotlightCards(); // re-bind since these cards are rebuilt on every render, including after cloud sync
-}
-
-
-/* Monthly plans — same card markup/classes as renderPricing so the two
-   sections always look identical; features may be strings (ticked) or
-   { text, included:false } (muted X). */
-function renderMonthly(){
-  var grid = document.getElementById('monthlyGrid');
-  if(!grid) return;
-  var plans = DATA.monthly || [];
-  var section = document.getElementById('monthly');
-  if(section) section.style.display = plans.length ? '' : 'none';
-  var waDigits = (DATA.contact && DATA.contact.whatsapp) ? DATA.contact.whatsapp.replace(/\D/g,'') : '';
-
-  var tick = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-  var cross = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-
-  grid.innerHTML = plans.map(function(t){
-    var msg = "Hi! I'm interested in the " + t.name + " monthly plan for my website.";
-    var waHref = waDigits ? ('https://wa.me/' + waDigits + '?text=' + encodeURIComponent(msg)) : '#contact';
-    var featuresHtml = (t.features || []).map(function(f){
-      var off = (typeof f === 'object' && f !== null && f.included === false);
-      var text = (typeof f === 'object' && f !== null) ? f.text : f;
-      return '<li' + (off ? ' class="is-off"' : '') + '>' + (off ? cross : tick) + '<span>' + escapeHtml(text) + '</span></li>';
-    }).join('');
-    var priceMatch = /^([^\d]*)(\d.*)$/.exec(t.price || '');
-    var priceHtml = priceMatch
-      ? '<span class="currency">'+escapeHtml(priceMatch[1])+'</span>'+escapeHtml(priceMatch[2])
-      : escapeHtml(t.price || '');
-    return '' +
-    '<div class="pricing-card'+(t.highlighted ? ' featured' : '')+'">' +
-      (t.highlighted ? '<span class="pricing-badge">Most popular</span>' : '') +
-      '<span class="pricing-name">'+escapeHtml(t.name)+'</span>' +
-      '<div class="pricing-price"><span class="amount">'+priceHtml+'</span>'+(t.priceNote ? '<span class="note">'+escapeHtml(t.priceNote)+'</span>' : '')+'</div>' +
-      '<p class="pricing-tagline">'+escapeHtml(t.tagline||'')+'</p>' +
-      '<ul class="pricing-features">'+featuresHtml+'</ul>' +
-      '<a class="btn '+(t.highlighted ? 'btn-primary' : 'btn-ghost')+' pricing-cta" href="'+waHref+'" target="_blank" rel="noopener">'+escapeHtml(t.ctaLabel || ('Choose ' + t.name))+'</a>' +
-    '</div>';
-  }).join('');
-
-  // bind the cursor-tracking glow on just these cards (renderPricing's
-  // initSpotlightCards would re-bind every card on the page a second time)
-  grid.querySelectorAll('.pricing-card').forEach(function(card){
-    card.addEventListener('mousemove', function(e){
-      var r = card.getBoundingClientRect();
-      card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-      card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
-    });
-  });
 }
 
 
@@ -4222,8 +4209,6 @@ function renderAll(){
   renderProducts();
   renderAds();
   renderFAQ();
-  renderPricing();
-  renderMonthly();
   renderBranding();
   applyPageBg();
   renderMediaSection();
@@ -4335,20 +4320,6 @@ function openProjectModal(p){
   document.getElementById('pmodalTitle').textContent = p.title;
   document.getElementById('pmodalDesc').textContent = p.desc;
   document.getElementById('pmodalTags').innerHTML = p.tags.map(function(t){ return '<span>'+escapeHtml(t)+'</span>'; }).join('');
-
-  var priceEl = document.getElementById('pmodalPrice');
-  if(p.price && p.price.trim()){
-    var priceVal = p.price.trim();
-    // Only prefix an actual currency amount ("₹30,000 – ₹50,000") with
-    // "Starting around" — a plain label ("Free", "Custom pricing") or a
-    // result stat ("3.2x ROAS", "2.1M views") reads fine on its own.
-    var looksLikeCurrency = /^[₹$€£]/.test(priceVal) || /^Rs\.?\s?\d/i.test(priceVal);
-    priceEl.textContent = looksLikeCurrency ? ('Starting around ' + priceVal) : priceVal;
-    priceEl.classList.add('show');
-  } else {
-    priceEl.textContent = '';
-    priceEl.classList.remove('show');
-  }
 
   var featEl = document.getElementById('pmodalFeatures');
   if(p.features && p.features.length){
@@ -4684,7 +4655,7 @@ var PRIVACY_POLICY_HTML =
   '<h3>What we collect, and why</h3>' +
   '<ul>' +
     '<li><b>Contact form / project inquiry:</b> the name, phone, email, project type, and project details you enter are used only to open a pre-filled WhatsApp message or email draft on your own device. This website does not save that submission to any server or database.</li>' +
-    '<li><b>AI chat &amp; estimator:</b> if you use the on-site AI assistant, whatever you type is sent to our backend, which forwards it to a third-party AI model provider to generate a reply. We don’t attach your name or contact details to that conversation unless you type them into the chat yourself, and we don’t build a permanent, identity-linked record of individual chats.</li>' +
+    '<li><b>AI chat:</b> if you use the on-site AI assistant, whatever you type is sent to our backend, which forwards it to a third-party AI model provider to generate a reply. We don’t attach your name or contact details to that conversation unless you type them into the chat yourself, and we don’t build a permanent, identity-linked record of individual chats.</li>' +
     '<li><b>Local storage:</b> your browser may cache site content locally, purely so the site loads faster on repeat visits. This stays on your device — it isn’t personal data and isn’t sent anywhere.</li>' +
   '</ul>' +
 
@@ -4692,7 +4663,7 @@ var PRIVACY_POLICY_HTML =
   '<ul>' +
     '<li>No analytics or advertising trackers (no Google Analytics, Meta Pixel, or similar) are installed on this site.</li>' +
     '<li>We never sell, rent, lease, or trade your personal information to third parties or marketing brokers under any circumstances.</li>' +
-    '<li>This site does not process payments — quotes and estimates here are informational only, not a binding offer.</li>' +
+    '<li>This site does not process payments — nothing shown here is a binding offer.</li>' +
   '</ul>' +
 
   '<h3>How long we keep it</h3>' +
@@ -4737,7 +4708,7 @@ var TERMS_OF_SERVICE_HTML =
   '<p>This website is operated by Hanumate Software, a web development agency based in Hanamkonda, Telangana, India ("we", "us", "the agency"). By using this site, you agree to the terms below.</p>' +
 
   '<h3>What’s on this site</h3>' +
-  '<p>This site showcases past work, describes services offered, and provides an informational cost estimator and AI assistant to help you scope a potential project. Nothing on this site — including anything the AI assistant or estimator says — is a binding quote, contract, or guarantee of price, timeline, or outcome. Actual project terms are agreed separately, in writing, once we’ve discussed your specific requirements.</p>' +
+  '<p>This site showcases past work, describes services offered, and provides an AI assistant to help you scope a potential project. Nothing on this site — including anything the AI assistant says — is a binding quote, contract, or guarantee of price, timeline, or outcome. Actual project terms are agreed separately, in writing, once we’ve discussed your specific requirements.</p>' +
 
   '<h3>Portfolio &amp; project references</h3>' +
   '<p>Projects shown in the Work section reflect real work delivered by the agency. Descriptions are kept accurate to the best of our knowledge and updated as projects evolve.</p>' +
@@ -5057,11 +5028,11 @@ function initStaffPage(){
 }
 
 /* ========================================================================
-   COST ESTIMATOR CHAT
+   IRA PROJECT-SCOPING CHAT
    ======================================================================== */
 
 var STEPS = [
-  { key:'type', q:"Hey! 👋 I'm IRA, Hanumate Software's AI assistant. Tell me about your project anytime and I'll help figure out what fits — or let's knock out a quick estimate. What kind of project are you looking to build?",
+  { key:'type', q:"Hey! 👋 I'm IRA, Hanumate Software's AI assistant. Tell me about your project anytime and I'll help figure out what fits — or let's scope it out with a few quick questions. What kind of project are you looking to build?",
     options:[
       {label:'Business website', value:'business'},
       {label:'E-commerce store', value:'ecommerce'},
@@ -5099,22 +5070,11 @@ var FEAT_LABEL = {plain:'Clean website', admin:'Admin panel', transact:'Booking 
 var TIME_LABEL = {flex:'Flexible', std:'Standard', rush:'Rush'};
 
 
-var BASE = { business:15000, ecommerce:35000, booking:25000, customapp:45000 };
-
-var SIZE_MULT = { s:1, m:1.3, l:1.7, xl:2.3 };
-
-var FEATURE_ADD = { plain:0, admin:8000, transact:15000, premium:20000 };
-
-var TIME_MULT = { flex:1, std:1.15, rush:1.4 };
-
-
 var chatState = { step:0, answers:{} };
 
 
 function initEstimatorChat(){
   document.getElementById('chat-toggle').addEventListener('click', openChat);
-  document.getElementById('heroEstimatorBtn').addEventListener('click', openChat);
-  document.getElementById('estimatorOpenBtn').addEventListener('click', openChat);
   document.getElementById('chatCloseBtn').addEventListener('click', function(){
     document.getElementById('chat-panel').classList.remove('open');
   });
@@ -5236,30 +5196,15 @@ function askStep(){
 }
 
 
-function computeEstimate(a){
-  var base = BASE[a.type] || 15000;
-  var raw = (base * (SIZE_MULT[a.size]||1) + (FEATURE_ADD[a.features]||0)) * (TIME_MULT[a.timeline]||1);
-  var low = Math.round((raw*0.85)/500)*500;
-  var high = Math.round((raw*1.15)/500)*500;
-  return { low:low, high:high };
-}
-
-
-function formatINR(n){
-  return '₹' + n.toLocaleString('en-IN');
-}
-
-
 function showResult(){
   var a = chatState.answers;
-  var est = computeEstimate(a);
   var body = document.getElementById('chatBody');
   var d = document.createElement('div');
   d.className = 'msg result';
-  d.innerHTML = '<div class="r-lbl mono">Your estimated range</div>' +
-    '<div class="r-amt">'+formatINR(est.low)+' – '+formatINR(est.high)+'</div>' +
-    '<div class="r-note">'+TYPE_LABEL[a.type]+' · '+SIZE_LABEL[a.size]+' · '+FEAT_LABEL[a.features]+' · '+TIME_LABEL[a.timeline]+' timeline</div>' +
-    '<div class="r-disclaimer">This is an estimate, not a final quotation — your exact scope and price get confirmed once we talk through your requirements.</div>';
+  d.innerHTML = '<div class="r-lbl mono">Your project brief</div>' +
+    '<div class="r-amt">'+TYPE_LABEL[a.type]+'</div>' +
+    '<div class="r-note">'+SIZE_LABEL[a.size]+' · '+FEAT_LABEL[a.features]+' · '+TIME_LABEL[a.timeline]+' timeline</div>' +
+    '<div class="r-disclaimer">This is a starting point, not a final scope — the exact details and timeline get confirmed once we talk through your requirements.</div>';
   body.appendChild(d);
   scrollChat();
 
@@ -5268,14 +5213,13 @@ function showResult(){
   var waBtn = document.createElement('button');
   waBtn.className = 'chat-opt';
   waBtn.style.borderColor = 'var(--accent)';
-  waBtn.textContent = 'Chat on WhatsApp with this estimate';
+  waBtn.textContent = 'Chat on WhatsApp with this brief';
   waBtn.addEventListener('click', function(){
-    var msg = "Hi! I used the estimator on your site.\n" +
+    var msg = "Hi! I used the project planner on your site.\n" +
       "Project: " + TYPE_LABEL[a.type] + "\n" +
       "Size: " + SIZE_LABEL[a.size] + "\n" +
       "Needs: " + FEAT_LABEL[a.features] + "\n" +
       "Timeline: " + TIME_LABEL[a.timeline] + "\n" +
-      "Estimated range: " + formatINR(est.low) + " - " + formatINR(est.high) + "\n" +
       "I'd like to talk about my project.";
     var url = 'https://wa.me/' + DATA.contact.whatsapp.replace(/\D/g,'') + '?text=' + encodeURIComponent(msg);
     window.open(url, '_blank');
@@ -5290,7 +5234,7 @@ function showResult(){
   scrollChat();
 
   lastEstimateContext = TYPE_LABEL[a.type] + ', ' + SIZE_LABEL[a.size] + ', ' + FEAT_LABEL[a.features] +
-    ', ' + TIME_LABEL[a.timeline] + ' timeline, estimated range ' + formatINR(est.low) + '–' + formatINR(est.high) + '.';
+    ', ' + TIME_LABEL[a.timeline] + ' timeline.';
   aiConversation = [];
   document.getElementById('chatAskRow').classList.add('show');
 }
@@ -5305,7 +5249,7 @@ var aiConversation = [];
 var lastEstimateContext = '';
 
 /* Builds a structured, per-project reference block straight from
-   DATA.projects (title, category, description, rough price, exact
+   DATA.projects (title, category, description, exact
    feature list, live link) so the AI answers specific project
    questions accurately instead of vaguely. Falls back gracefully for
    any project saved before price/features existed. */
@@ -5316,7 +5260,6 @@ function projectsContextBlock(){
     var lines = [];
     lines.push('- ' + p.title + ' — ' + p.cat);
     lines.push('  What it is: ' + p.desc);
-    if(p.price && p.price.trim()) lines.push('  Rough price: ' + p.price.trim());
     if(p.features && p.features.length){
       lines.push('  Features:');
       p.features.forEach(function(f){ lines.push('    · ' + f); });
@@ -5326,7 +5269,7 @@ function projectsContextBlock(){
   }).join('\n\n');
   return "PROJECTS IN OUR PORTFOLIO — this is the exact, factual info for each past project. Use it two ways:\n" +
     "1) PROACTIVELY: when a visitor describes what THEY want to build, actively scan this list for the closest matching past project by category/type (e.g. someone wanting an e-commerce/clothing store should be pointed to NÉTHA, since it's our e-commerce build) and bring it up yourself as a relevant example, even if they never named it — don't wait to be asked.\n" +
-    "2) REACTIVELY: when a visitor asks about a specific project by name (its features, price, or live link), answer straight from this list.\n" +
+    "2) REACTIVELY: when a visitor asks about a specific project by name (its features or live link), answer straight from this list.\n" +
     "Either way, never invent or guess a detail that isn't here. Don't dump every project's full breakdown at once — mention the 1-2 closest matches with a couple of concrete, relevant details (not the entire feature list), and offer to go deeper if they're interested.\n\n" + blocks + "\n\n";
 }
 
@@ -5336,17 +5279,17 @@ function aiSystemPrompt(){
 
     "HOW TO TALK: Talk like a real person in a casual chat — the register of ChatGPT, Gemini, or Claude in a friendly conversation, not a customer-service script. Use contractions and short, natural sentences. Never use stiff phrases like \"What brings you here today\" or \"perhaps revamp an existing one\" — just talk the way you actually would to someone. If someone just says \"hi\" or greets you, greet them back warmly and casually and ask what they're working on — don't launch into a formal interrogation. If their need is vague, ask ONE short casual follow-up before recommending anything. If they've already given enough detail, skip straight to a recommendation — don't make people repeat themselves.\n\n" +
 
-    "WHAT WE BUILD: business & brand websites, e-commerce stores with real-time inventory, booking/appointment systems, AI chatbots and cost estimators like this one, 3D/WebGL cinematic experiences, and admin panels so clients can edit their own site afterward. Everything is hand-coded — no templates, no page builders.\n\n" +
+    "WHAT WE BUILD: business & brand websites, e-commerce stores with real-time inventory, booking/appointment systems, AI chatbots like this one, 3D/WebGL cinematic experiences, and admin panels so clients can edit their own site afterward. Everything is hand-coded — no templates, no page builders.\n\n" +
 
     projectsContextBlock() +
 
-    "ROUGH PRICING FOR NEW PROJECTS (INR, only give this if it's actually useful in context, and always call it a rough range): business website 15,000\u201340,000; e-commerce store 35,000\u201390,000; booking/appointment system 25,000\u201360,000; custom web app or AI tool 45,000\u20131,00,000+, depending on scope, features and timeline. If the visitor is asking about the price of a specific past project instead, use that project's rough price from the list above, not this general range.\n\n" +
+    "PRICING: Never quote prices, price ranges, budgets or estimates — not for new projects and not for past ones. If someone asks what something costs, say pricing depends on scope and gets discussed directly with the team, and point them to the WhatsApp button so they can get a proper quote.\n\n" +
 
     "WHY US (use genuinely, don't force it into every reply): visitors talk directly to the team building their site, not a relay of account managers; every site ships with its own admin panel so they're never stuck waiting on a developer for text/image changes; and it's engineered properly underneath the premium surface — fast, accessible, real code.\n\n" +
 
-    (lastEstimateContext ? ("The visitor already ran the price estimator with these answers: " + lastEstimateContext + " Build on that context instead of re-asking for it.\n\n") : "") +
+    (lastEstimateContext ? ("The visitor already answered the project scoping questions with these answers: " + lastEstimateContext + " Build on that context instead of re-asking for it.\n\n") : "") +
 
-    "RULES: Never invent specific results, stats, features, prices, or links that weren't given to you above — stick to describing what's actually built. Keep replies to 2\u20135 sentences, no walls of text. Only mention the WhatsApp button or the 4-question estimator as a next step when it genuinely fits the moment, not as a reflexive sign-off every single time. If asked something with nothing to do with web development or this agency, answer briefly and steer back.";
+    "RULES: Never invent specific results, stats, features, prices, or links that weren't given to you above — stick to describing what's actually built. Keep replies to 2\u20135 sentences, no walls of text. Only mention the WhatsApp button or the 4-question project brief as a next step when it genuinely fits the moment, not as a reflexive sign-off every single time. If asked something with nothing to do with web development or this agency, answer briefly and steer back.";
 }
 
 
@@ -6633,7 +6576,7 @@ function animateHeroStats(){
 /* ---- Mouse-tracked spotlight glow on service and value cards ---- */
 
 function initSpotlightCards(){
-  document.querySelectorAll('.service-card, .why-item, .pricing-card').forEach(function(card){
+  document.querySelectorAll('.service-card, .why-item').forEach(function(card){
     card.addEventListener('mousemove', function(e){
       var r = card.getBoundingClientRect();
       card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
@@ -6712,7 +6655,7 @@ function initProcessRail(){
    (reviews, projects, FAQ). Skipped on touch devices and reduced motion. */
 (function(){
   if(window.matchMedia('(hover:none), (pointer:coarse), (prefers-reduced-motion: reduce)').matches) return;
-  var SEL = '.work-card,.video-card,.review-card,.faq-item,.contact-method,.estimator-shell,.reviews-belt,.contact-form,.process-item,.pricing-card,.service-card,.why-item';
+  var SEL = '.work-card,.video-card,.review-card,.faq-item,.contact-method,.reviews-belt,.contact-form,.process-item,.service-card,.why-item';
   var pending = false, lx = 0, ly = 0, target = null;
   document.addEventListener('pointermove', function(e){
     var t = e.target && e.target.closest ? e.target.closest(SEL) : null;
