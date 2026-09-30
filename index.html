@@ -687,13 +687,14 @@ html[data-celebration="ganesh"] #hero-bg{
   background-position: center, center 12%;
   background-repeat: no-repeat, no-repeat;
 }
-/* When a video or image is showing behind the hero, force the dark Forge
-   palette locally so text/borders stay legible over the footage, regardless
-   of the light background used everywhere else on the site. */
+/* When a video or image is showing behind the hero, the badge/button
+   panes below get extra opacity so they read against any photo. Text
+   itself deliberately stays the site's normal dark, crisp tone (not
+   flipped to light-on-dark) -- this brand's photography runs light and
+   warm, so a light-text-plus-shadow trick just looked blurry. Composing
+   the uploaded photo so the text column falls over a plain, light area
+   (as documented elsewhere) is what keeps it reading cleanly. */
 #hero.media-active{
-  --text: var(--ink);
-  --text-dim: var(--ink-dim);
-  --text-dimmer: var(--ink-dimmer);
   --border: var(--line);
   --border-strong: var(--line-strong);
   --bg: var(--obsidian);
@@ -1332,6 +1333,118 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
   .work-card, .work-grid .work-card:nth-child(even){ flex-direction:column; }
   .work-thumb{ flex:none; align-self:auto; aspect-ratio:16/10.5; min-height:0; }
   .work-body{ padding:26px 24px 30px; }
+}
+
+/* ========================================================================
+   WORK CAROUSEL — flat stacked-deck carousel for #work (Selected work):
+   tall portrait cards fanned out with one centred and in focus, each
+   card carrying its own index/category chip up top and a bottom-sheet
+   info card (title + View Project) baked in, so dimming the neighbours
+   dims their info with them instead of needing a separate caption panel.
+   The stage bleeds edge-to-edge under the normal container so the fan
+   can peek toward the browser edges; arrows sit near those edges too.
+   Digital Products keeps the older .work-grid list layout above.
+   ======================================================================== */
+.wc-shell{ margin-top:8px; }
+.wc-track{
+  position:relative;
+  width:100vw; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;
+}
+.wc-stage{
+  position:relative;
+  height:clamp(380px, 100vw, 560px);
+  overflow:hidden;
+  touch-action:pan-y;
+}
+.wc-card{
+  position:absolute; top:50%; left:50%;
+  width:min(300px, 58vw);
+  aspect-ratio:3/5.2;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  cursor:pointer;
+  border:1px solid var(--border);
+  box-shadow:0 30px 60px -24px rgba(0,0,0,.5);
+  transition:transform .6s var(--ease-out), opacity .6s var(--ease-out), filter .6s var(--ease-out), border-color var(--dur-fast);
+  transform:translate(-50%,-50%) translateX(calc(var(--offset,0) * 62%)) scale(var(--scale,1));
+  opacity:var(--opacity,1);
+  filter:brightness(var(--bright,1));
+  z-index:1;
+}
+.wc-card.is-active{ border-color:var(--border-strong); }
+.wc-visual{
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  background-color:var(--surface-2); padding:0 22px;
+}
+.wc-visual.has-cover{ background-size:cover; background-position:center; background-repeat:no-repeat; }
+.wc-visual.has-cover .wt-word{ display:none; }
+.wc-visual::after{
+  content:''; position:absolute; inset:0; z-index:1;
+  background:linear-gradient(200deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.6) 100%);
+}
+.wc-visual .noise{
+  position:absolute; inset:0; opacity:.5; mix-blend-mode:overlay; z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.wc-visual .wt-word{
+  position:relative; z-index:2;
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em; line-height:1.1;
+  font-size:clamp(1.3rem, 4vw, 1.9rem); opacity:.92;
+}
+
+/* ---- top-left index + category chip, overlaid on the card art ---- */
+.wc-topmeta{ position:absolute; top:16px; left:16px; z-index:3; display:flex; align-items:center; gap:10px; }
+.wc-topmeta .wc-idx{ font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:rgba(253,246,236,.7); }
+.wc-topmeta .wc-cat{
+  font-family:var(--font-mono); font-size:9px; letter-spacing:.07em; text-transform:uppercase;
+  padding:6px 11px; border-radius:var(--radius-full);
+  background:rgba(255,255,255,.1); backdrop-filter:blur(6px);
+  color:#fdf6ec; border:1px solid rgba(255,255,255,.35);
+  max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* ---- bottom-sheet info card baked into every card — the shared
+   opacity/brightness vars on .wc-card dim it along with the art, so
+   only the centred card reads clearly. ---- */
+.wc-footer{
+  position:absolute; left:12px; right:12px; bottom:12px; z-index:3;
+  background:var(--bg-card); border-radius:calc(var(--radius-lg) - 10px);
+  padding:14px 16px 16px; box-shadow:0 12px 28px -14px rgba(0,0,0,.4);
+}
+.wc-footer h3{ font-size:1rem; line-height:1.3; color:var(--text); }
+.wc-footer .work-open{ width:100%; justify-content:center; margin-top:12px; }
+
+.wc-arrow{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:50px; height:50px; border-radius:50%; z-index:10; padding:0;
+  display:flex; align-items:center; justify-content:center;
+  background:color-mix(in srgb, var(--bg-card) 78%, transparent);
+  backdrop-filter:blur(8px);
+  border:1px solid var(--border-strong); color:var(--text-dim);
+  cursor:pointer; transition:background var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast), transform var(--dur-fast);
+}
+.wc-arrow svg{ width:20px; height:20px; display:block; }
+.wc-arrow:hover{ background:var(--bg-card); border-color:var(--accent); color:var(--accent); }
+.wc-arrow:active{ transform:translateY(-50%) scale(.92); }
+.wc-prev{ left:24px; }
+.wc-next{ right:24px; }
+
+.wc-dots{ display:flex; justify-content:center; gap:8px; margin-top:22px; }
+.wc-dot{
+  width:8px; height:8px; border-radius:50%; padding:0;
+  background:var(--border-strong); border:none; cursor:pointer;
+  transition:background var(--dur-fast), width var(--dur-fast);
+}
+.wc-dot.active{ background:var(--accent); width:24px; border-radius:var(--radius-full); }
+
+@media (max-width:640px){
+  .wc-stage{ height:clamp(300px, 112vw, 410px); }
+  .wc-card{ width:min(230px, 64vw); }
+  .wc-arrow{ width:40px; height:40px; }
+  .wc-arrow svg{ width:16px; height:16px; }
+  .wc-prev{ left:10px; }
+  .wc-next{ right:10px; }
 }
 
 /* ---- Empty state for the Digital Products grid — same honest,
@@ -1996,15 +2109,23 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   --glass-shadow-overlay: 0 2px 6px rgba(60,30,10,.08), 0 40px 90px -30px rgba(50,24,8,.5);
 }
 
-/* When a video/photo sits behind the hero the site flips to dark locally —
-   the glass flips with it: clear, white-tinted panes instead of ivory. */
+/* The kicker badge, sound toggle, stats capsule and "Get a price
+   estimate" button sit directly on top of whatever photo/video is
+   active, so their glass needs real opacity of its own rather than the
+   thin, mostly-see-through tint used elsewhere on the page -- otherwise
+   they wash out against a busy or similarly-light photo. Text on these
+   panes is the site's normal dark tone (see above), so the panes stay
+   light, same family as the rest of the site's glass, just stronger. */
 #hero.media-active{
-  --glass-fill:      linear-gradient(140deg, rgba(255,255,255,.20) 0%, rgba(255,255,255,.07) 100%);
-  --glass-fill-soft: linear-gradient(140deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.06) 100%);
-  --glass-edge:      rgba(255,255,255,.24);
-  --glass-edge-hover:rgba(255,255,255,.5);
-  --glass-rim:       inset 0 1px 0 rgba(255,255,255,.42), inset 1px 0 0 rgba(255,255,255,.18);
-  --glass-shadow-sm: 0 12px 28px -14px rgba(0,0,0,.55);
+  --glass-fill:      linear-gradient(140deg, rgba(255,255,255,.86) 0%, rgba(255,250,243,.72) 100%);
+  --glass-fill-soft: linear-gradient(140deg, rgba(255,255,255,.82) 0%, rgba(255,250,243,.66) 100%);
+  --glass-edge:      rgba(150,90,45,.24);
+  --glass-edge-hover: color-mix(in srgb, var(--accent) 42%, rgba(150,90,45,.24));
+  --glass-rim:       inset 0 1px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.6);
+  --glass-shadow-sm: 0 12px 28px -14px rgba(60,30,10,.45);
+}
+#hero.media-active .hero-stat b{
+  text-shadow:0 0 1px rgba(0,0,0,.8), 0 0 3px rgba(0,0,0,.6);
 }
 
 /* ---- Colour glow behind the page: without something to blur, frosted glass
@@ -2795,9 +2916,20 @@ footer{
         <span class="eyebrow">Selected work</span>
         <h2 class="section-title">Proof, not promises.</h2>
       </div>
-      <p class="section-sub">Every project below is live and running someone's business right now — not a mockup. Click through for the story, or launch the site itself.</p>
+      <p class="section-sub">Swipe or tap through recent builds — every one is live and running someone's business right now, not a mockup. Tap the centred project to open its story.</p>
     </div>
-    <div class="work-grid reveal-stagger" id="workGrid"></div>
+    <div class="wc-shell reveal" id="workCarousel">
+      <div class="wc-track">
+        <button class="wc-arrow wc-prev" id="workPrev" type="button" aria-label="Previous project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="wc-stage" id="workStage" aria-roledescription="carousel" aria-label="Selected work"></div>
+        <button class="wc-arrow wc-next" id="workNext" type="button" aria-label="Next project">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="wc-dots" id="workDots"></div>
   </div>
 </section>
 
@@ -3600,50 +3732,127 @@ function renderContact(){
 }
 
 
+/* ---- Selected-work stacked carousel: tall cards fanned out, one
+   centred. Each card carries its own idx/category chip and a
+   bottom-sheet info card (title + View Project) — dimming a card via
+   its shared --opacity/--bright vars dims that baked-in info along
+   with the art, so there's no separate caption panel to keep in sync.
+   workCarouselIndex tracks which project is centred; updateWorkCarousel()
+   re-applies the per-card offset transforms + active states. ---- */
+var workCarouselIndex = 0;
+
 function renderProjects(){
-  var grid = document.getElementById('workGrid');
-  if(!grid) return;
-  grid.innerHTML = DATA.projects.map(function(p, idx){
+  var stage = document.getElementById('workStage');
+  if(!stage) return;
+  var projects = DATA.projects || [];
+  if(!projects.length){ stage.innerHTML=''; var dots0=document.getElementById('workDots'); if(dots0) dots0.innerHTML=''; return; }
+  if(workCarouselIndex >= projects.length) workCarouselIndex = 0;
+
+  stage.innerHTML = projects.map(function(p, idx){
     var hasCover = !!(p.coverUrl && p.coverUrl.trim());
     var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
     return '' +
-    '<div class="work-card" data-id="'+p.id+'" data-cursor-text="View">' +
-      '<div class="work-thumb '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
+    '<div class="wc-card" data-idx="'+idx+'" data-cursor-text="View">' +
+      '<div class="wc-visual '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
         (hasLogo ? '<div class="wt-logo"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
-        '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>' +
+        '<div class="wc-topmeta"><span class="wc-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="wc-cat">'+escapeHtml(p.cat)+'</span></div>' +
+        (hasCover ? '' : '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>') +
         '<div class="noise"></div>' +
       '</div>' +
-      '<div class="work-body">' +
-        '<div class="work-meta"><span class="work-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="work-cat">'+escapeHtml(p.cat)+'</span></div>' +
+      '<div class="wc-footer">' +
         '<h3>'+escapeHtml(p.title)+'</h3>' +
-        '<p>'+escapeHtml(p.desc.slice(0,120))+(p.desc.length>120?'…':'')+'</p>' +
-        (p.tags && p.tags.length ? '<div class="work-tags">'+p.tags.map(function(t){ return '<span class="tag-pill">'+escapeHtml(t)+'</span>'; }).join('')+'</div>' : '') +
-        '<button class="work-open btn btn-primary btn-sm" aria-label="Open project details">View Project<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
+        '<button type="button" class="work-open btn btn-primary btn-sm" aria-label="Open project details">View Project<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
       '</div>' +
     '</div>';
   }).join('');
 
-  grid.querySelectorAll('.work-card').forEach(function(card, idx){
-    var p = DATA.projects[idx];
-    var thumb = card.querySelector('.work-thumb');
+  stage.querySelectorAll('.wc-card').forEach(function(card, idx){
+    var p = projects[idx];
+    var visual = card.querySelector('.wc-visual');
     if(p.coverUrl && p.coverUrl.trim()){
-      thumb.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
+      visual.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
     }
+    // Whole card is one click target — a peeking neighbour brings itself
+    // to centre; the already-centred card opens its case study. The
+    // "View Project" button inside .wc-footer bubbles up to this same
+    // handler rather than needing its own listener.
     card.addEventListener('click', function(){
-      var id = parseInt(card.getAttribute('data-id'),10);
-      var proj = DATA.projects.find(function(x){ return x.id===id; });
-      if(proj) openProjectModal(proj);
+      if(idx === workCarouselIndex){ openProjectModal(p); }
+      else { goToWorkProject(idx); }
     });
-    card.addEventListener('mousemove', function(e){
-      var r = thumb.getBoundingClientRect();
-      var x = ((e.clientX - r.left)/r.width - 0.5) * 2;
-      var y = ((e.clientY - r.top)/r.height - 0.5) * 2;
-      thumb.style.transform = 'rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg)';
-    });
-    card.addEventListener('mouseleave', function(){ thumb.style.transform=''; });
   });
 
-  reInitReveal(grid.querySelectorAll('.work-card'));
+  var dots = document.getElementById('workDots');
+  if(dots){
+    dots.innerHTML = projects.map(function(p, idx){
+      return '<button type="button" class="wc-dot" data-idx="'+idx+'" aria-label="Show '+escapeHtml(p.title)+'"></button>';
+    }).join('');
+    dots.querySelectorAll('.wc-dot').forEach(function(dot){
+      dot.addEventListener('click', function(){ goToWorkProject(parseInt(dot.getAttribute('data-idx'),10)); });
+    });
+  }
+
+  updateWorkCarousel();
+}
+
+function goToWorkProject(idx){
+  var len = (DATA.projects || []).length;
+  if(!len) return;
+  workCarouselIndex = ((idx % len) + len) % len;
+  updateWorkCarousel();
+}
+
+function updateWorkCarousel(){
+  var projects = DATA.projects || [];
+  var len = projects.length;
+  if(!len) return;
+  var cur = workCarouselIndex;
+  var stage = document.getElementById('workStage');
+  if(!stage) return;
+
+  stage.querySelectorAll('.wc-card').forEach(function(card){
+    var idx = parseInt(card.getAttribute('data-idx'),10);
+    var diff = idx - cur;
+    if(diff > len/2) diff -= len;
+    if(diff < -len/2) diff += len;
+    var abs = Math.abs(diff);
+    card.style.setProperty('--offset', diff);
+    card.style.setProperty('--scale', abs===0 ? 1 : Math.max(0.72, 1 - abs*0.07));
+    card.style.setProperty('--opacity', abs===0 ? 1 : (abs===1 ? 0.68 : (abs===2 ? 0.34 : 0)));
+    card.style.setProperty('--bright', abs===0 ? 1 : 0.65);
+    card.style.zIndex = String(100 - abs);
+    card.style.pointerEvents = abs <= 3 ? 'auto' : 'none';
+    card.classList.toggle('is-active', abs===0);
+  });
+
+  var dots = document.getElementById('workDots');
+  if(dots){
+    dots.querySelectorAll('.wc-dot').forEach(function(dot){
+      dot.classList.toggle('active', parseInt(dot.getAttribute('data-idx'),10) === cur);
+    });
+  }
+}
+
+/* ---- Arrow-button clicks and touch-swipe navigation for the work
+   carousel. Bound once at startup — renderProjects() only rebuilds the
+   cards themselves, not these static controls. ---- */
+function initWorkCarousel(){
+  var prev = document.getElementById('workPrev');
+  var next = document.getElementById('workNext');
+  if(prev) prev.addEventListener('click', function(){ goToWorkProject(workCarouselIndex - 1); });
+  if(next) next.addEventListener('click', function(){ goToWorkProject(workCarouselIndex + 1); });
+
+  var stage = document.getElementById('workStage');
+  if(stage){
+    var touchStartX = null;
+    stage.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; }, {passive:true});
+    stage.addEventListener('touchend', function(e){
+      if(touchStartX===null) return;
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      if(Math.abs(dx) > 40){ goToWorkProject(workCarouselIndex + (dx<0?1:-1)); }
+      touchStartX = null;
+    }, {passive:true});
+  }
 }
 
 /* ---- Digital products — same card/modal system as Work, sourced from
@@ -4204,6 +4413,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initCursor();
   initRevealObserver();
   initWorkModal();
+  initWorkCarousel();
   initLegalModals();
   initStaffPage();
   initEstimatorChat();
