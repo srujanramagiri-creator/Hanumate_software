@@ -474,7 +474,7 @@ h1,h2,h3,h4{ font-family:var(--font-display); font-weight:700; letter-spacing:-0
 
 /* ---- Independence Day: tricolor fill on every primary button, and a
    tricolor ring around the chat launcher (kept as a border, not a
-   background fill, so the IRA logo inside stays fully visible). ---- */
+   background fill, so the WEXA logo inside stays fully visible). ---- */
 html[data-celebration="independence"] .btn-primary{
   background:
     linear-gradient(rgba(15,10,6,.52), rgba(15,10,6,.52)),
@@ -1317,7 +1317,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
    dims their info with them instead of needing a separate caption panel.
    The stage bleeds edge-to-edge under the normal container so the fan
    can peek toward the browser edges; arrows sit near those edges too.
-   Digital Products keeps the older .work-grid list layout above.
    ======================================================================== */
 .wc-shell{
   --cw:clamp(196px, 24vw, 350px);          /* centre-card width — everything scales from it */
@@ -1482,20 +1481,6 @@ html[data-celebration="independence"] .theme-chakra{ display:block; }
 @media (prefers-reduced-motion: reduce){
   .wc-card, .wc-tint, .wc-topmeta, .wc-footer, .wc-arrow{ transition:none; }
 }
-
-/* ---- Empty state for the Digital Products grid — same honest,
-   no-fake-content pattern as .reviews-empty, styled to match. ---- */
-.products-empty{
-  border:1px dashed var(--border-strong); border-radius:var(--radius-lg);
-  padding:70px 40px; text-align:center; display:flex; flex-direction:column; align-items:center;
-}
-.products-empty .pe-icon{
-  width:56px; height:56px; border-radius:50%; border:1px solid var(--border-strong); color:var(--accent);
-  display:flex; align-items:center; justify-content:center; margin-bottom:20px;
-}
-.products-empty .pe-icon svg{ width:22px; height:22px; }
-.products-empty h3{ font-size:1.2rem; }
-.products-empty p{ margin-top:9px; color:var(--text-dim); max-width:40ch; line-height:1.6; }
 
 /* ========================================================================
    VIDEO GRID (Media section)
@@ -2019,7 +2004,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:28px; border-top:1px solid var(--border); flex-wrap:wrap; gap:14px; }
 .footer-bottom span{ font-family:var(--font-mono); font-size:11.5px; color:var(--text-dimmer); }
 /* ========================================================================
-   CHAT WIDGET (IRA BUBBLE)
+   CHAT WIDGET (WEXA BUBBLE)
    ======================================================================== */
 #chat-toggle{
   position:fixed;
@@ -2083,6 +2068,9 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
   font-size:.86rem; transition:border-color var(--dur-fast), background var(--dur-fast); background:var(--bg);
 }
 .chat-opt:hover{ border-color:var(--accent); background:var(--surface-2); color:var(--ink); }
+.msg.bot{ white-space:pre-wrap; overflow-wrap:anywhere; }
+.chat-wa{ align-self:center; font-size:.76rem; color:var(--text-dim); text-decoration:none; padding:2px 4px; transition:color var(--dur-fast); }
+.chat-wa:hover, .chat-wa:focus-visible{ color:var(--accent); }
 .chat-typing{ align-self:flex-start; display:flex; gap:4px; padding:14px 16px; background:var(--bg-alt); border-radius:4px 16px 16px 16px; border:1px solid var(--border); }
 .chat-typing i{ width:6px; height:6px; border-radius:50%; background:var(--text-dimmer); animation:typing 1.2s infinite; }
 .chat-typing i:nth-child(2){ animation-delay:.2s; } .chat-typing i:nth-child(3){ animation-delay:.4s; }
@@ -2381,7 +2369,7 @@ footer{ padding:70px 0 34px; border-top:1px solid var(--border); }
 .contact-form{ padding:34px; border-radius:var(--radius-lg); }
 
 /* ---- Empty states — soft glass, dashed edge kept (it means "empty slot") ---- */
-.review-card.add-card, .reviews-empty, .products-empty{
+.review-card.add-card, .reviews-empty{
   background:var(--glass-fill-soft);
   -webkit-backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
   backdrop-filter:blur(var(--glass-blur-sm)) saturate(var(--glass-sat));
@@ -2751,6 +2739,63 @@ footer{
   "sameAs": ["https://www.instagram.com/hanumate_software", "https://www.youtube.com/@hanumatesoftware"]
 }
 </script>
+<style id="mx-motion">
+/* ===== Motion layer (additive) — transform/opacity only, honours reduced-motion ===== */
+#mxProgress{position:fixed;left:0;top:0;height:3px;width:100%;z-index:10000;pointer-events:none;transform-origin:0 50%;transform:scaleX(0);
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%,transparent);will-change:transform}
+.mx-title{filter:blur(14px);letter-spacing:.045em;transition:filter 1.1s var(--ease-out),letter-spacing 1.3s var(--ease-out)}
+.mx-title.mx-in{filter:blur(0);letter-spacing:inherit}
+.service-row{position:relative;isolation:isolate}
+.service-row::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(420px circle at var(--sx,50%) var(--sy,50%),color-mix(in srgb,var(--accent) 14%,transparent),transparent 62%)}
+.service-row:hover::after{opacity:1}
+.mx-mag{translate:var(--mgx,0px) var(--mgy,0px);transition:translate .35s var(--ease-out)}
+.mx-mag.mx-live{transition:translate .08s linear}
+.hero-atmos i{translate:var(--px,0px) var(--py,0px);will-change:translate}
+.hero-title .grad,.why-title .grad{background-size:220% 100%;animation:mxSheen 8s ease-in-out infinite alternate}
+@keyframes mxSheen{from{background-position:0% 50%}to{background-position:100% 50%}}
+.hero-kicker i{animation:mxPing 2.4s ease-out infinite}
+@keyframes mxPing{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}100%{box-shadow:0 0 0 12px transparent}}
+@media (prefers-reduced-motion:reduce){
+  #mxProgress{display:none}.mx-title{filter:none;letter-spacing:inherit;transition:none}
+  .mx-mag,.hero-atmos i{translate:none}.hero-title .grad,.why-title .grad,.hero-kicker i{animation:none}
+}
+</style>
+<style id="mx-select">
+/* ===== Custom project-type picker (native <select> stays as the source of truth) ===== */
+.mxs{position:relative}
+.mxs > select{position:absolute;inset:0;width:100%;height:100%;opacity:0;pointer-events:none}
+.mxs-btn{width:100%;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;
+  padding:15px 16px;border:1px solid rgba(150,90,45,.22);border-radius:var(--radius-sm);font-size:16px;color:var(--text);
+  background:rgba(255,255,255,.55);box-shadow:inset 0 1px 2px rgba(80,40,15,.06),inset 0 1px 0 rgba(255,255,255,.7);
+  transition:border-color .25s,box-shadow .25s,background .25s}
+.mxs-btn:hover{border-color:color-mix(in srgb,var(--accent) 45%,transparent);background:rgba(255,255,255,.75)}
+.mxs.open .mxs-btn,.mxs-btn:focus-visible{outline:none;border-color:var(--accent);background:rgba(255,255,255,.88);
+  box-shadow:0 0 0 3px rgba(196,73,26,.15),inset 0 1px 0 rgba(255,255,255,.9)}
+.mxs-n{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--accent);
+  padding:4px 8px;border-radius:999px;background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.mxs-val{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mxs-chev{width:18px;height:18px;flex:none;color:var(--text-dim);transition:transform .35s var(--ease-out),color .25s}
+.mxs.open .mxs-chev{transform:rotate(180deg);color:var(--accent)}
+.mxs-menu{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:60;margin:0;padding:8px;list-style:none;
+  max-height:min(340px,60vh);overflow:auto;border-radius:18px;border:1px solid rgba(255,255,255,.75);
+  background:rgba(255,251,246,.82);-webkit-backdrop-filter:blur(22px) saturate(1.4);backdrop-filter:blur(22px) saturate(1.4);
+  box-shadow:0 30px 60px -20px rgba(120,50,15,.38),0 8px 20px -10px rgba(120,50,15,.22),inset 0 1px 0 rgba(255,255,255,.9);
+  opacity:0;visibility:hidden;transform:translateY(-8px) scale(.97);transform-origin:50% 0;
+  transition:opacity .22s ease,transform .35s var(--ease-out),visibility 0s .35s}
+.mxs.up .mxs-menu{top:auto;bottom:calc(100% + 8px);transform-origin:50% 100%;transform:translateY(8px) scale(.97)}
+.mxs.open .mxs-menu{opacity:1;visibility:visible;transform:none;transition:opacity .22s ease,transform .35s var(--ease-out)}
+.mxs-opt{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:12px;cursor:pointer;color:var(--text);
+  opacity:0;transform:translateY(6px);transition:background .2s,color .2s,opacity .3s,transform .4s var(--ease-out)}
+.mxs.open .mxs-opt{opacity:1;transform:none;transition-delay:calc(var(--i)*28ms + 40ms),0s,calc(var(--i)*28ms + 40ms),calc(var(--i)*28ms + 40ms)}
+.mxs-opt .mxs-n{background:transparent;padding:4px 0;color:var(--text-dimmer,#8a7a68);transition:color .2s}
+.mxs-opt.act{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.mxs-opt.act .mxs-n{color:var(--accent)}
+.mxs-opt[aria-selected="true"]{font-weight:600;color:var(--accent)}
+.mxs-opt .mxs-tick{margin-left:auto;width:18px;height:18px;opacity:0;transform:scale(.5);transition:opacity .25s,transform .35s var(--ease-out)}
+.mxs-opt[aria-selected="true"] .mxs-tick{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.mxs-menu,.mxs-opt,.mxs-chev,.mxs-tick{transition:none!important}.mxs-opt{opacity:1;transform:none}}
+</style>
 </head>
 <body>
 <div class="page-bg" aria-hidden="true"></div>
@@ -2781,8 +2826,7 @@ footer{
     </a>
     <nav class="nav-links">
       <a href="#work">Work</a>
-      <a href="#products">Products</a>
-      <a href="#campaigns">Ads</a>
+      <a href="#campaigns">Reels</a>
       <a href="#media" id="navVideosLink" style="display:none;">Videos</a>
       <a href="#reviews">Reviews</a>
       <a href="#services">Services</a>
@@ -2800,8 +2844,7 @@ footer{
 
 <div class="mobile-menu" id="mobileMenu">
   <a href="#work">Work</a>
-  <a href="#products">Products</a>
-  <a href="#campaigns">Ads</a>
+  <a href="#campaigns">Reels</a>
   <a href="#media" id="navVideosLinkMobile" style="display:none;">Videos</a>
   <a href="#reviews">Reviews</a>
   <a href="#services">Services</a>
@@ -3076,25 +3119,6 @@ footer{
   </div>
 </section>
 
-<!-- DIGITAL PRODUCTS -->
-<section id="products">
-  <div class="container">
-    <div class="section-head reveal">
-      <div>
-        <span class="eyebrow">Digital products</span>
-        <h2 class="section-title">Things we've built,<br>not just delivered.</h2>
-      </div>
-      <p class="section-sub">Chatbots, tools and small products built on our own time — separate from client work, but built the same hand-coded way.</p>
-    </div>
-    <div class="work-grid reveal-stagger" id="productsGrid" style="display:none;"></div>
-    <div class="products-empty reveal" id="productsEmpty">
-      <div class="pe-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/><line x1="20" y1="14" x2="23" y2="14"/></svg></div>
-      <h3>Nothing listed yet</h3>
-      <p>Products go here as they're built — first up will likely be an AI chatbot or two.</p>
-    </div>
-  </div>
-</section>
-
 <!-- AD CREATIVE (id kept as "campaigns" — "ads"/"ad" in an id or class is a
      classic ad-blocker filter pattern, and we'd rather not have the one
      section selling ad work get silently hidden by uBlock/AdBlock) -->
@@ -3112,13 +3136,13 @@ footer{
   <div class="container">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">Ad creative</span>
+        <span class="eyebrow">Reels</span>
         <h2 class="section-title">Now shooting for<br>the scroll, not past it.</h2>
       </div>
-      <p class="section-sub">Ad reels, straight from Instagram — posted here the moment they go live.</p>
+      <p class="section-sub">Reels, straight from Instagram — posted here the moment they go live.</p>
     </div>
 
-    <div class="reel-stage reveal" id="reelStage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Ad reels">
+    <div class="reel-stage reveal" id="reelStage" tabindex="0" role="group" aria-roledescription="carousel" aria-label="Reels">
       <div class="reel-track" id="reelTrack"></div>
       <button class="reel-arrow reel-prev" id="reelPrev" type="button" aria-label="Previous reel">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"/></svg>
@@ -3185,7 +3209,7 @@ footer{
         <span class="eyebrow">FAQ</span>
         <h2 class="section-title">Questions people<br>usually ask.</h2>
       </div>
-      <p class="section-sub">Can't find your answer here? Drop it straight into the chat with IRA or reach out below.</p>
+      <p class="section-sub">Can't find your answer here? Drop it straight into the chat with WEXA or reach out below.</p>
     </div>
     <div class="faq-list reveal-stagger" id="faqList"></div>
   </div>
@@ -3266,7 +3290,7 @@ footer{
       <div class="footer-links">
         <div class="footer-col">
           <h4>Sitemap</h4>
-          <a href="#work">Work</a><a href="#products">Products</a><a href="#campaigns">Ads</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a>
+          <a href="#work">Work</a><a href="#campaigns">Reels</a><a href="#services">Services</a><a href="#process">Process</a><a href="#reviews">Reviews</a><a href="#contact">Contact</a>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -3427,21 +3451,22 @@ footer{
 </div>
 
 <!-- CHAT WIDGET -->
-<button id="chat-toggle" aria-label="Chat with IRA — AI assistant" data-cursor-text="Chat"><img id="chatToggleLogo" alt="IRA"><span class="ping"></span></button>
+<button id="chat-toggle" aria-label="Chat with WEXA — AI assistant" data-cursor-text="Chat"><img id="chatToggleLogo" alt="WEXA"><span class="ping"></span></button>
 
 <div id="chat-panel">
   <div class="chat-head">
-    <div class="ch-avatar mono"><img id="chatHeadLogo" alt="IRA"></div>
-    <div><b>IRA</b><span><i></i>Online now</span></div>
+    <div class="ch-avatar mono"><img id="chatHeadLogo" alt="WEXA"></div>
+    <div><b>WEXA</b><span><i></i>Online now</span></div>
     <button class="ch-restart" id="chatRestartBtn" aria-label="Start a new conversation"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
     <button class="ch-close" id="chatCloseBtn" aria-label="Close chat"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
   </div>
   <div class="chat-body" id="chatBody"></div>
   <div class="chat-foot">
     <div class="chat-ask-row" id="chatAskRow">
-      <textarea id="chatAskInput" placeholder="Type your message..." rows="1"></textarea>
+      <textarea id="chatAskInput" placeholder="Ask anything about your project…" aria-label="Message WEXA" rows="1"></textarea>
       <button class="chat-ask-send" id="chatAskSendBtn" aria-label="Send message"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
     </div>
+    <a class="chat-wa" id="chatWaLink" href="#" target="_blank" rel="noopener">Prefer WhatsApp? Chat with the team <span aria-hidden="true">→</span></a>
   </div>
 </div>
 
@@ -3464,9 +3489,9 @@ var AI_FUNCTION_NAME = "ai-proxy"; // must match the Edge Function name in your 
 
 var REVIEWS = []; // populated by syncReviewsFromCloud(); rendered by renderReviews()
 
-/* ---- IRA (the AI chat widget) logo, embedded as a data URI so the
+/* ---- WEXA (the AI chat widget) logo, embedded as a data URI so the
    whole site stays a single portable file with no extra image hosting. ---- */
-var IRA_LOGO_DATA_URI = "data:image/webp;base64,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";
+var WEXA_LOGO_DATA_URI = "data:image/webp;base64,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";
 
 /* ---- Celebration themes — admin-selectable seasonal palette swaps.
    Each key matches a `html[data-celebration="key"]` CSS block above,
@@ -3610,11 +3635,6 @@ var DEFAULT_DATA = {
         "Clean, trustworthy layout suited to a healthcare brand"
       ] }
   ],
-  // Standalone digital products (chatbots, tools, small apps) — distinct
-  // from client `projects` above. Same object shape, so the existing
-  // project modal renders these too. Starts empty on purpose; filled in
-  // as real products are added, never with placeholder entries.
-  products: [],
   // Ad reels — deliberately tiny shape: { id, url, caption, thumbUrl }.
   // Rendered with the same card grid and embed modal as Media/Videos below,
   // since a reel is video, not a case study. Starts empty; filled in from
@@ -3653,7 +3673,6 @@ function loadData(){
     merged.mediaVideos = parsed.mediaVideos || merged.mediaVideos;
     merged.faqs = (parsed.faqs && parsed.faqs.length) ? parsed.faqs : merged.faqs;
     merged.projects = (parsed.projects && parsed.projects.length) ? parsed.projects : merged.projects;
-    merged.products = (parsed.products && parsed.products.length) ? parsed.products : merged.products;
     merged.ads = (parsed.ads && parsed.ads.length) ? parsed.ads : merged.ads;
     return merged;
   }catch(e){ return clone(DEFAULT_DATA); }
@@ -3690,7 +3709,6 @@ function syncSiteDataFromCloud(){
       DATA.site = cloud.site || DATA.site;
       DATA.siteTheme = cloud.siteTheme || DATA.siteTheme;
       DATA.projects = cloud.projects;
-      DATA.products = cloud.products || DATA.products || [];
       DATA.ads = cloud.ads || DATA.ads || [];
       DATA.mediaVideos = cloud.mediaVideos || DATA.mediaVideos || [];
       DATA.faqs = (cloud.faqs && cloud.faqs.length) ? cloud.faqs : DATA.faqs;
@@ -3779,26 +3797,34 @@ function renderContact(){
 var workCarouselIndex = 0;
 var workSuppressClick = false;
 
-function workWraps(){ return (DATA.projects || []).length >= 5; }   // 5+ cards fill every slot, so loop; fewer just clamp
+/* Loops once there are 3+ projects, so the centre card always has a
+   neighbour on each side — and every project appears exactly once (no
+   repeated cards). With 1-2 projects it just clamps at the ends. */
+function workWraps(){ return (DATA.projects || []).length >= 3; }
+function workSlotCount(){ return (DATA.projects || []).length; }
 
 function renderProjects(){
   var stage = document.getElementById('workStage');
   if(!stage) return;
   var projects = DATA.projects || [];
   if(!projects.length){ stage.innerHTML=''; var dots0=document.getElementById('workDots'); if(dots0) dots0.innerHTML=''; return; }
-  if(workCarouselIndex >= projects.length) workCarouselIndex = 0;
+  var total = workSlotCount();
+  if(workCarouselIndex >= total) workCarouselIndex = 0;
+  var slots = [];
+  for(var v = 0; v < total; v++) slots.push(v);
 
-  stage.innerHTML = projects.map(function(p, idx){
+  stage.innerHTML = slots.map(function(v){
+    var idx = v % projects.length;
+    var p = projects[idx];
     var hasCover = !!(p.coverUrl && p.coverUrl.trim());
     var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
     return '' +
-    '<div class="wc-card" data-idx="'+idx+'" data-cursor-text="View" role="group" aria-roledescription="slide" aria-label="Project '+(idx+1)+' of '+projects.length+'">' +
+    '<div class="wc-card" data-idx="'+v+'" data-cursor-text="View" role="group" aria-roledescription="slide" aria-label="Project '+(idx+1)+' of '+projects.length+'">' +
       '<div class="wc-visual '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
         (hasCover ? '' : '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>') +
         '<div class="noise"></div>' +
         '<span class="wc-tint"></span>' +
         '<div class="wc-topmeta"><span class="wc-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="wc-cat">'+escapeHtml(p.cat)+'</span></div>' +
-        (hasLogo ? '<div class="wc-ring"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
       '</div>' +
       '<div class="wc-footer">' +
         '<h3>'+escapeHtml(p.title)+'</h3>' +
@@ -3807,8 +3833,8 @@ function renderProjects(){
     '</div>';
   }).join('');
 
-  stage.querySelectorAll('.wc-card').forEach(function(card, idx){
-    var p = projects[idx];
+  stage.querySelectorAll('.wc-card').forEach(function(card, slot){
+    var p = projects[slot % projects.length];
     var visual = card.querySelector('.wc-visual');
     if(p.coverUrl && p.coverUrl.trim()){
       visual.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
@@ -3817,11 +3843,11 @@ function renderProjects(){
     // card opens its case study (the View Project button bubbles here too).
     card.addEventListener('click', function(){
       if(workSuppressClick){ workSuppressClick = false; return; }
-      if(idx === workCarouselIndex){ openProjectModal(p); }
-      else { goToWorkProject(idx); }
+      if(slot === workCarouselIndex){ openProjectModal(p); }
+      else { goToWorkProject(slot); }
     });
     card.addEventListener('keydown', function(e){
-      if((e.key === 'Enter' || e.key === ' ') && idx === workCarouselIndex){ e.preventDefault(); openProjectModal(p); }
+      if((e.key === 'Enter' || e.key === ' ') && slot === workCarouselIndex){ e.preventDefault(); openProjectModal(p); }
     });
   });
 
@@ -3831,7 +3857,9 @@ function renderProjects(){
       return '<button type="button" class="wc-dot" data-idx="'+idx+'" aria-label="Show '+escapeHtml(p.title)+'"></button>';
     }).join('');
     dots.querySelectorAll('.wc-dot').forEach(function(dot){
-      dot.addEventListener('click', function(){ goToWorkProject(parseInt(dot.getAttribute('data-idx'),10)); });
+      dot.addEventListener('click', function(){
+        goToWorkProject(parseInt(dot.getAttribute('data-idx'),10));
+      });
     });
   }
 
@@ -3839,15 +3867,16 @@ function renderProjects(){
 }
 
 function goToWorkProject(idx){
-  var len = (DATA.projects || []).length;
+  var len = workSlotCount();
   if(!len) return;
   workCarouselIndex = workWraps() ? ((idx % len) + len) % len : Math.max(0, Math.min(len-1, idx));
   updateWorkCarousel();
+  if(typeof workAutoplayKick === 'function') workAutoplayKick();   // manual nav restarts the countdown
 }
 
 function updateWorkCarousel(){
   var projects = DATA.projects || [];
-  var len = projects.length;
+  var len = workSlotCount();           // virtual slots
   if(!len) return;
   var cur = workCarouselIndex, wrap = workWraps();
   var stage = document.getElementById('workStage');
@@ -3868,14 +3897,82 @@ function updateWorkCarousel(){
   var dots = document.getElementById('workDots');
   if(dots){
     dots.querySelectorAll('.wc-dot').forEach(function(dot){
-      dot.classList.toggle('active', parseInt(dot.getAttribute('data-idx'),10) === cur);
+      dot.classList.toggle('active', parseInt(dot.getAttribute('data-idx'),10) === (cur % projects.length));
     });
   }
   var prev = document.getElementById('workPrev'), next = document.getElementById('workNext');
   if(prev) prev.setAttribute('aria-disabled', (!wrap && cur === 0) ? 'true' : 'false');
   if(next) next.setAttribute('aria-disabled', (!wrap && cur === len-1) ? 'true' : 'false');
   var st = document.getElementById('workStatus');
-  if(st) st.textContent = 'Project '+(cur+1)+' of '+len+': '+projects[cur].title;
+  if(st) st.textContent = 'Project '+((cur % projects.length)+1)+' of '+projects.length+': '+projects[cur % projects.length].title;
+}
+
+/* ---- Autoplay. Advances one card every WORK_AUTOPLAY_MS (change this one
+   number to speed up / slow down: 1000 = 1s, 1500 = 1.5s). The card
+   transition takes .85s, so 1500 gives each card ~0.65s to rest.
+   It pauses whenever the visitor is interacting (hover, keyboard focus,
+   touch/drag), when a project modal is open, when the section is off
+   screen, when the tab is hidden, and never runs for prefers-reduced-motion.
+   A self-rescheduling setTimeout (not setInterval) means any manual
+   navigation naturally restarts the full countdown. ---- */
+var WORK_AUTOPLAY_MS = 1500;
+var workAuto = { timer:null, hover:false, focus:false, drag:false, visible:false, bound:false };
+
+function workAutoplayAllowed(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
+  if(workSlotCount() < 2) return false;
+  if(document.hidden) return false;
+  if(document.querySelector('.pmodal-backdrop.open')) return false;
+  return workAuto.visible && !workAuto.hover && !workAuto.focus && !workAuto.drag;
+}
+function workAutoplayStop(){ clearTimeout(workAuto.timer); workAuto.timer = null; }
+function workAutoplayKick(){
+  workAutoplayStop();
+  if(!workAuto.bound || !workAutoplayAllowed()) return;
+  workAuto.timer = setTimeout(workAutoplayTick, WORK_AUTOPLAY_MS);
+}
+function workAutoplayTick(){
+  workAuto.timer = null;
+  if(!workAutoplayAllowed()){ return; }          // resumes via the event hooks below
+  var last = workSlotCount() - 1;
+  // loops back to the first card even when there are <3 projects (no wrap)
+  goToWorkProject(!workWraps() && workCarouselIndex >= last ? 0 : workCarouselIndex + 1);
+}
+function initWorkAutoplay(){
+  var shell = document.getElementById('workCarousel');
+  var dots  = document.getElementById('workDots');
+  if(!shell || workAuto.bound) return;
+  workAuto.bound = true;
+
+  [shell, dots].forEach(function(el){
+    if(!el) return;
+    el.addEventListener('pointerenter', function(e){ if(e.pointerType === 'mouse'){ workAuto.hover = true; workAutoplayStop(); } });
+    el.addEventListener('pointerleave', function(e){ if(e.pointerType === 'mouse'){ workAuto.hover = false; workAutoplayKick(); } });
+    el.addEventListener('focusin',  function(e){ if(e.target.matches && e.target.matches(':focus-visible')){ workAuto.focus = true; workAutoplayStop(); } });
+    el.addEventListener('focusout', function(){ workAuto.focus = false; workAutoplayKick(); });
+  });
+  // finger / drag: hold still while the visitor's hands are on it
+  shell.addEventListener('pointerdown', function(e){ if(e.pointerType !== 'mouse'){ workAuto.drag = true; workAutoplayStop(); } });
+  window.addEventListener('pointerup',     function(){ if(workAuto.drag){ workAuto.drag = false; workAutoplayKick(); } });
+  window.addEventListener('pointercancel', function(){ if(workAuto.drag){ workAuto.drag = false; workAutoplayKick(); } });
+
+  document.addEventListener('visibilitychange', workAutoplayKick);
+  if(window.matchMedia){
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if(mq.addEventListener) mq.addEventListener('change', workAutoplayKick);
+  }
+  // project modal open/close toggles the .open class — pick it up and pause/resume
+  var mb = document.getElementById('pmodalBackdrop');
+  if(mb && window.MutationObserver){
+    new MutationObserver(workAutoplayKick).observe(mb, { attributes:true, attributeFilter:['class'] });
+  }
+  // only run while the carousel is actually on screen
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      workAuto.visible = entries[0].isIntersecting;
+      workAutoplayKick();
+    }, { threshold:.35 }).observe(shell);
+  } else { workAuto.visible = true; workAutoplayKick(); }
 }
 
 /* ---- Arrow, keyboard and swipe/drag navigation. Bound once at startup —
@@ -3903,66 +4000,6 @@ function initWorkCarousel(){
     }
   });
   window.addEventListener('pointercancel', function(){ sx = null; });
-}
-
-/* ---- Digital products — same card/modal system as Work, sourced from
-   DATA.products instead of DATA.projects. Shows an honest empty state
-   until real products are added (no fabricated placeholder entries). ---- */
-function renderProducts(){
-  var grid = document.getElementById('productsGrid');
-  var empty = document.getElementById('productsEmpty');
-  if(!grid || !empty) return;
-
-  var products = DATA.products || [];
-  if(!products.length){
-    grid.style.display = 'none';
-    empty.style.display = 'flex';
-    return;
-  }
-  empty.style.display = 'none';
-  grid.style.display = 'grid';
-
-  grid.innerHTML = products.map(function(p, idx){
-    var hasCover = !!(p.coverUrl && p.coverUrl.trim());
-    var hasLogo = !!(p.logoUrl && p.logoUrl.trim());
-    return '' +
-    '<div class="work-card" data-id="'+p.id+'" data-cursor-text="View">' +
-      '<div class="work-thumb '+(hasCover?'':p.thumb)+(hasCover?' has-cover':'')+'">' +
-        (hasLogo ? '<div class="wt-logo"><img src="'+escapeHtml(p.logoUrl)+'" alt="" loading="lazy" decoding="async"></div>' : '') +
-        '<span class="wt-word">'+escapeHtml(p.thumbWord||p.title)+'</span>' +
-        '<div class="noise"></div>' +
-      '</div>' +
-      '<div class="work-body">' +
-        '<div class="work-meta"><span class="work-idx">'+String(idx+1).padStart(2,'0')+'</span><span class="work-cat">'+escapeHtml(p.cat)+'</span></div>' +
-        '<h3>'+escapeHtml(p.title)+'</h3>' +
-        '<p>'+escapeHtml(p.desc.slice(0,120))+(p.desc.length>120?'…':'')+'</p>' +
-        (p.tags && p.tags.length ? '<div class="work-tags">'+p.tags.map(function(t){ return '<span class="tag-pill">'+escapeHtml(t)+'</span>'; }).join('')+'</div>' : '') +
-        '<button class="work-open btn btn-primary btn-sm" aria-label="Open product details">View Project<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  grid.querySelectorAll('.work-card').forEach(function(card, idx){
-    var p = products[idx];
-    var thumb = card.querySelector('.work-thumb');
-    if(p.coverUrl && p.coverUrl.trim()){
-      thumb.style.backgroundImage = 'url("'+p.coverUrl.trim()+'")';
-    }
-    card.addEventListener('click', function(){
-      var id = parseInt(card.getAttribute('data-id'),10);
-      var prod = products.find(function(x){ return x.id===id; });
-      if(prod) openProjectModal(prod);
-    });
-    card.addEventListener('mousemove', function(e){
-      var r = thumb.getBoundingClientRect();
-      var x = ((e.clientX - r.left)/r.width - 0.5) * 2;
-      var y = ((e.clientY - r.top)/r.height - 0.5) * 2;
-      thumb.style.transform = 'rotateY('+(x*7)+'deg) rotateX('+(-y*7)+'deg)';
-    });
-    card.addEventListener('mouseleave', function(){ thumb.style.transform=''; });
-  });
-
-  reInitReveal(grid.querySelectorAll('.work-card'));
 }
 
 /* ---- Ad reels — coverflow carousel. Sourced from DATA.ads: an Instagram
@@ -4251,7 +4288,6 @@ function renderAll(){
   renderHero();
   renderContact();
   renderProjects();
-  renderProducts();
   renderAds();
   renderFAQ();
   renderBranding();
@@ -4419,8 +4455,8 @@ function closeProjectModal(){
 
 document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('yearNow').textContent = new Date().getFullYear();
-  document.getElementById('chatToggleLogo').src = IRA_LOGO_DATA_URI;
-  document.getElementById('chatHeadLogo').src = IRA_LOGO_DATA_URI;
+  document.getElementById('chatToggleLogo').src = WEXA_LOGO_DATA_URI;
+  document.getElementById('chatHeadLogo').src = WEXA_LOGO_DATA_URI;
   renderAll();
   splitTitleWords();
   initPreloader();
@@ -4430,6 +4466,7 @@ document.addEventListener('DOMContentLoaded', function(){
   initRevealObserver();
   initWorkModal();
   initWorkCarousel();
+  initWorkAutoplay();
   initServiceRows();
   initLegalModals();
   initStaffPage();
@@ -5074,47 +5111,8 @@ function initStaffPage(){
 }
 
 /* ========================================================================
-   IRA PROJECT-SCOPING CHAT
+   WEXA PROJECT-SCOPING CHAT
    ======================================================================== */
-
-var STEPS = [
-  { key:'type', q:"Hey! 👋 I'm IRA, Hanumate Software's AI assistant. Tell me about your project anytime and I'll help figure out what fits — or let's scope it out with a few quick questions. What kind of project are you looking to build?",
-    options:[
-      {label:'Business website', value:'business'},
-      {label:'E-commerce store', value:'ecommerce'},
-      {label:'Booking / appointment system', value:'booking'},
-      {label:'Custom web app / AI tool', value:'customapp'}
-    ]},
-  { key:'size', q:"Got it. Roughly how many pages or sections do you need?",
-    options:[
-      {label:'1–3 (single page)', value:'s'},
-      {label:'4–7 (standard)', value:'m'},
-      {label:'8–15 (large)', value:'l'},
-      {label:'15+ (enterprise)', value:'xl'}
-    ]},
-  { key:'features', q:"Which of these best describes what you need?",
-    options:[
-      {label:'Just a clean website', value:'plain'},
-      {label:'+ Admin panel to edit content', value:'admin'},
-      {label:'+ Booking / payments / e-commerce', value:'transact'},
-      {label:'+ AI chatbot or 3D experience', value:'premium'}
-    ]},
-  { key:'timeline', q:"Last one — what's your timeline?",
-    options:[
-      {label:'Flexible (6+ weeks)', value:'flex'},
-      {label:'Standard (3–4 weeks)', value:'std'},
-      {label:'Rush (1–2 weeks)', value:'rush'}
-    ]}
-];
-
-var TYPE_LABEL = {business:'Business website', ecommerce:'E-commerce store', booking:'Booking / appointment system', customapp:'Custom web app / AI tool'};
-
-var SIZE_LABEL = {s:'1–3 pages', m:'4–7 pages', l:'8–15 pages', xl:'15+ pages'};
-
-var FEAT_LABEL = {plain:'Clean website', admin:'Admin panel', transact:'Booking / e-commerce', premium:'AI chatbot / 3D experience'};
-
-var TIME_LABEL = {flex:'Flexible', std:'Standard', rush:'Rush'};
-
 
 var chatState = { step:0, answers:{} };
 
@@ -5125,6 +5123,14 @@ function initEstimatorChat(){
     document.getElementById('chat-panel').classList.remove('open');
   });
   document.getElementById('chatRestartBtn').addEventListener('click', restartChat);
+  var waLink = document.getElementById('chatWaLink');
+  if(waLink){
+    waLink.addEventListener('click', function(e){
+      var num = (DATA.contact && DATA.contact.whatsapp) ? String(DATA.contact.whatsapp).replace(/\D/g,'') : '';
+      if(!num){ e.preventDefault(); return; }
+      waLink.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent("Hi! I was chatting with WEXA on your site and I'd like to talk about my project.");
+    });
+  }
 
   document.getElementById('chatAskSendBtn').addEventListener('click', sendChatAsk);
   var askInput = document.getElementById('chatAskInput');
@@ -5153,13 +5159,14 @@ function openChat(){
   if(!panel.dataset.started){
     panel.dataset.started = '1';
     startChat();
+  } else {
+    focusChatInput();
   }
 }
 
 
 function restartChat(){
   document.getElementById('chatBody').innerHTML = '';
-  document.getElementById('chatAskRow').classList.remove('show');
   aiConversation = [];
   lastEstimateContext = '';
   chatState = { step:0, answers:{} };
@@ -5173,7 +5180,20 @@ function startChat(){
   chatState = { step:0, answers:{} };
   aiConversation = [];
   lastEstimateContext = '';
-  setTimeout(askStep, 400);
+  addTyping();
+  setTimeout(function(){
+    removeTyping();
+    addBotMsg("Hey! 👋 I'm WEXA, Hanumate Software's AI assistant. Ask me anything about websites, apps or how we work — or just tell me what you're planning to build and I'll help you figure out the best way to do it.");
+    focusChatInput();
+  }, 450);
+}
+
+/* desktop only — on phones, auto-focusing would pop the keyboard over the greeting */
+function focusChatInput(){
+  var el = document.getElementById('chatAskInput');
+  if(el && window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+    setTimeout(function(){ el.focus(); }, 60);
+  }
 }
 
 
@@ -5184,6 +5204,30 @@ function addBotMsg(text){
   d.textContent = text;
   body.appendChild(d);
   scrollChat();
+}
+
+/* Reveals an AI reply a few words at a time so it reads like it's being
+   typed live (the Edge Function returns the whole answer at once). Total
+   reveal is capped at ~2.4s however long the reply is, and it's instant
+   for prefers-reduced-motion. */
+function addBotMsgSmooth(text, done){
+  var body = document.getElementById('chatBody');
+  var d = document.createElement('div');
+  d.className = 'msg bot';
+  body.appendChild(d);
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ d.textContent = text; scrollChat(); if(done) done(); return; }
+  var tokens = text.split(/(\s+)/);
+  var perTick = Math.max(2, Math.ceil(tokens.length / 85));   // ~85 ticks × 28ms ≈ 2.4s max
+  var i = 0;
+  (function tick(){
+    var nearBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 80;
+    i = Math.min(tokens.length, i + perTick);
+    d.textContent = tokens.slice(0, i).join('');
+    if(nearBottom) scrollChat();
+    if(i < tokens.length){ setTimeout(tick, 28); }
+    else if(done){ done(); }
+  })();
 }
 
 function addUserMsg(text){
@@ -5215,75 +5259,6 @@ function scrollChat(){
   body.scrollTop = body.scrollHeight;
 }
 
-
-function askStep(){
-  var step = STEPS[chatState.step];
-  if(!step){ return showResult(); }
-  addBotMsg(step.q);
-  var body = document.getElementById('chatBody');
-  var wrap = document.createElement('div');
-  wrap.className = 'chat-options';
-  step.options.forEach(function(opt){
-    var b = document.createElement('button');
-    b.className = 'chat-opt';
-    b.textContent = opt.label;
-    b.addEventListener('click', function(){
-      wrap.remove();
-      addUserMsg(opt.label);
-      chatState.answers[step.key] = opt.value;
-      chatState.step++;
-      addTyping();
-      setTimeout(function(){ removeTyping(); askStep(); }, 550);
-    });
-    wrap.appendChild(b);
-  });
-  body.appendChild(wrap);
-  scrollChat();
-}
-
-
-function showResult(){
-  var a = chatState.answers;
-  var body = document.getElementById('chatBody');
-  var d = document.createElement('div');
-  d.className = 'msg result';
-  d.innerHTML = '<div class="r-lbl mono">Your project brief</div>' +
-    '<div class="r-amt">'+TYPE_LABEL[a.type]+'</div>' +
-    '<div class="r-note">'+SIZE_LABEL[a.size]+' · '+FEAT_LABEL[a.features]+' · '+TIME_LABEL[a.timeline]+' timeline</div>' +
-    '<div class="r-disclaimer">This is a starting point, not a final scope — the exact details and timeline get confirmed once we talk through your requirements.</div>';
-  body.appendChild(d);
-  scrollChat();
-
-  var wrap = document.createElement('div');
-  wrap.className = 'chat-options';
-  var waBtn = document.createElement('button');
-  waBtn.className = 'chat-opt';
-  waBtn.style.borderColor = 'var(--accent)';
-  waBtn.textContent = 'Chat on WhatsApp with this brief';
-  waBtn.addEventListener('click', function(){
-    var msg = "Hi! I used the project planner on your site.\n" +
-      "Project: " + TYPE_LABEL[a.type] + "\n" +
-      "Size: " + SIZE_LABEL[a.size] + "\n" +
-      "Needs: " + FEAT_LABEL[a.features] + "\n" +
-      "Timeline: " + TIME_LABEL[a.timeline] + "\n" +
-      "I'd like to talk about my project.";
-    var url = 'https://wa.me/' + DATA.contact.whatsapp.replace(/\D/g,'') + '?text=' + encodeURIComponent(msg);
-    window.open(url, '_blank');
-  });
-  var moreBtn = document.createElement('button');
-  moreBtn.className = 'chat-opt';
-  moreBtn.textContent = 'Start over';
-  moreBtn.addEventListener('click', restartChat);
-  wrap.appendChild(waBtn);
-  wrap.appendChild(moreBtn);
-  body.appendChild(wrap);
-  scrollChat();
-
-  lastEstimateContext = TYPE_LABEL[a.type] + ', ' + SIZE_LABEL[a.size] + ', ' + FEAT_LABEL[a.features] +
-    ', ' + TIME_LABEL[a.timeline] + ' timeline.';
-  aiConversation = [];
-  document.getElementById('chatAskRow').classList.add('show');
-}
 
 /* ========================================================================
    AI FOLLOW-UP (via a Supabase Edge Function — see admin setup notes;
@@ -5321,21 +5296,21 @@ function projectsContextBlock(){
 
 
 function aiSystemPrompt(){
-  return "You are IRA, Hanumate Software's AI assistant — a web development agency in India building premium, hand-coded websites and web apps for local businesses. Your job is to actually help visitors figure out what they need, not just recite a service list. Only mention your name (IRA) if someone asks who you are or what your name is — don't introduce yourself by name unprompted.\n\n" +
+  return "You are WEXA, Hanumate Software's AI assistant — a web development agency in India building premium, hand-coded websites and web apps for local businesses. Your job is to actually help visitors figure out what they need, not just recite a service list. Only mention your name (WEXA) if someone asks who you are or what your name is — don't introduce yourself by name unprompted.\n\n" +
 
-    "HOW TO TALK: Talk like a real person in a casual chat — the register of ChatGPT, Gemini, or Claude in a friendly conversation, not a customer-service script. Use contractions and short, natural sentences. Never use stiff phrases like \"What brings you here today\" or \"perhaps revamp an existing one\" — just talk the way you actually would to someone. If someone just says \"hi\" or greets you, greet them back warmly and casually and ask what they're working on — don't launch into a formal interrogation. If their need is vague, ask ONE short casual follow-up before recommending anything. If they've already given enough detail, skip straight to a recommendation — don't make people repeat themselves.\n\n" +
+    "HOW TO TALK: Talk like a real person in a casual chat — the register of ChatGPT, Gemini, or Claude in a friendly conversation, not a customer-service script. Use contractions and short, natural sentences. Never use stiff phrases like \"What brings you here today\" or \"perhaps revamp an existing one\" — just talk the way you actually would to someone. If someone just says \"hi\" or greets you, greet them back warmly and casually and ask what they're working on — don't launch into a formal interrogation. Always answer the question they actually asked first, directly, before anything else. Reply in the same language and tone the visitor writes in (English, Telugu, Hindi, or a mix — match them). Don't repeat yourself or re-greet in later messages, and don't use bullet-point lists or headings — plain conversational sentences. If their need is vague, ask ONE short casual follow-up before recommending anything. If they've already given enough detail, skip straight to a recommendation — don't make people repeat themselves.\n\n" +
 
     "WHAT WE BUILD: business & brand websites, e-commerce stores with real-time inventory, booking/appointment systems, AI chatbots like this one, 3D/WebGL cinematic experiences, and admin panels so clients can edit their own site afterward. Everything is hand-coded — no templates, no page builders.\n\n" +
 
     projectsContextBlock() +
 
-    "PRICING: Never quote prices, price ranges, budgets or estimates — not for new projects and not for past ones. If someone asks what something costs, say pricing depends on scope and gets discussed directly with the team, and point them to the WhatsApp button so they can get a proper quote.\n\n" +
+    "PRICING: Never quote prices, price ranges, budgets or estimates — not for new projects and not for past ones. If someone asks what something costs, say pricing depends on scope and gets discussed directly with the team, and point them to the \"Chat on WhatsApp\" link under the message box so they can get a proper quote.\n\n" +
 
     "WHY US (use genuinely, don't force it into every reply): visitors talk directly to the team building their site, not a relay of account managers; every site ships with its own admin panel so they're never stuck waiting on a developer for text/image changes; and it's engineered properly underneath the premium surface — fast, accessible, real code.\n\n" +
 
     (lastEstimateContext ? ("The visitor already answered the project scoping questions with these answers: " + lastEstimateContext + " Build on that context instead of re-asking for it.\n\n") : "") +
 
-    "RULES: Never invent specific results, stats, features, prices, or links that weren't given to you above — stick to describing what's actually built. Keep replies to 2\u20135 sentences, no walls of text. Only mention the WhatsApp button or the 4-question project brief as a next step when it genuinely fits the moment, not as a reflexive sign-off every single time. If asked something with nothing to do with web development or this agency, answer briefly and steer back.";
+    "RULES: Never invent specific results, stats, features, prices, or links that weren't given to you above — stick to describing what's actually built. Keep replies to 2\u20135 sentences, no walls of text. Mention the \"Chat on WhatsApp\" link under the message box only when it genuinely fits the moment (they want a quote, a call, or to start a project), not as a reflexive sign-off every single time. If you genuinely don't know something (or it isn't covered above), say so honestly and suggest they ask the team directly instead of guessing. If asked something with nothing to do with web development or this agency, answer briefly and steer back.";
 }
 
 
@@ -5368,7 +5343,7 @@ function sendChatAsk(){
   var input = document.getElementById('chatAskInput');
   var sendBtn = document.getElementById('chatAskSendBtn');
   var question = input.value.trim();
-  if(!question) return;
+  if(!question || sendBtn.disabled) return;   // ignore Enter while a reply is still coming
   addUserMsg(question);
   input.value = '';
   input.style.height = 'auto';
@@ -5376,18 +5351,18 @@ function sendChatAsk(){
   addTyping();
 
   aiConversation.push({ role:'user', content: question });
-  var messages = [{ role:'system', content: aiSystemPrompt() }].concat(aiConversation);
+  var messages = [{ role:'system', content: aiSystemPrompt() }].concat(aiConversation.slice(-14));   // recent turns only
 
   callAIProxy(messages)
     .then(function(reply){
       removeTyping();
-      addBotMsg(reply);
       aiConversation.push({ role:'assistant', content: reply });
-      sendBtn.disabled = false;
+      addBotMsgSmooth(reply, function(){ sendBtn.disabled = false; if(window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches) input.focus(); });
     })
     .catch(function(err){
       removeTyping();
-      addBotMsg("I couldn't reach the AI just now (" + err.message + "). You can also message us directly on WhatsApp — the button above still works!");
+      addBotMsg("Hmm, I couldn't reach the AI just now. Try again in a moment, or message the team directly on WhatsApp using the link below.");
+      if(window.console) console.warn('WEXA chat error:', err && err.message);
       sendBtn.disabled = false;
     });
 }
@@ -5698,7 +5673,7 @@ function initServiceRows(){
       var form = document.getElementById('contactForm');
       if(!form) return;
       var sel = form.querySelector('select[name="type"]');
-      if(sel){ Array.prototype.forEach.call(sel.options, function(o){ if(o.text === type) sel.value = o.value || o.text; }); }
+      if(sel){ Array.prototype.forEach.call(sel.options, function(o){ if(o.text === type) sel.value = o.value || o.text; }); sel.dispatchEvent(new Event('change',{bubbles:true})); }
       var msg = form.querySelector('textarea[name="message"]');
       if(msg && !msg.value.trim()) msg.value = "I'd like to talk about a " + type.toLowerCase() + ".";
     });
@@ -6814,5 +6789,110 @@ function initProcessRail(){
   </div>
 </div>
 
+<script>
+/* Motion layer — progress bar, title settle, spotlight, magnetic buttons, hero parallax */
+(function(){
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=window.matchMedia&&matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if(reduce) return;
+  var bar=document.createElement('div'); bar.id='mxProgress'; bar.setAttribute('aria-hidden','true'); document.body.appendChild(bar);
+  var hero=document.getElementById('hero'), orbs=[].slice.call(document.querySelectorAll('.hero-atmos i')), ticking=false, mx=0,my=0;
+  function frame(){
+    ticking=false;
+    var h=document.documentElement, max=h.scrollHeight-innerHeight, y=scrollY;
+    bar.style.transform='scaleX('+(max>0?Math.min(1,y/max):0)+')';
+    if(y<innerHeight*1.2) orbs.forEach(function(o,i){
+      var d=[.10,-.06,.14][i%3];
+      o.style.setProperty('--py',(y*d+my*(i+1)*6)+'px'); o.style.setProperty('--px',(mx*(i+1)*10)+'px');
+    });
+  }
+  function tick(){ if(!ticking){ticking=true;requestAnimationFrame(frame);} }
+  addEventListener('scroll',tick,{passive:true}); addEventListener('resize',tick); tick();
+  if(fine&&hero) hero.addEventListener('pointermove',function(e){
+    mx=e.clientX/innerWidth-.5; my=e.clientY/innerHeight-.5; tick();
+  },{passive:true});
+  /* section titles settle in from a soft blur */
+  var titles=document.querySelectorAll('.section-title');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('mx-in');io.unobserve(e.target);} });},{threshold:.35});
+    titles.forEach(function(t){t.classList.add('mx-title');io.observe(t);});
+  }
+  if(!fine) return;
+  /* cursor-follow spotlight on service rows (event-delegated) */
+  var list=document.querySelector('.services-list');
+  if(list) list.addEventListener('pointermove',function(e){
+    var r=e.target.closest&&e.target.closest('.service-row'); if(!r) return;
+    var b=r.getBoundingClientRect();
+    r.style.setProperty('--sx',(e.clientX-b.left)+'px'); r.style.setProperty('--sy',(e.clientY-b.top)+'px');
+  },{passive:true});
+  /* magnetic primary buttons */
+  document.querySelectorAll('.btn-primary').forEach(function(btn){
+    btn.classList.add('mx-mag');
+    btn.addEventListener('pointermove',function(e){
+      var b=btn.getBoundingClientRect();
+      btn.classList.add('mx-live');
+      btn.style.setProperty('--mgx',((e.clientX-b.left-b.width/2)*.22)+'px');
+      btn.style.setProperty('--mgy',((e.clientY-b.top-b.height/2)*.32)+'px');
+    });
+    btn.addEventListener('pointerleave',function(){
+      btn.classList.remove('mx-live'); btn.style.setProperty('--mgx','0px'); btn.style.setProperty('--mgy','0px');
+    });
+  });
+})();
+</script>
+<script>
+/* Custom picker for the booking form's "Project type" — enhances the native select, which still feeds FormData/reset/prefill */
+(function(){
+  var sel=document.querySelector('#contactForm select[name="type"]'); if(!sel) return;
+  var chev='<svg class="mxs-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  var tick='<svg class="mxs-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+  var wrap=document.createElement('div'); wrap.className='mxs';
+  sel.parentNode.insertBefore(wrap,sel); wrap.appendChild(sel);
+  sel.tabIndex=-1; sel.setAttribute('aria-hidden','true');
+  var label=wrap.parentNode.querySelector('label'); var uid='mxs'+Math.random().toString(36).slice(2,7);
+  if(label){label.id=uid+'-l';}
+  var btn=document.createElement('button'); btn.type='button'; btn.className='mxs-btn';
+  btn.setAttribute('aria-haspopup','listbox'); btn.setAttribute('aria-expanded','false'); if(label) btn.setAttribute('aria-labelledby',uid+'-l '+uid+'-b'); btn.id=uid+'-b';
+  var menu=document.createElement('ul'); menu.className='mxs-menu'; menu.id=uid+'-m'; menu.setAttribute('role','listbox'); if(label) menu.setAttribute('aria-labelledby',uid+'-l'); btn.setAttribute('aria-controls',menu.id);
+  var opts=[].map.call(sel.options,function(o,i){
+    var li=document.createElement('li'); li.className='mxs-opt'; li.setAttribute('role','option'); li.style.setProperty('--i',i);
+    li.innerHTML='<span class="mxs-n">'+String(i+1).padStart(2,'0')+'</span><span>'+o.text+'</span>'+tick; li.dataset.i=i; menu.appendChild(li); return li;
+  });
+  wrap.appendChild(btn); wrap.appendChild(menu);
+  var act=0;
+  function sync(){
+    var i=Math.max(0,sel.selectedIndex);
+    btn.innerHTML='<span class="mxs-n">'+String(i+1).padStart(2,'0')+'</span><span class="mxs-val"></span>'+chev;
+    btn.querySelector('.mxs-val').textContent=sel.options[i].text;
+    opts.forEach(function(li,k){li.setAttribute('aria-selected',k===i?'true':'false');});
+  }
+  function setAct(k){ act=(k+opts.length)%opts.length; opts.forEach(function(li,j){li.classList.toggle('act',j===act);}); opts[act].scrollIntoView({block:'nearest'}); btn.setAttribute('aria-activedescendant',''); }
+  function open(){
+    var r=btn.getBoundingClientRect(), need=Math.min(340,innerHeight*.6)+16;
+    wrap.classList.toggle('up',innerHeight-r.bottom<need && r.top>innerHeight-r.bottom);
+    wrap.classList.add('open'); btn.setAttribute('aria-expanded','true'); setAct(Math.max(0,sel.selectedIndex));
+  }
+  function close(f){ wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false'); if(f) btn.focus(); }
+  function pick(k){ sel.selectedIndex=k; sel.dispatchEvent(new Event('change',{bubbles:true})); sync(); close(true); }
+  btn.addEventListener('click',function(){ wrap.classList.contains('open')?close():open(); });
+  menu.addEventListener('click',function(e){ var li=e.target.closest('.mxs-opt'); if(li) pick(+li.dataset.i); });
+  menu.addEventListener('pointermove',function(e){ var li=e.target.closest('.mxs-opt'); if(li&&+li.dataset.i!==act) setAct(+li.dataset.i); });
+  wrap.addEventListener('keydown',function(e){
+    var o=wrap.classList.contains('open'), k=e.key;
+    if(k==='Escape'&&o){e.preventDefault();close(true);}
+    else if(k==='ArrowDown'||k==='ArrowUp'){e.preventDefault(); if(!o) open(); else setAct(act+(k==='ArrowDown'?1:-1));}
+    else if(o&&(k==='Home'||k==='End')){e.preventDefault(); setAct(k==='Home'?0:opts.length-1);}
+    else if(o&&(k==='Enter'||k===' ')){e.preventDefault(); pick(act);}
+    else if(k==='Tab'&&o){close();}
+    else if(k.length===1&&/\S/.test(k)){ var q=k.toLowerCase(), n=opts.length;
+      for(var s=1;s<=n;s++){ var j=(act+s)%n; if(sel.options[j].text.toLowerCase().charAt(0)===q){ if(!o) open(); setAct(j); break; } } }
+  });
+  document.addEventListener('pointerdown',function(e){ if(!wrap.contains(e.target)) close(); });
+  sel.addEventListener('change',sync);
+  if(sel.form) sel.form.addEventListener('reset',function(){ setTimeout(sync,0); });
+  sync();
+})();
+</script>
 </body>
 </html>
