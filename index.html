@@ -4008,7 +4008,7 @@ function initWorkCarousel(){
    uses — see openAdModal below); neighbours peek out either side and are
    clickable / swipeable. With no reels yet, five honest "Reel coming soon"
    placeholders keep the section looking finished without faking content. ---- */
-var reelState = { items:[], i:0, wrap:false, bound:false, suppressClick:false };
+var reelState = { items:[], i:0, wrap:false, bound:false, suppressClick:false, hover:false, inView:true, last:0 };
 
 function renderAds(){
   var track = document.getElementById('reelTrack');
@@ -4024,7 +4024,7 @@ function renderAds(){
 
   reelState.items = items;
   reelState.i = Math.min(reelState.i, items.length - 1);
-  reelState.wrap = items.length >= 5;   // 5+ cards fill every slot, so loop; fewer just clamp
+  reelState.wrap = items.length >= 3;   // same as Work: loops with 3+ reels so the centre card always has neighbours; each reel appears once
 
   track.innerHTML = items.map(function(it, k){
     var head = it.real ? 'Instagram' : escapeHtml(it.caption);
@@ -4043,7 +4043,7 @@ function renderAds(){
   }).join('');
 
   reelLayout();
-  if(!reelState.bound){ reelBind(); reelState.bound = true; }
+  if(!reelState.bound){ reelBind(); reelAutoInit(); reelState.bound = true; }
 }
 
 function reelLayout(){
@@ -4070,7 +4070,34 @@ function reelGo(delta){
   var st = reelState, n = st.items.length;
   if(n < 2) return;
   st.i = st.wrap ? ((st.i + delta) % n + n) % n : Math.max(0, Math.min(n-1, st.i + delta));
+  st.last = Date.now();
   reelLayout();
+}
+
+/* Auto-slide: advances every few seconds; pauses on hover/focus/touch, while
+   offscreen or the tab is hidden, while a reel is open, and after any manual
+   move. Off entirely for prefers-reduced-motion. */
+var REEL_AUTO_MS = 4200;
+function reelAutoInit(){
+  var stage = document.getElementById('reelStage'); if(!stage) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var st = reelState;
+  var hold = function(v){ return function(){ st.hover = v; st.last = Date.now(); }; };
+  stage.addEventListener('pointerenter', hold(true));
+  stage.addEventListener('pointerleave', hold(false));
+  stage.addEventListener('focusin', hold(true));
+  stage.addEventListener('focusout', hold(false));
+  stage.addEventListener('touchstart', function(){ st.last = Date.now(); }, {passive:true});
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ st.inView = es[0].isIntersecting; }, {threshold:.35}).observe(stage);
+  }
+  setInterval(function(){
+    var modal = document.getElementById('vmodalBackdrop');
+    if(!st.wrap || st.hover || !st.inView || document.hidden) return;
+    if(modal && modal.classList.contains('open')) return;
+    if(Date.now() - st.last < REEL_AUTO_MS - 200) return;   // recently interacted
+    reelGo(1);
+  }, REEL_AUTO_MS);
 }
 
 function reelBind(){
